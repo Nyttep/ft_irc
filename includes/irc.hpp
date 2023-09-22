@@ -21,4 +21,7 @@
 # include <cstdlib>
 # include <sys/types.h>
 
+void	ft_check_arg(int argc, char **argv);
+int		ft_atoi(const char *str);
+
 #endif

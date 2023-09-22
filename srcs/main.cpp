@@ -38,8 +38,15 @@ std::vector	getPfds()
 
 }
 
+
 int	main(int argc, char** argv)
 {
+	if (argc != 3)
+	{
+		std::cerr << "Error: Port and password required" << std::endl;
+		exit(1);
+	}
+	ft_check_arg(argc, argv);
 	Server	serv(argv[2], argv[1]);
 	int	listener = getListenerSocket(serv);
 	return (0);
