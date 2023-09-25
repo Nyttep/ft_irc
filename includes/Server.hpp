@@ -35,6 +35,7 @@ class Server //date creation ?
 		int			getPort();
 		User&		getUser(int	key);
 		bool		addUser(int key, User value);
+		bool		removeUser(int key);
 		bool		isRegistered(int key);
 		void		addChan(Channel	newChan);
 		bool		chanExist(std::string name);

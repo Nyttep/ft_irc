@@ -14,14 +14,20 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _isOP(false)
-{}
+User::User() : _nName(""), _uName(""), _rName(""), _isOP(false), _isLogged(false)
+{
+	_buff.resize(BUFF_SIZE);
+}
 
-User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false)
-{}
+User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false), _isLogged(false)
+{
+	_buff.resize(BUFF_SIZE);
+}
 
-User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false)
-{}
+User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false), _isLogged(false)
+{
+	_buff.resize(BUFF_SIZE);
+}
 
 User::User(const User& toCopy)
 {
@@ -39,6 +45,7 @@ User&	User::operator=(const User& rhs)
 	_uName = rhs._uName;
 	_rName = rhs._rName;
 	_isOP = rhs._isOP;
+	_isOP = rhs._isLogged;
 	return (*this);
 }
 
@@ -89,10 +96,20 @@ void	User::removeOP()
 	_isOP = false;
 }
 
+std::string	User::getBuff()
+{
+	return (_buff);
+}
+
+std::string	User::getMsg()
+{
+	return (_msg);
+}
+
 //--------------------------- Other Functions ----------------------------
 
 
-bool		User::isOP()
+bool	User::isOP()
 {
 	return (_isOP);
 }
@@ -107,5 +124,46 @@ void	User::removeOP()
 	_isOP = false;
 }
 
-//--------------------------- Other Functions ----------------------------
+bool	User::isLogged()
+{
+	return (_isLogged);
+}
 
+void	User::logIn()
+{
+	_isLogged = true;
+}
+
+void	User::logOut()
+{
+	_isLogged = false;
+}
+
+void	User::clearMsg()
+{
+	_msg.clear();
+}
+
+void	User::clearBuff()
+{
+	_buff.clear();
+}
+
+bool	User::formatRecvData()
+{
+	int	pos = _buff.find("\r\n");
+
+	if (!_extra.empty())
+	{
+		_msg.append(_extra);
+		_extra.clear();
+	}
+	if (pos == std::string::npos)
+	{
+		_msg.append(_buff);
+		return (0);
+	}
+	_msg.append(_buff.substr(0, pos + 2));
+	_extra.append(_buff.substr(pos + 2, _buff.size()));
+	return (1)
+}

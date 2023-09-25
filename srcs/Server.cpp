@@ -58,6 +58,8 @@ User&	Server::getUser(int key)
 	return (ret);
 }
   
+//------------------------- Other Functions -----------------------------
+
 bool	Server::addUser(int key, User value)
 {
 	if (this->isRegistered(key))
@@ -66,12 +68,15 @@ bool	Server::addUser(int key, User value)
 	return (ret.second);
 }
 
+bool	Server::removeUser(int key)
+{
+	return (_users.erase(key));
+}
+
 void	Server::addChan(Channel	newChan)
 {
 	_channels.push_back(newChan);
 }
-
-//------------------------- Other Functions -----------------------------
 
 bool	Server::isValidPswd(std::string try)
 {

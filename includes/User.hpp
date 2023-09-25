@@ -18,10 +18,14 @@
 class User
 {
 	private :
-		std::string	_nName; // nickname
-		std::string _uName; // username
-		std::string _rName; // realname
-		bool		_isOP;
+		std::string		_nName; // nickname
+		std::string 	_uName; // username
+		std::string 	_rName; // realname
+		std::string		_msg;
+		std::string		_buff;
+		std::string		_extra;
+		bool			_isOP;
+		bool			_isLogged;
 	public :
 		User();
 		User(std::string newNName, std::string newUName);
@@ -35,9 +39,17 @@ class User
 		void		setUName(std::string newUName);
 		std::string	getRName();
 		void		setRName(std::string newRName);
+		std::string	getBuff();
+		std::string	getMsg();
+		void		clearMsg();
+		void		clearBuff();
 		bool		isOP();
+		bool		isLogged();
+		void		logIn();
+		void		logOut();
 		void		makeOP();
 		void		removeOP();
+		bool		formatRecvData();
 };
 
 #endif

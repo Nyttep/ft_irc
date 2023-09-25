@@ -22,4 +22,6 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 
+# define SIZE_BUFF 1024
+
 #endif
