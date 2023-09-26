@@ -1,0 +1,370 @@
+
+ARCHITECTURE:
+
+CLient unique identifie par pseudo.
+Chaque serveur doit avoir les infos de tous les client: le nom, adresse de l'hebergeur auquel le client se connect.
+
+
+Pseudo pas vide, pas de caractère ' ' , * ? ! @
+Pseudo ne commence pas par $ : chan-type et .
+OPtionnel pseudo commence pas par nombre
+
+
+Service plus utilise de nos jours.
+
+
+Chan est un groupe de plusieurs utilisateurs.
+Se crée quand un rejoins, se détruit quand plus personne dans le chan.
+Commence par un préfixe # (general) & (local). Le nom du chan ne peut avoir ' ' ^G ,
+(^G ou BELL en ASCII est 7, soit \a)
+# General, est un channel connu de tous les serveurs dans le réseau.
+& Local est un channel qui est spécifique seulement au serveur.
+D'autres types de channel peuvent exister.
+Pour créer/rejoindre, command JOIN.
+Si n'existe pas, le chan est créé et l'utilisateur devient opérateur.
+Rejoindre dépend des modes en cours (+i, +k, +l)
+Les chans ont un topic. une ligne qui se montre aux utilisateurs quand ils rejoignent le chan ou si le topic est modifié, une notif averti les utilisateurs.
+
+
+Les modes alterent le fonctionnement des channels
+Les modes a faire sont
+i: Invite seulement: controle l'arrive des nouveaux utilise. IL doit etre invite, sinon ERR 473
+
+t: Topic protege: controle si l'utilisateur doit etre operateur pour modifie le sujet. SI desactiver, tous les utilisateurs pour modifie le topic.
+
+k: Clé: le channel est verrouille par une clé et doit etre fourni pour rejoindre le channel. Pas d'espace pour la clé. Si utilisateur JOIN sans clé ou invalid, ERR 475.
+La clé n'a pas d'espace, si la valeur est incorrect, retourne ERR 696.
+Avec ce mode, le client DOIT gérer ERR 696, ERR 525, MODE avec une clé differente(tronqué ou invalid caractères), le changement de clé ignoré si MODE avait un parametre invalide.
+
+o: Operateur préfixe. on les droit opérateurs du channel et peut faire les actions de modo. les opérateurs sont identifié par @
+
+l: Limite client: ce mode controle quel nombre d'utilisateur il peut y avoir. La valeur est un int. Si un client veut rejoindre et la limite est atteinte, deploie ERR 471
+
+Le serveur défini les modes par CHANMODES. les modes sont délimité par ,
+Les serveurs peuvent créer de nouveaux modes.
+
+
+Un utilisateur peut rejoindre plusieurs chan en meme temps, mais une limite doit être impose par le serveur, spécifie par CHANLIMIT. se compose du préfixe et d'une limite séparé par :
+Ex: CHANLIMIT=#:50 (général max 50 chans) &#:50, (50 géné et 50 local) #: (général illimité)
+
+
+
+Les opérateurs sont considéré comme les proprio du chan. les serveurs peuvent definir des niveaux de modo (ex: halfop, fondateur). les opérateurs ne peuvent utiliser les commandes op
+KICK, eject un utilisateur du chan
+MODE, modifie les modes
+INVITE, invite un utilisateur dans le chan
+TOPIC defini le sujet.
+Dans un chan, ils sont identifie par un @suivi du pseudo, a chaque fois qu'ils sont associé au dit chan (ex: NAMES command)
+
+
+
+
+
+
+COMMUNICATION:
+One-to-one communication:
+O-t-o souvent les utilisateurs et non serveur.
+Concerne les IRC en plusieurs serveurs ou PM.
+
+
+One-to-many communication:
+Vers un chan. envoie le message vers membres du chan.
+1 utilisateur: Message envoyé vers le serveur et puis rien.
+2 utilisateurs: Fonctionne comme une c'etait des messages privés en dehors d'un channel.
++2 utilisateur: message envoyé à tous les clients.
+
+vers host/server Mask. Pas a faire (je pense)
+
+vers une liste. le moins efficace. Envoie un message vers une liste (utilisateur, chan). le serveur casse la liste et envoie une copie séparé à toutes les destinations. Pas efficace car n'analyse pas les destinataires et peut envoyer des doublons.
+
+
+One-to-All:
+Principalement les messages d'informations envoyé à tous les clients et/ou serveurs.
+Utilisateur vers utilisateur:
+Opérateurs peuvent le faire aux utilisateurs du réseau.
+
+Utilisateur vers serveur:
+Les commandes qui resulte un changement d'état(membre de chan, changement mode). DOIT etre vnoyé à tous les serveurs et la distribution pas modifé par l'utilisateur.
+
+Serveur vers serveur:
+Un serveur donc OSEF.
+
+
+
+
+
+PARAMETRE CONNEXION:
+Fonctionne en TCP/IP. Le port standard est 6667 pour texte brut, 6697 pour connexions TLS
+
+Client vers Serveur Protocole:
+Envoie des paquets d'octets l'un l'autre. se termine pas \r\n
+les logiciels DOIVENT utilise UTF-8, 
+Les entités (clients, serveurs) sont cartographie pour eviter les doublons "Bob" et "bob". doit etre précisé dans le support
+
+Format Message:
+une seule ligne délimité terminé par \r\n
+Quand le serveur lit le message, il lit le message dans un buffer. Le parsage et traitement du message ne se fait que lorsque \r\n se fait. si message vide, ignoré.
+Si plusieurs messages, se fait par les limites \r\n.
+
+Les messages ont ce format:
+@tag :source contenu
+
+ex @id=1234 :dans@localhost PRIVMSG #chan :Salut
+
+la plupart des serveurs limite les messages à 512 octets (\r\n compris) mais des octets supplémentaire doivent être apporté pour la section tag. Client autorise 8191, et serveurs 4096.
+
+Tag est optionnel et ne DOIT pas etre envoyé sauf si autorise explicitement. Commence par un @ (qui est retiré de la valeur)
+
+Source est optionnel, commence par : (qui est retiré de la valeur). Si pas de tag, DOIT etre le premier caractère du message. Elle indique la source du message. les utilisateurs ne doivent pas inclure la source quand ils envoient un message. Les serveurs peuvent inclure la source des messages. Les client DOIVENT gérer les messages de la meme maniere si la source est contenu ou non.
+
+
+
+Command: soit des lettre, soit le code en 3 chiffres.
+
+Paramètres, les paramètres sont des infos supplémnetaires pour une commande. Les paramètres peuvent être séparé par un ou plusieurs espaces. Marche pas si nombre invalide ou si un parramètre suivi d'espace puis rien.
+Les logiciels doivent éviter d'envoyer plus de 15 paramètres en raison des premiers protocoles.
+
+Les serveurs doivent gérer le \n seul et peuvent gérer le \r seul comme si c'était la paire \r\n.
+Serveurs et client doivent ignorer les lignes vides.
+Les serveurs doivent gérer au déla des 512 octets soit en faisent erreur 417. Ou tronquer au 510eme pour metre \r\n puis continuer la suite.
+
+
+Réponse numérique: La plupart des messages du client vers serveur genere une réponse. La plus commune est la réponse numérique, pour les erreurs ou réponses normales. Un réponse numérique doi contenir la source et le code à 3 chiffre comme commande. La réponse numérique doit contenir la cible comme premier paramètre. Une réponse numérique ne peut venir du client.
+
+Si les wildcards sont autorise, ils sont referé comme mask. Le protocole autorise ? et *. ils peuvent être eteint avec \.
+? correspond à un et un seul caracètere. Ex: a?c cherche une correspondance de 3 caractères commencant par a et terminant par c.
+
+* correspond à n'importe quel nombre de caractère. Ex: a*c, cherche une correspondance de 2 ou plus commenant par a et terminant par c.
+
+
+
+
+
+ENREGISTREMENT DE CONNEXION:
+Lors de l'établissement de connexion. Le client doit s'enregister, sans attendre les messages de bannière du serveur.
+ 
+Jusqu'à sa complétion, Seule quelques commandes peuvent être accepté par le serveur. 
+L'ordre recommandé est
+
+
+1    CAP LS 302
+2    PASS
+3    NICK and USER
+4    Capability Negotiation
+5    SASL (if negotiated)
+6    CAP END
+
+1 à 3 envoyé à la connexion. 4 est utilise la capacité de négociation si supporté par le serveur.
+Si 4 pas géré par serveur, l'enregistrement continue sans 4-6
+
+1: si serveur supporte capacité de négociation, CAP suspend le processus d'enregistrementpour démarrer la capacité de négoce.
+
+2: le PASS du serveur.
+
+3: NICK/USER pour définir usitisateur, pseudo, vrai nom. Si pas de capacité de négoce, ces commandes terminent l'enregistrement.
+
+certains serveurs envoient ping et attend un pong venant du client avant de continuer. Peut intervenir immédiatement à la connexion ou autre moment du processus de connexion.
+
+Quand enregistrement terminé par un succes. le serveur doit envoyé rpl 001 002 003 004  et au moins un 005. Si des modes sont actif par défaut, le serveur doit envoyé 221. Le serveur peut envoyer d'autres messages.
+
+
+
+
+
+ANNONCE FONCTIONNALITE:
+réponse 005 dépend de ce que est implementé dans le serveur.
+
+
+
+
+
+CAPACITE DE NEGOCIATION: 
+
+
+
+
+
+MESSAGES CLIENT:
+Les massages sont client vers serveurs, sauf spécifié.
+Pour une commande, il peut y avoir des paramètres. les [param] sont optionnels. les {param} peuvent etre répété.
+param{, param} indique au moins un param, séparé par ,
+
+COMMANDES DE CONNEXION:
+?CAP?
+?AUTHENTICATE?
+
+PASS commande pour le pass du serveur. si échoue err 464 et PEUT arreter la connexion avec command ERROR.
+
+NICK: utilisé pour donné un pseudo au nouveau, ou modifié le précédent. Un message peut être donné par serveur aux clients si changement est un succès.
+
+USER: utilisé au début d'une connexion, pour donner un pseudo et une identité au nouvel utitlisateur. realname en dernier car des espaces peuvent être présents. Taille max défini par USERLEN dans ISUPPORT. Si pseudo sup, tronqué. doit avoir 1 caractère et pas être vide. 0 et * doivent être envoyé par client car peut varier en fonction des protocoles IRC. SI déjà enregistré, err 462
+
+PING: envoyé par client ou serveur. On répond avec PONG. PONG répond avec le meme token. PING peut être envoyé par serveur lors d'un enrgistrment.
+
+PONG: Réponse à PING. [<server>] doit etre envoyé pour indiqué quel serveur répond.
+
+OPER: utiliser par un utilisateur pour devenir opérateur.
+
+QUIT: Pour mettre fin à la connexion. Le serveur répond avec ERROR. Ce message peut également être envoyé par serveur pour avertir les utilisateurs des channels du gars qu'est parti. [reason] si raison donné , le serveur doit annoncé avant reason "Quit: ". S'applique aussi si reason pas précisé. Si un client part sans faire QUIT, le serveur envoie un message QUIT aux autres utilisateurs, le serveur doit definir la nature de reason comme "timeout: 120".
+
+
+ERROR: réponse d'un serveur pour erreur fatal avant de mettre fin à la connexion.
+
+
+COMMANDE DE CHANNEL:
+JOIN: pour rejoindre un channel, on peut rejoindre autant de channel en même temps, dans la limite. chaque channel peut avoir une clé et vérifier si il peut rejoindre le channel. Quand succès, le client recoit toutes les infos de JOIN, PART, KICK, MODE concernant le chan. L'utilisateur recoit tous les PRIVMSG et NOTICE du chan ainsi que les QUIT.
+1: le message de JOIN
+2: le RPL 332 et optionnel RPL 333, rien si pas de topic.
+3: LIST avec une ou plus RPL353, suivi d'un RPL 366. Le nouveau venu doit compris dans la liste.
+ATTENTION, commande spéciale 0. JOIN 0 fait quitter tous les chans où le client est connecté.
+Les autres utilisateurs recoivent un message disant qu'un nouvel utilisateur est arrivé.
+
+PART: supprime un utilisateur du channel. SI fait pas partie du chan ERR442, si chan existe pas 403. Un [reason] peut être donné
+
+TOPIC: pour voir ou changer le topic du channel. si [topic] pas précisé, RPL 332 ou 331, si précisé, change le topic.
+Si 332 est renvoyé, 333 doit suivre.
+
+NAMES: Voir les utilisateurs du chan, le préfixe doit etre précise (@ pour opérateur, ~ pour fondateur). Serveur PEUVENT autorisé plus qu'une chan en param.
+
+LIST: donne liste des chans, avec des infos. Pas de paramètres, liste des chans. [channel] donne des infos du chan demandé. [elistcond] défini par RPL_ISUPPORT, donc dépend si le serveur l'a implementé avec ELIST token. donne les chans correspondant à la ELIST doc.
+
+INVITE: invite un utilisateur dans le chan. quand succes 341 envoyé seulement a celui qui a fait la commande. Certains serveurs peuvent autoriser sans paramètres et l'utilisateur voit ou il est invité.
+
+KICK: vire un utilisateur du chan. si pas de [comment], un message par défaut. le serveur NE DOIT PAS envoyé de KICK avec tous les utilisateurs kické, un par utilisateur seulement. Serveur peut limité le nb de cibles avec TARGMAX de RPL_ISUPPORT.
+
+
+MOTD: Message du jour du serveyr. si pas [target], le message du serveur où le client est co. si [target] le message, de ce serveur
+
+VERSION: Donne la version du logiciel et RPL_ISUPPORT. SI [target] pas précise, le serveur où le client se trouve. [target] est un client, donne version du client. [target] serveur, le seveur. Le serveur répond avec une RPL_VERSION et une ou plus RPL_ISUPPORT
+
+ADMIN: donne le nom du l'admin. pas précisé, où le client est co. si précisé, [target] est un serveur et donne info du serveur.
+
+CONNECT: force un serveur de se co à un autre serveur. réservé aux opérateurs.
+
+LUSERS: DOnne stats de des utilisateurs local et global.
+
+TIME: donne l'heure du serveur. SI [server] pas précisé, la ou est co.
+
+STATS: donne les stats du serveur.
+
+HELP: retourne doc du serveur et command implémenté.
+
+INFO: retourne les infos du serveurs. comprends généralement, le nom et version et ces auteurs. d'autres infos, peuvent être donné.
+
+MODE: deux MODE
+MODE USER: target est un user. user doit forcément être l'utilisateur lui même. sans [modestring], renvoie le mode d'user. si donné, le mode est appliqué à ce user.
+MODE CHANNEL: taget est un channel. pas modestring, donne les modes du channel. 
+
++, ajoute le mode, - retire, la lettre.
+
+
+COMMANDE ENVOI MESSAGE:
+PRIVMSG: envoie message privé que ce soit entre users ou les chans.
+Si géré par un serveur, pour un chan, si il y a un préfixe tel que @ (opérateur) le privmsg sera envoyé qu'aux opérateurs du chan.
+Si l'utilisateur est parti, le serveur peut répondre avec 301.
+
+NOTICE: comme un privsmg sauf que les réponses autos comme 301, ne sont pas renvoyé.
+
+
+REQUETE UTILISATEUR:
+WHO: renvoie une liste d'utilisateur correspondant au mask. si chan, la liste des membres du channel. Si utilisateur, l'utilisateur ou ce qui correspond à la recherche. 
+
+WHOIS: pour un utilisateur particulier. Les serveurs envoient généralement au client lui meme et aux opérateurs, puisqu'il y a des infos sensible.
+
+WHOWAS: infos sur un utilisateur qui n'existe plus. que ce soit un utilisateur qui a changé de pseudo ou qui a quitté IRC. 
+
+MESSAGE OPERATEUR:
+KILL: ferme la connexion de l'utilisateur.
+
+REHASH: commande admin pour forcer le serveur de relire ses fichiers de configuration.
+
+RESTART: redémarre le serveur. 
+
+SQUIT: déconnecte le serveur du réseau.
+
+
+MESSAGE OPTIONNEL:
+AWAY: defini un message pour dire qu'il est afk. si [text] pas def, l'user est plus afk.
+
+LINKS: un utilisateur liste tous les serveurs dont le serveur ou il se trouve.
+
+USERHOST: retourne les infos des utilisateurs demandés.
+
+WALLOPS: envoie un message à tous les utilisateurs connectés et qui a le mode w.
+
+
+TYPES DE CHAN:
+#General: un chan normal. un nouveau chan général a par défaut MODE +t. un général est persistent sur le réseau. si deux clients sur deux serveurs différents sur #général ils peuvent communiquer
+
+&Local: un chan local. n'est pas persistent sur le réseau. Unique au serveur. donc &local du serveur 1 et serveur 2, sont unique et les clients ne peuvent communiquer entre les deux serveurs. 
+
+
+
+PREFIXE MEMBRE DE CHAN:
+Fondateur: prefixe ~, mode +q. désigne le fondateur du chan. A tous les droits modo et est considéré propriétaire.
+
+Opérateur: préfixe @, mode +o. un opérateur et peut exercer des commandes opérateurs.
+
+
+
+
+PARAMETRE RPL_ISUPPORT:
+Permet de dire au client quelles sont les fonctionnalités du serveur.
+AWAYLEN: taille de message commande AWAY
+
+CASEMAPPING: Indique le format le serveur utilise . Ex:ascii
+le serveur DOIT EVITER d'utiliser rfc1459
+
+CHANLIMIT: indique nombre de channel qu'on peut rejoindre. Ex: #&:4 signifie 4 général et 4 local.
+
+CHANMODES: précise le mode de chan dispo et quel types d'arguement ils ont pour la commande MODDE.
+
+CHANNELLEN: taille max d'un nom de channel.
+
+CHANTYPES: définis les préfixes disponibles sur le serveur. &#
+
+ELIST: définis les paramètres pour etendre les recherches de la commande LIST.
+
+EXCEPTS: définis des exceptions de ban.
+
+EXTBAN: paramatre indiquant les extensions de masques bans que le serveur supporte.
+
+HOSTLEN(proposé): indique taille max qu'un hostname peut avoir.
+
+INVEX: indique que le serveur supporte invite exception.
+
+KICKLEN: Taille max du message de KICK.
+
+MAXLIST: définis les variables que le serveur peut supporter pour chaque types de mode de MODE.
+
+MAXTARGETS: le nb max de cibles pour PRIVMSG NOTICE. IL est préférable d'annoncé TARGMAX et il est prévu qu'il remplace MAXTARGETS.
+
+MODES: définis combien de mode peut être définis sur un chan par un seule commande MODE.
+
+NETWORK: indique le nom du réseau IRC où le client est connecté.
+
+NICKLEN: la taille max d'un nickname.
+
+PREFIX: il y a différents statuts dans les chan. PREFIX definis ces préfixes
+
+SAFELIST: Précise que l'utilisateur peut utiliser LIST sans risque d'être déco a cause de l'énorme quantité de données que génère LIST.
+
+SILENCE:Inidique le nb max d'entrées qu'un client peut avoir dans SILENCE.
+
+STATUSMSG: indique que le serveur support une methode pour les clients d'envoyer des messages par PRIVMSG/NOTICE aux personnes avec préfixes.
+
+TARGMAX:définis le nombbre max de target par commande.
+
+TOPICLEN: Taille max d'un message topic.
+
+USERLEN(proposed):taille max d'un username.
+
+
+
+
+
+
+
+
+
+

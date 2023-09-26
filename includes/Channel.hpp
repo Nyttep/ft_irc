@@ -19,11 +19,25 @@ class Channel //date creation ?
 {
 	private :
 		std::string			_name;
-		std::map<int, User>	_users;
+		std::vector<User>	_operators;
+		std::vector<User>	_users;
+		std::vector<User>	_invite;
+
+		std::string			_key;
+		std::string			_topic;
+		size_t				_limit;
+
+		bool				_i;
+		bool				_t;
+		bool				_k;
+		bool				_o;
+		bool				_l;
+
 		Channel();
+		Channel(const Channel& toCopy);
+
 	public :
 		Channel(std::string newName);
-		Channel(const Channel& toCopy);
 		~Channel();
 		Channel&	operator=(const Channel& rhs);
 		std::string	getName();

@@ -1,0 +1,21 @@
+<> paramètres
+[] optionnel
+{} répétition
+
+?AUTHENTICATE?: AUTHENTICATE
+NICK: NICK <nickname> 							statut:verif arg
+USER: USER <username> 0 * <realname> 					statut:verif arg
+PASS: PASS <password>
+MODE: MODE <target> [<modestring> [<mode arguments>...]]
+JOIN: JOIN <channel>{,<channel>} [<key>{,<key>}]
+PART: PART <channel>{,<channel>} [<reason>]
+PING: PING <token>
+PONG: PONG [<server>] <token>
+KICK: KICK <channel> <user> *( "," <user> ) [<comment>]
+PRIVMSG: PRIVMSG <target>{,<target>} <text to be sent>
+?NOTICE?: NOTICE <target>{,<target>} <text to be sent>
+QUIT: QUIT [<reason>] 							statut:verif arg
+INVITE: INVITE <nickname> <channel>
+TOPIC: TOPIC <channel> [<topic>]					statut:verif arg
+?NAMES?: NAMES <channel>{,<channel>}
+?LIST?: LIST [<channel>{,<channel>}] [<elistcond>{,<elistcond>}]	statut:

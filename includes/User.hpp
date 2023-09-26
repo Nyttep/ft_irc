@@ -18,15 +18,23 @@
 class User
 {
 	private :
-		std::string	_nName; // nickname
-		std::string _uName; // username
-		std::string _rName; // realname
-		bool		_isOP;
-	public :
+		int						_fd;
+		int						_port;
+
+		std::string				_nName; // nickname
+		std::string 			_uName; // username
+		std::string 			_rName; // realname
+		std::string				_hName; // hostname
+
+		std::vector<Channel>	_lChannel; // LocalChan
+		std::vector<Channel>	_gChannel; // GeneralChan
+
 		User();
+		User(const User& toCopy);
+
+	public :
 		User(std::string newNName, std::string newUName);
 		User(std::string newNName, std::string newUName, std::string newRName);
-		User(const User& toCopy);
 		~User();
 		User&		operator=(const User& rhs);
 		std::string	getNName();
