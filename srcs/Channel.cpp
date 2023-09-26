@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Channel.hpp"
+#include "irc.hpp"
 
 //---------------------- Constructors & Destructors ----------------------
 
@@ -46,15 +46,14 @@ std::string	Channel::getName()
 
 User&	Channel::getUser(int key)
 {
-	User&	ret = _users.find(key);
-	if (ret == _users.end())
-		return (NULL);
+	std::map<int, User>::iterator	found = _users.find(key);
+	User&	ret = found->second;
 	return (ret);
 }
 
 bool	Channel::addUser(int key, User value)
 {
-	if (this->isRegistered(key))
+	if (this->isInChannel(key))
 		return (0);
 	std::pair<std::map<int, User>::iterator, bool>	ret = _users.insert(std::pair<int, User>(key, value));
 	return (ret.second);

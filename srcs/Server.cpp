@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#include "irc.hpp"
 
 //---------------------- Constructors & Destructors ----------------------
 
 Server::Server()
 {}
 
-Server::Server(std::string newPswd, int newPort) : _pswd(newPswd), _port(newPort)
+Server::Server(std::string newPswd, std::string newPort) : _pswd(newPswd), _port(newPort)
 {}
 
 Server::Server(const Server& toCopy)
@@ -45,16 +45,15 @@ std::string	Server::getPswd()
 	return (_pswd);
 }
 
-int	Server::getPort()
+std::string	Server::getPort()
 {
 	return (_port);
 }
 
 User&	Server::getUser(int key)
 {
-	User&	ret = _users.find(key);
-	if (ret == _users.end())
-		return (NULL);
+	std::map<int, User>::iterator	found = _users.find(key);
+	User&	ret = found->second;
 	return (ret);
 }
   
@@ -62,8 +61,6 @@ User&	Server::getUser(int key)
 
 bool	Server::addUser(int key, User value)
 {
-	if (this->isRegistered(key))
-		return (0);
 	std::pair<std::map<int, User>::iterator, bool>	ret = _users.insert(std::pair<int, User>(key, value));
 	return (ret.second);
 }
@@ -78,9 +75,9 @@ void	Server::addChan(Channel	newChan)
 	_channels.push_back(newChan);
 }
 
-bool	Server::isValidPswd(std::string try)
+bool	Server::isValidPswd(std::string tryPswd)
 {
-	if (try == _pswd)
+	if (tryPswd == _pswd)
 		return (true);
 	return (false);
 }
@@ -94,7 +91,7 @@ bool	Server::chanExist(std::string name)
 {
 	if (_channels.empty())
 		return (false);
-	for (std::vector<Channel>::iterator	it = _channels.begin(); it++; it != _channels.end())
+	for (std::vector<Channel>::iterator	it = _channels.begin(); it != _channels.end(); it++)
 	{
 		if (name == it->getName())
 			return (true);

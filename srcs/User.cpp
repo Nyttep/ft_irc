@@ -10,23 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "User.hpp"
+#include "irc.hpp"
 
 //---------------------- Constructors & Destructors ----------------------
 
 User::User() : _nName(""), _uName(""), _rName(""), _isOP(false), _isLogged(false)
 {
-	_buff.resize(BUFF_SIZE);
 }
 
 User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false), _isLogged(false)
 {
-	_buff.resize(BUFF_SIZE);
 }
 
 User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false), _isLogged(false)
 {
-	_buff.resize(BUFF_SIZE);
 }
 
 User::User(const User& toCopy)
@@ -66,7 +63,7 @@ std::string	User::getUName()
 	return (_uName);
 }
 
-void		User::setUName(std::string newUName);
+void		User::setUName(std::string newUName)
 {
 	_uName = newUName;
 }
@@ -76,29 +73,9 @@ std::string	User::getRName()
 	return (_rName);
 }
 
-void		User::setRName(std::string newRName);
+void		User::setRName(std::string newRName)
 {
 	_rName = newRName;
-}
-
-bool		User::isOP()
-{
-	return (_isOP);
-}
-
-void	User::makeOP()
-{
-	_isOP = true;
-}
-
-void	User::removeOP()
-{
-	_isOP = false;
-}
-
-std::string	User::getBuff()
-{
-	return (_buff);
 }
 
 std::string	User::getMsg()
@@ -144,14 +121,10 @@ void	User::clearMsg()
 	_msg.clear();
 }
 
-void	User::clearBuff()
+bool	User::formatRecvData(std::vector<char>& buff)
 {
-	_buff.clear();
-}
-
-bool	User::formatRecvData()
-{
-	int	pos = _buff.find("\r\n");
+	std::string				tmp(buff.data());
+	std::string::size_type	pos = tmp.find("\r\n");
 
 	if (!_extra.empty())
 	{
@@ -160,10 +133,10 @@ bool	User::formatRecvData()
 	}
 	if (pos == std::string::npos)
 	{
-		_msg.append(_buff);
+		_msg.append(tmp);
 		return (0);
 	}
-	_msg.append(_buff.substr(0, pos + 2));
-	_extra.append(_buff.substr(pos + 2, _buff.size()));
-	return (1)
+	_msg.append(tmp.substr(0, pos + 2));
+	_extra.append(tmp.substr(pos + 2, tmp.size()));
+	return (1);
 }
