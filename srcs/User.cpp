@@ -85,22 +85,6 @@ std::string	User::getMsg()
 
 //--------------------------- Other Functions ----------------------------
 
-
-bool	User::isOP()
-{
-	return (_isOP);
-}
-
-void	User::makeOP()
-{
-	_isOP = true;
-}
-
-void	User::removeOP()
-{
-	_isOP = false;
-}
-
 bool	User::isLogged()
 {
 	return (_isLogged);

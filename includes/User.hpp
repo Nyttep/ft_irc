@@ -29,7 +29,6 @@ class User
 
 		std::string			_msg;
 		std::string			_extra;
-		bool				_isOP;
 		bool				_isLogged;
 	public :
 		User();
@@ -48,12 +47,9 @@ class User
 		void				setRName(std::string newRName);
 		std::string			getMsg();
 		void				clearMsg();
-		bool				isOP();
 		bool				isLogged();
 		void				logIn();
 		void				logOut();
-		void				makeOP();
-		void				removeOP();
 		bool				formatRecvData(std::vector<char>& buff);
 };
 

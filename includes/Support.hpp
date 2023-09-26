@@ -4,11 +4,11 @@
 # define CASEMAPPING="ascii"
 # define CHANLIMIT="#&:4"
 # define CHANMODES="i, t, k, o, l"
-# define CHANNELLEN=24
+# define CHANNELLEN=24 //maxlen du nom du channel
 # define CHANTYPES= "&#"
 # define KICKLEN=64
-# define MAXLIST=5
-# define MODES=1
+# define MAXLIST=5 //cb de mods peuvent etres actifs a la fois
+# define MODES=1 //cb de mods du peux activer a la fois
 # define NETWORK="IRC_NETWORK"
 # define NICKLEN=16
 # define PREFIX="@" /* peut etre ~ pour fondateur ? */
