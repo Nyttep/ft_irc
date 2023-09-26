@@ -13,28 +13,25 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "irc.hpp"
-# include "Channel.hpp"
-# include "User.hpp"
-
 class Server //date creation ?
 {
 	private :
 		std::string				_pswd;
-		int						_port;
+		std::string				_port;
 		std::map<int, User>		_users;
 		std::vector<Channel>	_channels;
 		Server();
 	public :
-		Server(std::string newPswd, int newPort);
+		Server(std::string newPswd, std::string newPort);
 		Server(const Server& toCopy);
 		~Server();
-		Server&		operator=(const Channel& rhs);
+		Server&		operator=(const Server& rhs);
 		std::string	getPswd();
-		bool		isValidPswd(std::string try);
-		int			getPort();
+		bool		isValidPswd(std::string tryPswd);
+		std::string	getPort();
 		User&		getUser(int	key);
 		bool		addUser(int key, User value);
+		bool		removeUser(int key);
 		bool		isRegistered(int key);
 		void		addChan(Channel	newChan);
 		bool		chanExist(std::string name);

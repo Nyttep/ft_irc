@@ -13,8 +13,6 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "User.hpp"
-
 class Channel //date creation ?
 {
 	private :

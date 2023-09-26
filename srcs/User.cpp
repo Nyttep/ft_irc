@@ -10,18 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "User.hpp"
+#include "irc.hpp"
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _isOP(false)
-{}
+User::User() : _nName(""), _uName(""), _rName(""), _isOP(false), _isLogged(false)
+{
+}
 
-User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false)
-{}
+User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false), _isLogged(false)
+{
+}
 
-User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false)
-{}
+User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false), _isLogged(false)
+{
+}
 
 User::User(const User& toCopy)
 {
@@ -39,6 +42,7 @@ User&	User::operator=(const User& rhs)
 	_uName = rhs._uName;
 	_rName = rhs._rName;
 	_isOP = rhs._isOP;
+	_isOP = rhs._isLogged;
 	return (*this);
 }
 
@@ -59,7 +63,7 @@ std::string	User::getUName()
 	return (_uName);
 }
 
-void		User::setUName(std::string newUName);
+void		User::setUName(std::string newUName)
 {
 	_uName = newUName;
 }
@@ -69,12 +73,20 @@ std::string	User::getRName()
 	return (_rName);
 }
 
-void		User::setRName(std::string newRName);
+void		User::setRName(std::string newRName)
 {
 	_rName = newRName;
 }
 
-bool		User::isOP()
+std::string	User::getMsg()
+{
+	return (_msg);
+}
+
+//--------------------------- Other Functions ----------------------------
+
+
+bool	User::isOP()
 {
 	return (_isOP);
 }
@@ -89,23 +101,42 @@ void	User::removeOP()
 	_isOP = false;
 }
 
-//--------------------------- Other Functions ----------------------------
-
-
-bool		User::isOP()
+bool	User::isLogged()
 {
-	return (_isOP);
+	return (_isLogged);
 }
 
-void	User::makeOP()
+void	User::logIn()
 {
-	_isOP = true;
+	_isLogged = true;
 }
 
-void	User::removeOP()
+void	User::logOut()
 {
-	_isOP = false;
+	_isLogged = false;
 }
 
-//--------------------------- Other Functions ----------------------------
+void	User::clearMsg()
+{
+	_msg.clear();
+}
 
+bool	User::formatRecvData(std::vector<char>& buff)
+{
+	std::string				tmp(buff.data());
+	std::string::size_type	pos = tmp.find("\r\n");
+
+	if (!_extra.empty())
+	{
+		_msg.append(_extra);
+		_extra.clear();
+	}
+	if (pos == std::string::npos)
+	{
+		_msg.append(tmp);
+		return (0);
+	}
+	_msg.append(tmp.substr(0, pos + 2));
+	_extra.append(tmp.substr(pos + 2, tmp.size()));
+	return (1);
+}
