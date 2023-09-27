@@ -15,8 +15,15 @@ void	execute_INVITE(std::vector<std::string>  arguments)
 	{
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
+	}
+	if (on_channel(channel, client) == false)
+	{
+		std::cerr << "Redirection 442" << std::endl;
+	}
+	if (on_channel(channel, target) == true)
+	{
+		std::cerr << "Redirection 443" << std::endl;
 	}	
-	
 	//Succes
 	std::cout << "Redirection 341 à User command et message invite pour la cible" << std::endl;
 	return (0);

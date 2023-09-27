@@ -19,3 +19,4 @@ INVITE: INVITE <nickname> <channel>
 TOPIC: TOPIC <channel> [<topic>]					statut:verif arg
 ?NAMES?: NAMES <channel>{,<channel>}
 ?LIST?: LIST [<channel>{,<channel>}] [<elistcond>{,<elistcond>}]	statut:
+ERROR
