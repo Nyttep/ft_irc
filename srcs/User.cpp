@@ -14,15 +14,11 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _isOP(false), _isLogged(false)
+User::User() : _nName(""), _uName(""), _rName(""), _isLogged(false), _fd(0)
 {
 }
 
-User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false), _isLogged(false)
-{
-}
-
-User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false), _isLogged(false)
+User::User(int newFD) : _fd(newFD) , _isLogged(false)
 {
 }
 
@@ -81,6 +77,11 @@ void		User::setRName(std::string newRName)
 std::string	User::getMsg()
 {
 	return (_msg);
+}
+
+int					User::getFD()
+{
+	return (_fd);
 }
 
 //--------------------------- Other Functions ----------------------------

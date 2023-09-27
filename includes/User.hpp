@@ -35,8 +35,7 @@ class User
 		User(const User& toCopy);
 
 	public :
-		User(std::string newNName, std::string newUName);
-		User(std::string newNName, std::string newUName, std::string newRName);
+		User(int newFD);
 		~User();
 		User&				operator=(const User& rhs);
 		std::string			getNName();
@@ -46,6 +45,7 @@ class User
 		std::string			getRName();
 		void				setRName(std::string newRName);
 		std::string			getMsg();
+		int					getFD();
 		void				clearMsg();
 		bool				isLogged();
 		void				logIn();

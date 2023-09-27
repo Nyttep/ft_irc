@@ -35,6 +35,7 @@
 int							getListenerSocket(Server serv);
 std::vector<struct pollfd>	getPfds(int listener);
 void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv);
+bool						sendAll(std::string msg, User target);
 
 void	ft_check_arg(int argc, char **argv);
 int		ft_atoi(const char *str);

@@ -80,6 +80,31 @@ void	delFromPfds(std::vector<struct pollfd> pfds, int i, int& fdCount)
 	fdCount--;
 }
 
+bool	msgTooLong(std::string msg)
+{
+	if (msg.size() > 512)
+		return (true);
+	return (false);
+}
+
+bool	sendAll(std::string msg, User target)
+{
+	int	sent = 0;
+	int len = msg.size();
+	int bytesleft = len;
+	while (total < len)
+	{
+		n = send(target, msg.data() + total, bytesleft, 0);
+		if (n == -1)
+			break;
+		total += n;
+		bytesleft -= n;
+	}
+	if (n == -1)
+		return (0);
+	return (1);
+}
+
 void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 {
 	int						fdCount = 1;
@@ -123,7 +148,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					}
 					else
 					{
-						if (!serv.addUser(pfds[i].fd, User()))
+						if (!serv.addUser(pfds[i].fd, User(pfds[i].fd)))
 						{
 							std::cerr << "Error: unexpected error: couldn't insert element in map";
 							return ;
@@ -151,6 +176,14 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					{
 						if (client->formatRecvData(buff))
 						{
+							if (msgTooLong(client->getMsg))
+							{
+								if(!sendAll(ERR_INPUTTOOLONG(client->getFD()), *client))
+								{
+									perror("Error: ");
+									return ;
+								}
+							}
 							std::cout << pfds[i].fd << "sent: " << client->getMsg() << std::endl;//send cmd
 							client->clearMsg();
 						}
