@@ -11,8 +11,8 @@
 # define MODES=1
 # define NETWORK="IRC_NETWORK"
 # define NICKLEN=16
-# define PREFIX="@" /* peut etre ~ pour fondateur ? */
-# define TARGMAX="PRIVMSG:3,JOIN:3,KICK:1,PART:3"
+# define PREFIX="@"
+# define TARGMAX="PRIVMSG:3,JOIN:3,KICK:1,PART:3,MODE:1"
 # define TOPICLEN=64
 # define USERLEN=16
 

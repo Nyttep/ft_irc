@@ -29,6 +29,9 @@ class User
 		std::vector<Channel>	_lChannel; // LocalChan
 		std::vector<Channel>	_gChannel; // GeneralChan
 
+		bool					_pass;
+		bool					_registered;
+
 		User();
 		User(const User& toCopy);
 

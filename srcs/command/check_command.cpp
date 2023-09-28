@@ -37,6 +37,16 @@ bool	correct_chan(std::string arguments) /**/
 	return true;
 }
 
+bool	correct_user(std::string arguments)
+{
+	for(std::map<int, User>::iterator *it = Server._users.begin(); it != Server._users.end(); ++it)
+	{
+		if (arguments == *it->second.getNName())
+			return true;
+	}
+	return false;
+}
+
 // verif si client est ope
 bool	is_operator(client, channel)
 {
