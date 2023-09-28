@@ -13,7 +13,7 @@ void    execute_KICK(std::vector<std::string> arguments)
     }
     if (correct_chan(argument[0]) == false)
     {
-        break;
+        std::cerr << "Redirection 403" << std::endl;
     }
     if (on_channel(client, chan) == false)
     {
@@ -32,7 +32,9 @@ void    execute_KICK(std::vector<std::string> arguments)
     }
     if (arguments.size() == 2)
     {
-        // send un message à la cible kické
+        // send un message par default à la cible kické
+        for (size_t i = 0)
+        std::cout << client << ": " << targets << "was kicked from the channel\r\n" << std::endl;
     }
     else
     {

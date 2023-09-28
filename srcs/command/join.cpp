@@ -30,11 +30,16 @@ void    execute_JOIN(std::vector<std::string> arguments)
     }
     for (size_t i = 0; i !=channels.size(), ++i)
     {
-        if (Channel[i]._k == true && (i <= keys.size() && Channel[i].key == keys[i]))
-        // Ok key
-        else
-        {
-            std::cerr << "Redirection 475" << std::endl;
+        if (Channel[i]._k == true)
+        { 
+            if(keys.empty())
+                std::cerr << "Redirection 475" << std::endl;
+            if (i <= keys.size() && Channel[i].key == keys[i])
+            // Ok key
+            else
+            {
+                std::cerr << "Redirection 475" << std::endl;
+            }
         }
         if (Channel[i]._i == true && (on_invite(Clients, Channel[i]) == false))
             std::cerr << "Redirection 473" << std::endl;

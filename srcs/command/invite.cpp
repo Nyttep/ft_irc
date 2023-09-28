@@ -20,6 +20,10 @@ void	execute_INVITE(std::vector<std::string>  arguments)
 	{
 		std::cerr << "Redirection 442" << std::endl;
 	}
+	if ((channel._i ==true) && (is_operator(channel, client) == false))
+	{
+		std::cerr << "Redirection 482" std::endl;
+	}
 	if (on_channel(channel, target) == true)
 	{
 		std::cerr << "Redirection 443" << std::endl;

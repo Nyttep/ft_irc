@@ -1,5 +1,7 @@
-bool	correct_chan(std::string arguments)
+// verifie le chan demande
+bool	correct_chan(std::string arguments) /**/
 {
+	// check prefixe
 	if (arguments[0] != '#' && arguments[0] != '&')
 	{
 		std::cerr << "Reduirection 403" << std::endl;
@@ -10,6 +12,7 @@ bool	correct_chan(std::string arguments)
 		if (arguments == /*vecteur[i]*/)
 			break;
 	}
+	// check chan serveur
 	if (arguments != /*vecteur[i]*/)
 	{
 		std::cerr << "Redirection 403" << std::endl;
@@ -31,14 +34,10 @@ bool	correct_chan(std::string arguments)
 				break;
 		}
 	}
-	if (arguments != /*vecteur[i]*/)
-	{
-		std::cerr << "Redirection 442" << std::endl;
-		return false;
-	}
 	return true;
 }
 
+// verif si client est ope
 bool	is_operator(client, channel)
 {
 	for (size_t i = 0; i != channel.operators; ++i)
@@ -54,6 +53,7 @@ bool	is_operator(client, channel)
 	return true;
 }
 
+// verifie si client sur chan
 bool    on_channel(channel, client)
 {
     for (size_t i = 0; i != channel.operators; ++i)
@@ -77,6 +77,7 @@ bool    on_channel(channel, client)
 	return false;
 }
 
+// collect les arguments qui sont separe par virgule
 std::vector<std::string>	collect_arguments(std::string	string)
 {
 	std::vector<std::string>    vector;
@@ -92,6 +93,7 @@ std::vector<std::string>	collect_arguments(std::string	string)
 	return (vector);
 }
 
+// verifie si client est dans la liste invite
 bool on_invite(User client, Channel chan)
 {
 	std::vector<User>	invite = chan.getInvite()
@@ -104,6 +106,8 @@ bool on_invite(User client, Channel chan)
 		return true;
 	return false;
 }
+
+// si limit, verifie si client peut etre ajoute
 bool	max_user(Channel chan)
 {
 	size_t 	nb_user = 0;
@@ -116,6 +120,7 @@ bool	max_user(Channel chan)
 	return false;
 }
 
+// verifie le nb de chan le client est
 bool	max_channel(std::string chan, User user)
 [
 	std::vector<Channel>	list;
