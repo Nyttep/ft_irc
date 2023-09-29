@@ -2,18 +2,21 @@
 #include <vector>
 #include <string>
 
-void    execute_QUIT(std::vector<std::string> arguments)
+void    execute_QUIT(Command command, Server server)
 {
     std::string	message = "Quit: ";
-    if (arguments.empty())
+    if (command.getParams().empty())
 		message += "Disconnecting from IRC Server";
 	else
 	{
-		for (size_t i = 1; i < arguments.size(); ++i)
+		for (size_t i = 0; i < command.getParams().size(); ++i)
     	{
-            message += arguments[i];
-            if (i < arguments.size() - 1)
-                message += " ";
+            if (!command.getParam()[i].empty())
+			{
+            	if (!message.empty())
+                	message += " ";
+				message += command.getParams()[i];
+			}
     	}
 	}
 	std::cout << "Envoie du message" << std::endl;

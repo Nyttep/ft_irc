@@ -2,20 +2,21 @@
 #include <cstring>
 #include <vector>
 
-void    execute_PASS(std::vector<std::string> arguments)
+void    execute_PASS(Command command, Server server)
 {
-    if (arguments.empty() || arguments[0].empty())
+    if (command.getParams().empty() || command.getParams()[0].empty() || command.getParams().size())
     {
-        std::cerr << "Redirection 461" << std::endl;
+        if (command.getParams().size() > 1)
+            std::cerr << "Too many arguments" << std::endl;
+        else
+            std::cerr << "Redirection 461" << std::endl;
+        return ;
     }
-    if (client.registered == true)
-    {
-        std::cerr << "Redirection 462" << std::endl;
-    }
-    if (arguments[0] != Server.pass)
+    if (command.getParams()[0] != Server.getPswd())
     {
         client.pass == false;
         std::cerr << "Redirection 464" << std::endl;
+        return ;
     }
     client.pass == true;
 }

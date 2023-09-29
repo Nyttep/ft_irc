@@ -1,4 +1,4 @@
-void    execute_PART(std::vector<std::string> arguments)
+void    execute_PART(Command command, Server server)
 {
     std::vector<std::string>    channel;
     if (arguments.empty() || argument[0].empty())

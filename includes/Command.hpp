@@ -7,8 +7,7 @@
 class Command
 {
 	private:
-    std::string					_tags;
-	std::string					_source;
+	User						*_source;
 	std::string					_verb;
 	std::vector<std::string>	_params;
 
@@ -16,9 +15,16 @@ class Command
 	Command(const Command &src);
 
 	public:
-	Command(std::string tags, std::string source, std::string verb, std::vector<std::string> params);
+	Command(User source, std::string verb, std::vector<std::string> params);
 	~Command();
-	Command&	operator=(const Command& src);
+	Command&				operator=(const Command& src);
+	void					setSource(User client);
+	User					getSource();
+	void					setVerb(std::string verb);
+	std::string				getVerb();
+	void					setParams(std::vector<std::string> params);
+	void					setPParams(int it, std::string string);
+	std::vector<std::string>	getParams();
 };
 
 #endif

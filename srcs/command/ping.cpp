@@ -1,10 +1,12 @@
-void    execute_PING(std::vector<std::string>   string)
+void    execute_PING(Command command, Server server)
 {
-    if (arguments.empty() || arguments.size() < 1 || arguments[0].empty())
+    if (command.getParams().empty() || command.getParams()[0].empty() || command.getParams().size() != 1)
     {
-        std::cerr << "Redirection 461" << std::endl;
+        if (command.getParams().size() > 1)
+            std::cerr << "Too many Params" << std::endl;
+        else
+            std::cerr << "Redirection 461" << std::endl;
+        return;
     }
-    std::string PONG = "PONG ";
-    PONG += arguments[0];
-    // renvoie au client PONG Avec "SERVER_NAME: ";
+    std::string PONG = "PONG " + SERVER_NAME + " " + command.getParams()[0];
 }

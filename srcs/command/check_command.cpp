@@ -1,88 +1,41 @@
-// verifie le chan demande
-bool	correct_chan(std::string arguments) /**/
+bool	correct_user(Server server, std::string client)
 {
-	// check prefixe
-	if (arguments[0] != '#' && arguments[0] != '&')
+	std::map<int, User> userlist = server.getUser();
+	for(std::map<int, User>::iterator *it = userlist.begin(); it != userlist.end(); ++it)
 	{
-		std::cerr << "Reduirection 403" << std::endl;
-		return false;
-	}
-	for (size_t i = 0; i!=/*vecteur de server des chans*/, ++i)
-	{
-		if (arguments == /*vecteur[i]*/)
-			break;
-	}
-	// check chan serveur
-	if (arguments != /*vecteur[i]*/)
-	{
-		std::cerr << "Redirection 403" << std::endl;
-		return false;
-	}
-	if (arguments[0] == '#')
-	{
-		for (size_t i = 0; i!=/*vecteur de user des chans general*/, ++i)
-		{
-			if (arguments == /*vecteur[i]*/)
-				break;
-		}
-	}
-	else
-	{
-		for (size_t i = 0; i!=/*vecteur de user des chans local*/, ++i)
-		{
-			if (arguments == /*vecteur[i]*/)
-				break;
-		}
-	}
-	return true;
-}
-
-bool	correct_user(std::string arguments)
-{
-	for(std::map<int, User>::iterator *it = Server._users.begin(); it != Server._users.end(); ++it)
-	{
-		if (arguments == *it->second.getNName())
+		if (client == *it->second.getNName())
 			return true;
 	}
 	return false;
 }
 
 // verif si client est ope
-bool	is_operator(client, channel)
+bool	is_operator(User client, Channel channel)
 {
-	for (size_t i = 0; i != channel.operators; ++i)
+	std::vector<User> operators = channel.getOperators();
+	
+	for (size_t i = 0; i != operators.size(); ++i)
 	{
-		if (client == channel.operators[i])
-			break;
+		if (client.getNName() == operators[i].getNName())
+			return true;
 	}
-	if (client != channel.operators[i])
-	{
-		std::cerr << "Redirection 482" << std::endl;
 		return false;
-	}
-	return true;
 }
 
 // verifie si client sur chan
-bool    on_channel(channel, client)
+bool    on_channel(User client, Channel channel)
 {
-    for (size_t i = 0; i != channel.operators; ++i)
+    std::vector<User>	users = channel.getOperators();
+	for (size_t i = 0; i != users.size(); ++i)
     {
-        if (client == channel.operators[i])
-            break;
+        if (client.getNName() == users[i].getNName())
+            return true;
     }
-    if (client == channel.operators[i])
+	users = channel.getUser();
+	for (size_t i = 0; i != users.size(); ++i)
     {
-        return true;
-    }
-    for (size_t i = 0; i != channel.users; ++i)
-    {
-        if (client == channel.users[i])
-            break;
-    }
-    if (client == channel.users[i])
-    {
-        return true;
+        if (client.getNName() == users[i].getNName())
+            return true;
     }
 	return false;
 }
@@ -107,13 +60,11 @@ std::vector<std::string>	collect_arguments(std::string	string)
 bool on_invite(User client, Channel chan)
 {
 	std::vector<User>	invite = chan.getInvite()
-	for (size_t i=0; invite.size(); ++i)
+	for (size_t i=0; i != invite.size(); ++i)
 	{
 		if (client.getNName() == invite[i])
 			return true;
 	}
-	if (client.getNName() == invite[i])
-		return true;
 	return false;
 }
 
@@ -131,15 +82,13 @@ bool	max_user(Channel chan)
 }
 
 // verifie le nb de chan le client est
-bool	max_channel(std::string chan, User user)
+bool	max_channel(User user, std::string chan)
 [
 	std::vector<Channel>	list;
 	if (chan[0] == '#')
 		list = user.getGChannel();
 	else
-	{
 		list = user.getLChannel();
-	}
 	if ((list.size() + 1) > CHANLIMIT)
 		return true;
 	return false;

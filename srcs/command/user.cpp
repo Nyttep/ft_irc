@@ -2,34 +2,35 @@
 #include <string>
 #include <iostream>
 
-void    execute_USER(std::vector<std::string> arguments)
+void    execute_USER(Command command, Server server)
 {
-    if (arguments.empty() || arguments.size() < 4)
+    if (command.getParams().empty() || command.getParams().size() != 4 || command.getParams()[0].empty() || command.getParams()[1].empty() || command.getParams()[2].empty() || command.getParams()[3].empty())
     {
-        std::cerr << "Redirection 461" <<std::endl;
+        if (command.getParams().size() > 4)
+            std::cerr << "Toomanyparams" << std::endl;
+        else
+            std::cerr << "Redirection 461" << std::endl;
         return ;
     }
-    std::vector<std::string>::iterator it;
-
-    for (it = arguments.begin(); it != arguments.end(); ++it)
+    if (command.getParams()[1] != "0" && command.getParams()[2] != "*")
     {
-        if ((*it).empty())
+        std::cerr << "Redirection 400" << std::endl;
+    }
+    if (command.getParams()[0].length() > USERLEN)
+    {
+        std::string trunc_user = command.getParams()[0].substr(0, USERLEN);
+        command.setPParams(0, trunc_user);
+    }
+    std::string real_name;
+    for (size_t i = 3; i < command.getParams().size(); ++i)
+    {
+        if (!command.getParam()[i].empty())
         {
-            std::cerr << "Redirection 461" << std::endl;
+            if (!real_name.empty())
+                real_name += " ";
+            real_name += (command.getParam()[i]);
         }
     }
-    if (arguments[0].length() > USERLEN)
-        arguments[0].substr(0, USERLEN);
-    std::string real_name;
-    for (size_t i = 3; i < arguments.size(); ++i)
-    {
-            real_name += arguments[i];
-            if (i < arguments.size() - 1)
-                real_name += " ";
-    }
-
-    // Vérifier si deja enregistrer 
-    // if ()
-//      std::cerr << "Redirection 462" << std::endl;
-    // ajouter dans la classe User
+    command.getSource().setUName(command.getParams()[0]);
+    command.getSource().setRName(real_name);
 }
