@@ -18,6 +18,7 @@
 # include <iostream>
 # include <fstream>
 # include <string>
+# include <utility>
 # include <map>
 # include <vector>
 # include <cstdlib>
@@ -26,6 +27,8 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <unistd.h>
+# include "rpl_err_command.hpp"
+# include "Message.hpp"
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"

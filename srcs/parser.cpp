@@ -1,6 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <vector>
+#include "ft_irc.hpp"
 
 std::string	trim(const std::string &src)
 {
@@ -27,9 +25,9 @@ bool	isascii(const std::string src)
     return true;
 }
 
-void	execute_INVITE(std::vector<std::string> arguments)
+void	execute_INVITE(std::vector<std::string> client.args)
 {
-	if (arguments.empty())
+	if (client.args.empty())
 		std::cout << "Redirection 461" << std::endl;
 	// 
 	
@@ -38,75 +36,70 @@ void	execute_INVITE(std::vector<std::string> arguments)
 	std::cout << "Redirection 341" << std::endl;
 }
 
-void	execute_command(std::string command, std::vector<std::string> arguments)
+void	execute_command(User& client)
 {
-	if (command == "NICK")
-		execute_NICK(arguments);
-	else if (command == "USER")
-		execute_USER(arguments);
-	else if (command == "PASS")
-		execute_PASS(arguments);
-	else if (command == "MODE")
-		execute_MODE(arguments);
-	else if (command == "JOIN")
-		execute_JOIN(arguments);
-	else if (command == "PART")
-		execute_PART(arguments);
-	else if (command == "PING")
-		execute_PING(arguments);
-	else if (command == "PONG")
-		execute_PONG(arguments);
-	else if (command == "KICK")
-		execute_KICK(arguments);
-	else if (command == "PRIVMSG")
-		execute_PRIVMSG(arguments);
-	else if (command == "QUIT")
-		execute_QUIT(arguments);
-	else if (command == "INVITE")
-		execute_INVITE(arguments);
-	else if (command == "TOPIC")
-		execute_TOPIC(arguments);
+	if (client.cmd == "NICK")
+		execute_NICK(client.args);
+	else if (client.cmd == "USER")
+		execute_USER(client.args);
+	else if (client.cmd == "PASS")
+		execute_PASS(client.args);
+	else if (client.cmd == "MODE")
+		execute_MODE(client.args);
+	else if (client.cmd == "JOIN")
+		execute_JOIN(client.args);
+	else if (client.cmd == "PART")
+		execute_PART(client.args);
+	else if (client.cmd == "PING")
+		execute_PING(client.args);
+	else if (client.cmd == "PONG")
+		execute_PONG(client.args);
+	else if (client.cmd == "KICK")
+		execute_KICK(client.args);
+	else if (client.cmd == "PRIVMSG")
+		execute_PRIVMSG(client.args);
+	else if (client.cmd == "QUIT")
+		execute_QUIT(client.args);
+	else if (client.cmd == "INVITE")
+		execute_INVITE(client.args);
+	else if (client.cmd == "TOPIC")
+		execute_TOPIC(client.args);
 	else
 		std::cout << "Redirection 421" << std::endl;
 }
 
-int main(int argc, char **argv)
+int parser(Server& serv, User& client)
 {
-    if (argc != 2)
-        return (0);
-    std::string reception = argv[1];
-    std::string	command;
-    std::vector<std::string> arguments;
 	std::string::size_type space;
 
-	reception = trim(reception);
-	space = reception.find(' ');
-	command = reception.substr(0, space);
-	reception.erase(0, command.length() + 1);
-    while (!reception.empty())
+	client.raw = trim(client.raw);
+	space = client.raw.find(' ');
+	client.cmd = client.raw.substr(0, space);
+	client.raw.erase(0, client.cmd.length() + 1);
+    while (!client.raw.empty())
     {
-        reception = trim(reception);
-        space = reception.find(' ');
+        client.raw = trim(client.raw);
+        space = client.raw.find(' ');
         if (space != std::string::npos)
         {
-            arguments.push_back(reception.substr(0, space));
-            reception = reception.substr(space + 1);
+            client.args.push_back(client.raw.substr(0, space));
+            client.raw = client.raw.substr(space + 1);
         }
         else
         {
-            arguments.push_back(reception);
-			reception = "";
+            client.args.push_back(client.raw);
+			client.raw = "";
         }
     }
-	std::cout << "Command : " << command << "$" << std::endl;
-    for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
+	std::cout << "client.cmd : " << client.cmd << "$" << std::endl;
+    for (std::vector<std::string>::iterator it = client.args.begin(); it != client.args.end(); ++it)
     {
         std::cout << "Argument : " << *it << "$" << std::endl;
     }
 
-	std::cout << "Reception : " << reception << "$" << std::endl;
+	std::cout << "client.raw : " << client.raw << "$" << std::endl;
 
-    execute_command(command, arguments);
+    execute_command(client);
 
     return 0;
 }

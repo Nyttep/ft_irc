@@ -17,9 +17,9 @@ class Channel //date creation ?
 {
 	private :
 		std::string			_name;
-		std::vector<User>	_operators;
-		std::vector<User>	_users;
-		std::vector<User>	_invite;
+		std::vector<User*>	_operators;
+		std::vector<User*>	_users;
+		std::vector<User*>	_invite;
 
 		std::string			_key;
 		std::string			_topic;

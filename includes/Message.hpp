@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   privmsg.cpp                                        :+:      :+:    :+:   */
+/*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/27 18:09:09 by pdubois           #+#    #+#             */
-/*   Updated: 2023/09/27 18:09:23 by pdubois          ###   ########.fr       */
+/*   Created: 2023/09/27 18:17:22 by pdubois           #+#    #+#             */
+/*   Updated: 2023/09/27 18:31:00 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_irc.hpp"
+#ifndef MESSAGE_HPP
+# define MESSAGE_HPP
 
-void    execute_PRIVMSG(std::vector<std::string> arguments)
+#include "irc.hpp"
+
+class Message
 {
+	private :
+		Message(const Message& toCopy);
+	public :
+		std::string					raw;
+		std::string					cmd;
+		std::vector<std::string>	args;
+		Message();
+		~Message();
+		Message&				operator=(const Message& rhs);
+};
 
-}
-// FAIRE une RPL_TOOMANYTARGETS(407), pas dans le manuel
+#endif

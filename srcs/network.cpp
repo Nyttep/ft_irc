@@ -12,7 +12,7 @@
 
 #include "irc.hpp"
 
-int	getListenerSocket(Server serv)
+int	getListenerSocket(Server &serv)
 {
 	int	listener = -1;
 	int	yes = 1;
@@ -87,17 +87,19 @@ bool	msgTooLong(std::string msg)
 	return (false);
 }
 
-bool	sendAll(std::string msg, User target)
+bool	sendAll(std::string msg, User &target)
 {
 	int	sent = 0;
 	int len = msg.size();
 	int bytesleft = len;
-	while (total < len)
+	int n = 0;
+
+	while (sent < len)
 	{
-		n = send(target, msg.data() + total, bytesleft, 0);
+		n = send(target.getFD(), msg.data() + sent, bytesleft, 0);
 		if (n == -1)
 			break;
-		total += n;
+		sent += n;
 		bytesleft -= n;
 	}
 	if (n == -1)
@@ -105,7 +107,7 @@ bool	sendAll(std::string msg, User target)
 	return (1);
 }
 
-void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
+void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv)
 {
 	int						fdCount = 1;
 	struct sockaddr_storage	remoteAddr;
@@ -148,7 +150,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					}
 					else
 					{
-						if (!serv.addUser(pfds[i].fd, User(pfds[i].fd)))
+						if (!serv.addUser(pfds[i].fd, new User(pfds[i].fd)))
 						{
 							std::cerr << "Error: unexpected error: couldn't insert element in map";
 							return ;
@@ -176,7 +178,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					{
 						if (client->formatRecvData(buff))
 						{
-							if (msgTooLong(client->getMsg))
+							if (msgTooLong(client->getMsg().raw))
 							{
 								if(!sendAll(ERR_INPUTTOOLONG(client->getFD()), *client))
 								{
@@ -184,7 +186,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 									return ;
 								}
 							}
-							std::cout << pfds[i].fd << "sent: " << client->getMsg() << std::endl;//send cmd
+							std::cout << pfds[i].fd << "sent: " << client->getMsg().raw << std::endl;//send cmd
 							client->clearMsg();
 						}
 					}

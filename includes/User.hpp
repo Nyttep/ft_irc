@@ -24,13 +24,13 @@ class User
 		std::string 			_rName; // realname
 		std::string				_hName; // hostname
 
-		std::vector<Channel>	_lChannel; // LocalChan
-		std::vector<Channel>	_gChannel; // GeneralChan
+		std::vector<Channel*>	_lChannel; // LocalChan
+		std::vector<Channel*>	_gChannel; // GeneralChan
 
-		std::string			_msg;
-		std::string			_extra;
-		bool				_isLogged;
-	public :
+		Message					_msg;
+		std::string				_extra;
+		bool					_isLogged;
+		
 		User();
 		User(const User& toCopy);
 
@@ -44,7 +44,7 @@ class User
 		void				setUName(std::string newUName);
 		std::string			getRName();
 		void				setRName(std::string newRName);
-		std::string			getMsg();
+		Message				getMsg();
 		int					getFD();
 		void				clearMsg();
 		bool				isLogged();

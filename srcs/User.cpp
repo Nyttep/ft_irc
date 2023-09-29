@@ -37,8 +37,7 @@ User&	User::operator=(const User& rhs)
 	_nName = rhs._nName;
 	_uName = rhs._uName;
 	_rName = rhs._rName;
-	_isOP = rhs._isOP;
-	_isOP = rhs._isLogged;
+	_isLogged = rhs._isLogged;
 	return (*this);
 }
 
@@ -74,12 +73,12 @@ void		User::setRName(std::string newRName)
 	_rName = newRName;
 }
 
-std::string	User::getMsg()
+Message	User::getMsg()
 {
 	return (_msg);
 }
 
-int					User::getFD()
+int	User::getFD()
 {
 	return (_fd);
 }
@@ -103,7 +102,9 @@ void	User::logOut()
 
 void	User::clearMsg()
 {
-	_msg.clear();
+	_msg.raw.clear();
+	_msg.cmd.clear();
+	_msg.args.clear();
 }
 
 bool	User::formatRecvData(std::vector<char>& buff)
@@ -113,15 +114,15 @@ bool	User::formatRecvData(std::vector<char>& buff)
 
 	if (!_extra.empty())
 	{
-		_msg.append(_extra);
+		_msg.raw.append(_extra);
 		_extra.clear();
 	}
 	if (pos == std::string::npos)
 	{
-		_msg.append(tmp);
+		_msg.raw.append(tmp);
 		return (0);
 	}
-	_msg.append(tmp.substr(0, pos + 2));
+	_msg.raw.append(tmp.substr(0, pos + 2));
 	_extra.append(tmp.substr(pos + 2, tmp.size()));
 	return (1);
 }
