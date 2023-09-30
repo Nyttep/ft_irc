@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   channel.hpp                                        :+:      :+:    :+:   */
+/*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -42,6 +42,9 @@ class Channel //date creation ?
 		User&		getUser(int	key);
 		bool		addUser(int key, User value);
 		bool		isInChannel(int key);
+		bool		isOperator(User client);
+		void		addInvite(User client);
+
 };
 
 #endif

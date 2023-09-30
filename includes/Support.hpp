@@ -16,4 +16,8 @@
 # define TOPICLEN 64
 # define USERLEN 16
 
+bool	chantypes(char c);
+int		targmax(std::string target);
+int		chanlimit(std::string prefixe);
+
 #endif

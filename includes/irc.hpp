@@ -21,6 +21,7 @@
 # include <map>
 # include <vector>
 # include <cstdlib>
+# include <climits>
 # include <sys/types.h>
 # include <sys/poll.h>
 # include <sys/socket.h>
@@ -29,6 +30,9 @@
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"
+# include "Command.hpp"
+# include "Support.hpp"
+# include "rpl_err_command.hpp"
 
 # define SIZE_BUFF 1024
 
@@ -36,7 +40,29 @@ int							getListenerSocket(Server serv);
 std::vector<struct pollfd>	getPfds(int listener);
 void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv);
 
-void	ft_check_arg(int argc, char **argv);
-int		ft_atoi(const char *str);
+// check_arg
+void						ft_check_arg(int argc, char **argv);
+int							ft_atoi(const char *str);
+
+// command
+void						execute_INVITE(Command command, Server server);
+void						execute_JOIN(Command command, Server server);
+void						execute_KICK(Command command, Server server);
+void						execute_MODE(Command command, Server server);
+void						execute_NICK(Command command, Server server);
+void						execute_PART(Command command, Server server);
+void						execute_PASS(Command command, Server server);
+void						execute_PING(Command command, Server server);
+void						execute_PRIVMSG(Command command, Server server);
+void						execute_QUIT(Command command, Server server);
+void						execute_TOPIC(Command command, Server server);
+void						execute_USER(Command command, Server server);
+
+// check_command
+std::vector<std::string>	collect_arguments(std::string string);
+bool						on_channel(User client, Channel channel);
+bool						correct_user(Server server, std::string client);
+bool						max_user(Channel chan);
+bool						max_channel(User user, std::string chan);
 
 #endif

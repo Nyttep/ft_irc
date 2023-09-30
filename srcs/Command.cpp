@@ -1,4 +1,4 @@
-#include "Command.hpp"
+#include "irc.hpp"
 
 Command::Command()
 {}
@@ -6,11 +6,10 @@ Command::Command()
 Command::~Command()
 {}
 
-Command::Command(User source)
+Command::Command(User *source)
 {
 	_source = source;
 	_verb = "";
-	_params = "";
 }
 
 Command::Command(const Command& src)

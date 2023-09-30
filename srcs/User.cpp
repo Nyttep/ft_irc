@@ -83,6 +83,26 @@ std::string	User::getMsg()
 	return (_msg);
 }
 
+bool		User::getPass()
+{
+	return (_pass);
+}
+
+bool		User::setPass(bool value)
+{
+	_pass = value;
+}
+
+bool		User::getRegistered()
+{
+	return (_registered);
+}
+
+bool		User::setRegistered(bool value)
+{
+	_registered = value;
+}
+
 //--------------------------- Other Functions ----------------------------
 
 

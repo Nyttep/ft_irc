@@ -1,8 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <map>
-#include <string>
-#include <cstdlib>
+#include "irc.hpp"
 
 void	execute_NICK(Command command, Server server) /* prendre le serveur en paramètres */
 {
@@ -49,12 +45,15 @@ void	execute_NICK(Command command, Server server) /* prendre le serveur en param
 			return ;
 		}
 	}
-	if()// des conditions de merde pour si c'est son premier enregistrement et donc le handshake
-	{}
+	if (command.getSource().getRegistered() == false && command.getSource().getNName().empty() \
+        && command.getSource().getUName().empty() && command.getSource().getRName().empty())
+    {
+        command.setRegistered(true);
+        handshake();
+    }
 	else
 	{
-	std::string formername = command.getSource().getNName();
-	command.getSource().setNName(command.getParams()[0]);
-	// Ajout dans liste users serveur, set_nick dans User et verif les channels ou ils se trouvent pour modifier tous ces nick
+		std::string formername = command.getSource().getNName();
+		command.getSource().setNName(command.getParams()[0]);
 	}
 }

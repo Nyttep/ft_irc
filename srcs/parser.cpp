@@ -1,6 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <vector>
+#include "irc.hpp"
 
 std::string	trim(const std::string &src)
 {
@@ -29,7 +27,7 @@ bool	isascii(const std::string src) /*Inutile, surement a supprimer*/
 	return true;
 }
 
-void	execute_command(Command command, Server server)
+void	execute_verb(Command command, Server server)
 {
 	if (command.getVerb() == "NICK")
 	{
@@ -82,13 +80,13 @@ void	execute_command(Command command, Server server)
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
-	else if (command.getVerb() == "PONG")
-	{
-		if (command.getSource().getRegistered() == true)
-			execute_PONG(command, server);
-		else
-			std::cerr << "Redirection 451" << std::endl;
-	}
+	// else if (command.getVerb() == "PONG") 				Est-ce qu'on le fait ? 
+	// {													Seulement quand il a entre ou fait PASS, 
+	// 	if (command.getSource().getRegistered() == true)	le serveur peut envoyer au client PING 
+	// 		execute_PONG(command, server);					et attends la reponse
+	// 	else
+	// 		std::cerr << "Redirection 451" << std::endl;
+	// }
 	else if (command.getVerb() == "KICK")
 	{
 		if (command.getSource().getRegistered() == true)
@@ -209,23 +207,21 @@ int	main(int argc, char **argv)
 		return (0);
 
 	std::string reception = argv[1]; /*a supprimer, sera la string envoye*/
-	std::string	verb;
-	std::vector<std::string> arguments;
+	Command	command(source);
 
 	reception = trim(reception);
 	if (reception.empty())
 		return (0);
 	command.setVerb(parsing_cmd(&reception));
 	if (!reception.empty())
-		arguments = parsing_arguments(&reception);
-	Command	command(source, verb, arguments);
+		command.setParams(parsing_arguments(&reception));
 
 	// un simple check  a supprimer
-	if (verb.empty())
+	if (command.getVerb().empty())
 		std::cout << "verb : (null)" << std::endl;
 	else	
-		std::cout << "verb : \"" << verb << "\"" << std::endl;
-	for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
+		std::cout << "verb : \"" << command.getVerb() << "\"" << std::endl;
+	for (std::vector<std::string>::iterator it = command.getParams().begin(); it != command.getParams().end(); ++it)
 	{
 		if (it->empty())
 			std::cout << "Argument : (null)" << std::endl;
@@ -234,8 +230,6 @@ int	main(int argc, char **argv)
 	}
 	// fin supprimer
 
-	if (arguments.size() > 15)
-		std::cerr << "Creer une phrase si il y a trop de parametres" << std::endl;
 	execute_verb(command, server);
 
 	return (0);

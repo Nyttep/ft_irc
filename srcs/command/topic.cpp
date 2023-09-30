@@ -1,6 +1,4 @@
-#include <iostream>
-#include <string>
-#include <cstdlib>
+#include "irc.hpp"
 
 void	execute_TOPIC(Command command, Server server)
 {
@@ -33,15 +31,15 @@ void	execute_TOPIC(Command command, Server server)
 			return;
 		}
 		std::string new_topic;
-    	for (size_t i = 1; i <= command.getParams().size(); ++i)
-    	{
-     		if (!command.getParam()[i].empty())
-       		{
-            	if (!new_topic.empty())
-                	new_topic += " ";
-            	new_topic += (command.getParam()[i]);
-        	}
-    	}
+		for (size_t i = 1; i <= command.getParams().size(); ++i)
+		{
+	 		if (!command.getParam()[i].empty())
+	   		{
+				if (!new_topic.empty())
+					new_topic += " ";
+				new_topic += (command.getParam()[i]);
+			}
+		}
 		if (new_topic.empty())
 			server.getChan(command.getParam()[0]).setTopic("");
 		else

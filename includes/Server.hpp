@@ -35,6 +35,7 @@ class Server //date creation ?
 		bool		isRegistered(int key);
 		void		addChan(Channel	newChan);
 		bool		chanExist(std::string name);
+		Channel&	getChan(std::string name);
 };
 
 #endif

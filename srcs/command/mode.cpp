@@ -1,3 +1,5 @@
+#include "irc.hpp"
+
 // Mode Type B (Toujours des parametres): o
 // Mode Type C (Parametre quand +, pas de param quand -): k l
 // Mode Type D (pas de parametres): i t

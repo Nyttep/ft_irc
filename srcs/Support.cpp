@@ -1,8 +1,4 @@
-#include "../includes/Support.hpp"
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <climits>
+#include "irc.hpp"
 
 int	chanlimit(std::string prefixe)
 {
@@ -25,7 +21,7 @@ int	targmax(std::string target) /*modifier pour que saute le :*/
 {
 	std::string	targmax = TARGMAX;
 	std::string	res;
-	size_t begin = targmax.find(target);
+	size_t begin = targmax.find(target + ':');
 	if (begin != std::string::npos)
 	{
 		begin += target.length();

@@ -59,9 +59,24 @@ bool	Channel::addUser(int key, User value)
 	return (ret.second);
 }
 
+void	Channel::addInvite(User client)
+{
+	_invite.push_back(client);
+}
+
 //--------------------------- Other Functions ----------------------------
 
 bool	Channel::isInChannel(int key)
 {
 	return (_users.count(key));
+}
+
+bool	Channel::isOperator(User client)
+{
+	for (size_t i = 0; i != _operators.size(); ++i)
+	{
+		if (client.getNName() == _operators[i].getNName())
+			return true;
+	}
+		return false;
 }

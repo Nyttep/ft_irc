@@ -56,6 +56,16 @@ User&	Server::getUser(int key)
 	User&	ret = found->second;
 	return (ret);
 }
+
+Channel&	Server::getChan(std::string name)
+{
+	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+	{
+		if (name == it->getName())
+			return (*it);
+	}
+	// Attention 
+}
   
 //------------------------- Other Functions -----------------------------
 

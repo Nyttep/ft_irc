@@ -56,6 +56,10 @@ class User
 		void				makeOP();
 		void				removeOP();
 		bool				formatRecvData(std::vector<char>& buff);
+		bool				getPass();
+		bool				setPass(bool value);
+		bool				getRegistered();
+		bool				setRegistered(bool value);
 };
 
 #endif
