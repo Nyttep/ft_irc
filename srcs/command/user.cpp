@@ -30,6 +30,7 @@ void    execute_USER(Command command, Server server)
             real_name += (command.getParam()[i]);
         }
     }
-    command.getSource().setUName(command.getParams()[0]);
+    if (command.getSource().getUName().empty())
+        command.getSource().setUName(command.getParams()[0]);
     command.getSource().setRName(real_name);
 }

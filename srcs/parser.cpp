@@ -215,7 +215,7 @@ int	main(int argc, char **argv)
 	reception = trim(reception);
 	if (reception.empty())
 		return (0);
-	verb = parsing_cmd(&reception);
+	command.setVerb(parsing_cmd(&reception));
 	if (!reception.empty())
 		arguments = parsing_arguments(&reception);
 	Command	command(source, verb, arguments);

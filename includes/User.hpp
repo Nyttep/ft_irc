@@ -13,8 +13,6 @@
 #ifndef USER_HPP
 # define USER_HPP
 
-# include "irc.hpp"
-
 class User
 {
 	private :
@@ -32,6 +30,9 @@ class User
 		bool					_pass;
 		bool					_registered;
 
+		std::string			_msg;
+		std::string			_extra;
+	public :
 		User();
 		User(const User& toCopy);
 
@@ -39,16 +40,22 @@ class User
 		User(std::string newNName, std::string newUName);
 		User(std::string newNName, std::string newUName, std::string newRName);
 		~User();
-		User&		operator=(const User& rhs);
-		std::string	getNName();
-		void		setNName(std::string newNName);
-		std::string	getUName();
-		void		setUName(std::string newUName);
-		std::string	getRName();
-		void		setRName(std::string newRName);
-		bool		isOP();
-		void		makeOP();
-		void		removeOP();
+		User&				operator=(const User& rhs);
+		std::string			getNName();
+		void				setNName(std::string newNName);
+		std::string			getUName();
+		void				setUName(std::string newUName);
+		std::string			getRName();
+		void				setRName(std::string newRName);
+		std::string			getMsg();
+		void				clearMsg();
+		bool				isOP();
+		bool				isLogged();
+		void				logIn();
+		void				logOut();
+		void				makeOP();
+		void				removeOP();
+		bool				formatRecvData(std::vector<char>& buff);
 };
 
 #endif

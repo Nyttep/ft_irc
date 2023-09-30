@@ -6,11 +6,11 @@ Command::Command()
 Command::~Command()
 {}
 
-Command::Command(User source, std::string verb, std::vector<std::string> parameter)
+Command::Command(User source)
 {
 	_source = source;
-	_verb = verb;
-	_params = parameter;
+	_verb = "";
+	_params = "";
 }
 
 Command::Command(const Command& src)
