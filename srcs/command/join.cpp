@@ -39,12 +39,12 @@ void    join_chan(Command command, Server server, std::vector<std::string> chann
             return ;
         }
     }
-    if (channels[i]._i == true && (on_invite(command.getSource(), server.getChan(channels[i])) == false))
+    if (server.getChan(channels[i]).getI() == true && (on_invite(command.getSource(), server.getChan(channels[i])) == false))
     {
         std::cerr << "Redirection 473" << std::endl;
         return ;
     }
-    if (Channel[i]._l == true && (max_user(server.getChan(channels[i])) == true))
+    if (server.getChan(channel[i]).getL() == true && (max_user(server.getChan(channels[i])) == true))
     {
         std::cerr << "Redirection 471" << std::endl;
         return ;

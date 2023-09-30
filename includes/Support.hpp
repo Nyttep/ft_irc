@@ -12,7 +12,7 @@
 # define NETWORK "IRC_NETWORK"
 # define NICKLEN 16
 # define PREFIX "@"
-# define TARGMAX "PRIVMSG:3,JOIN:3,KICK:1,PART:3,MODE:1"
+# define TARGMAX "PRIVMSG:3,JOIN:3,KICK:1,PART:3"
 # define TOPICLEN 64
 # define USERLEN 16
 

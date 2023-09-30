@@ -18,8 +18,7 @@ void    execute_USER(Command command, Server server)
     }
     if (command.getParams()[0].length() > USERLEN)
     {
-        std::string trunc_user = command.getParams()[0].substr(0, USERLEN);
-        command.setPParams(0, trunc_user);
+        command.setPParams(0, command.getParams()[0].erase(USERLEN, command.getParams()[0].length() - USERLEN));
     }
     std::string real_name;
     for (size_t i = 3; i < command.getParams().size(); ++i)

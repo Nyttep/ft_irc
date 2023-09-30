@@ -14,12 +14,16 @@ void	execute_TOPIC(Command command, Server server)
 		std::cerr << "Redirection 403" << std::endl;
 		return;
 	}
+	if (on_channel(command.getSource(), server.getChan(command.getParams()[0])) == false)
+	{
+		std::cerr << "Redirection 442" << std::endl;
+	}
 	if (command.getParams().size() == 1)
 	{
 		if (server.getChan(command.getParams()[0]).getTopic().empty())
 			std::cout << "Redirection 331" << std::endl;
 		else
-			std::cout << "Redirection 332 suivi de 333" << std::endl;
+			std::cout << "Redirection 332 suivi de 333(optionnel)" << std::endl;
 	}
 	else
 	{
@@ -29,7 +33,7 @@ void	execute_TOPIC(Command command, Server server)
 			return;
 		}
 		std::string new_topic;
-    	for (size_t i = 1; i < command.getParams().size(); ++i)
+    	for (size_t i = 1; i <= command.getParams().size(); ++i)
     	{
      		if (!command.getParam()[i].empty())
        		{

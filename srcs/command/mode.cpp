@@ -1,3 +1,6 @@
+// Mode Type B (Toujours des parametres): o
+// Mode Type C (Parametre quand +, pas de param quand -): k l
+// Mode Type D (pas de parametres): i t
 std::string	display_modes(Channel chan)
 {
 	std::string message;
@@ -67,7 +70,7 @@ void	mode_operator(Command command, Server server, std::vector<std::string> targ
 	if (command.getParams()[1][0] == '+')
 	{
 		std::vector<std::string> new_operator = collect_arguments(command.getParams()[2]);
-		if (new_operator.size() > TARGMAX)
+		if (new_operator.size() > 1) /*changer avec support.hpp MODE*/
 		{
 			std::cerr << "Redirection 407" << std::endl;
 			return;
@@ -179,7 +182,7 @@ void	execute_MODE(Command command, Server server)
 		return ;
 	}
 	std::vector<std::string> targets = collect_arguments(arguments[0]);
-	if (targets > targmax("MODE:"))
+	if (targets.size() > 1)
 	{
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
@@ -232,6 +235,3 @@ void	execute_MODE(Command command, Server server)
 		}
 	}
 }
-// Mode Type B (Toujours des parametres): o
-// Mode Type C (Parametre quand +, pas de param quand -): k l
-// Mode Type D (pas de parametres): i t

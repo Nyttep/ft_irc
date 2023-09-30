@@ -4,19 +4,15 @@
 
 void    execute_QUIT(Command command, Server server)
 {
-    std::string	message = "Quit: ";
+    std::string	message = "Quit:";
     if (command.getParams().empty())
-		message += "Disconnecting from IRC Server";
+		message += " Disconnecting from IRC Server";
 	else
 	{
 		for (size_t i = 0; i < command.getParams().size(); ++i)
     	{
             if (!command.getParam()[i].empty())
-			{
-            	if (!message.empty())
-                	message += " ";
-				message += command.getParams()[i];
-			}
+				message += " " + command.getParams()[i];
     	}
 	}
 	std::cout << "Envoie du message" << std::endl;

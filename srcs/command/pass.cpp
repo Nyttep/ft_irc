@@ -12,11 +12,11 @@ void    execute_PASS(Command command, Server server)
             std::cerr << "Redirection 461" << std::endl;
         return ;
     }
-    if (command.getParams()[0] != Server.getPswd())
+    if (command.getParams()[0] != server.getPswd())
     {
-        client.pass == false;
+        command.getSource().setPass() == false;
         std::cerr << "Redirection 464" << std::endl;
         return ;
     }
-    client.pass == true;
+    command.getSource().setPass() == true;
 }

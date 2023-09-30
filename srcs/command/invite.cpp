@@ -28,21 +28,23 @@ void	execute_INVITE(Command command, Server server)
 	if (on_channel(command.getSource(), server.getChan(channel[0])) == false)
 	{
 		std::cerr << "Redirection 442" << std::endl;
+		return ;
 	}
 	if (is_operator(command.getSource(), server.getChan(channel[0])) == false)
 	{
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
 	}
-	if (correct_user(server, target) == false)
+	if (correct_user(server, target[0]) == false)
 	{
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
-	if (on_channel(server.getUser(target), server.getChan(channel[0])) == true)
+	if (on_channel(server.getUser(target[0]), server.getChan(channel[0])) == true)
 	{
 		std::cerr << "Redirection 443" << std::endl;
-	}	
+	}
+	server.getChan(channel[0]).addInvite(target[0]);
 	std::cout << "Redirection 341 à User command et message invite pour la cible" << std::endl;
 	return;
 }

@@ -33,7 +33,7 @@ void	execute_command(Command command, Server server)
 {
 	if (command.getVerb() == "NICK")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource().getPass() == true)
 			execute_NICK(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;

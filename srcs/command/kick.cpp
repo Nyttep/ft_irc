@@ -3,7 +3,7 @@ void    execute_KICK(Command command, Server server)
 	if (command.getParams().empty() || command.getParams().size() < 2 || \
 		command.getParams()[0].empty() || command.getParams()[1].empty())
 	{
-			std::cout << "Redirection 461" << std::endl;
+		std::cout << "Redirection 461" << std::endl;
 		return ;
 	}
     if (server.chanExist(command.getParam()[0]) == false)
@@ -27,25 +27,35 @@ void    execute_KICK(Command command, Server server)
 		std::cerr << "Too many params" << std::endl;
 		return ;
 	}
-	// Mettre une boucle qui verifie chaque target
     if (on_channel(targets, server.getChan(command.getParam()[0])) == false)
     {
         std::cerr << "Redirection 441" << std::endl;
 		return ;
     }
-    if (command.getParam().size() == 2)
+	if (is_operator(targets[0], server.getChan(command.getParams()[0])) == true)
+		server.getChan(command.getParams()[0]).removerOperator(targets[0]);	
+	else
+		server.getChan(command.getParams()[0]).removeUser(targets[0]);
+    std::string	message_chan = command.getSource().getNName() + " kicked " + targets[0] + " from " server.getChan(command.getParam()[0]).getName();
+	std::string message_kick = command.getSource().getNName() + " kicked you from " + server.getChan(command.getParams()[0]).getName();
+	if (command.getParam().size() == 2)
     {
-        std::cout << client << ": " << targets << "was kicked from the channel\r\n" << std::endl;
+		/* send default*/
+		std::cout << message_chan << std::endl;
+		std::cout << message_kick << std::endl;
     }
     else
     {
-        std::string comment;
     	for (size_t i = 2; i <= command.getParam().size(); ++i)
     	{
-            comment += command.getParam()[i];
-            if (i < command.getParam.size() - 1)
-                comment += " ";
-    	}
+            if (!command.getParams()[i].empty())
+			{
+			    message_chan += " " + command.getParams()[i];
+                message_kick += " " + command.getParams()[i];
+			}
+		}
 		// send message à la cible kicke
+		std::cout << message_chan << std::endl;
+		std::cout << message_kick << std::endl;
     }
 }

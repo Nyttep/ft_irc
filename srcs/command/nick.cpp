@@ -31,14 +31,12 @@ void	execute_NICK(Command command, Server server) /* prendre le serveur en param
 		}
 	}
 	if (command.getParams()[0].length() > NICKLEN)
-	{
-		std::string	trunc_nick = command.getParams()[0].substr(0, NICKLEN);
-		command.setPParams(0, trunc_nick));
-	}
+		command.setPParams(0, command.getParams()[0].erase(NICKLEN, command.getParams()[0].length() - NICKLEN));
 	// List users comparison
 	std::string	low_nick = command.getParams()[0];
 	for (size_t i = 0; i != low_nick.length(); ++i)
 		low_nick[i] = std::tolower(low_nick[i]);
+	// Enlever ca et mettre en place une fonction de classe server qui cherche l utilisateur
 	std::map<int, User>	userlist = server.getUser();
 	for (std::map<int, std::string>::const_iterator it = userlist.begin(); it != userlist.end(); ++it)
 	{
@@ -51,7 +49,12 @@ void	execute_NICK(Command command, Server server) /* prendre le serveur en param
 			return ;
 		}
 	}
+	if()// des conditions de merde pour si c'est son premier enregistrement et donc le handshake
+	{}
+	else
+	{
 	std::string formername = command.getSource().getNName();
 	command.getSource().setNName(command.getParams()[0]);
 	// Ajout dans liste users serveur, set_nick dans User et verif les channels ou ils se trouvent pour modifier tous ces nick
+	}
 }
