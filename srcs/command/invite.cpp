@@ -23,7 +23,7 @@ void	execute_INVITE(Command command, Server server)
 		std::cerr << "Redirection 403" << std::endl;
 		return;
 	}
-	if (on_channel(command.getSource(), server.getChan(channel[0])) == false)
+	if (server.getChan(channel[0]).onChannel(command.getSource()) == false)
 	{
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
@@ -33,16 +33,18 @@ void	execute_INVITE(Command command, Server server)
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
 	}
-	if (correct_user(server, target[0]) == false)
+	if (server.isUser(target[0]) == false)
 	{
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
-	if (on_channel(server.getUser(target[0]), server.getChan(channel[0])) == true)
+	if (server.getChan(channel[0]).onChannel(server.getUser(target[0])) == true)
 	{
 		std::cerr << "Redirection 443" << std::endl;
 	}
 	server.getChan(channel[0]).addInvite(server.getUser(target[0]));
+	sendAll(RPL_INVITING(SERVERNAME, target[0],channel[0]), command.getSource());
+	sendAll(":" + SERVERNAME + " You are invited to " + channel[0] + "\r\n", server.getUser(target[0]));
 	std::cout << "Redirection 341 à User command et message invite pour la cible" << std::endl;
 	return;
 }

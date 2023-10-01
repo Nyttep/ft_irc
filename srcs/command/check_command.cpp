@@ -44,21 +44,21 @@ std::string	DateCreation()
 
 void	handshake(Command command, Server server)
 {
-	RPL_WELCOME(SERVERNAME, command.getSource().getNName());
-	RPL_YOURHOST(SERVERNAME);
-	RPL_CREATED(SERVERNAME, /*une fonction qui cree le temps*/);
-	RPL_MYINFO(SERVERNAME, CHANMODES);
-	RPL_ISUPPORT(SERVERNAME, NETWORK);
-	RPL_ISUPPORT(SERVERNAME, "CASEMAPPING=" + CASEMAPPING);
-	RPL_ISUPPORT(SERVERNAME, "CHANTYPES=" + CHANTYPES);
-	RPL_ISUPPORT(SERVERNAME, "CHANLIMIT=" + CHANLIMIT);
-	RPL_ISUPPORT(SERVERNAME, "CHANMODES=" + CHANMODES);
-	RPL_ISUPPORT(SERVERNAME, "MODE=" + std::atoi(MODES));
-	RPL_ISUPPORT(SERVERNAME, "PREFIX=" + PREFIX);
-	RPL_ISUPPORT(SERVERNAME, "TARGMAX=" + TARGMAX);
-	RPL_ISUPPORT(SERVERNAME, "NICKLEN=" + NICKLEN);
-	RPL_ISUPPORT(SERVERNAME, "USERLEN=" + USERLEN);
-	RPL_ISUPPORT(SERVERNAME, "CHANNELLEN=" + CHANNELLEN);
-	RPL_ISUPPORT(SERVERNAME, "KICKLEN=" + KICKLEN);
-	RPL_ISUPPORT(SERVERNAME, "TOPICLEN=" + TOPICLEN);
+	sendAll(RPL_WELCOME(SERVERNAME, command.getSource().getNName()), command.getSource());
+	sendAll(RPL_YOURHOST(SERVERNAME), command.getSource());
+	sendAll(RPL_CREATED(SERVERNAME, server.getTime()), command.getSource());
+	sendAll(RPL_MYINFO(SERVERNAME, CHANMODES), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, NETWORK), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CASEMAPPING=" + CASEMAPPING), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANTYPES=" + CHANTYPES), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANLIMIT=" + CHANLIMIT), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANMODES=" + CHANMODES), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "MODE=" + std::atoi(MODES)), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "PREFIX=" + PREFIX), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "TARGMAX=" + TARGMAX), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "NICKLEN=" + std::atoi(NICKLEN)), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "USERLEN=" + std::atoi(USERLEN)), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANNELLEN=" + std::atoi(CHANNELLEN)), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "KICKLEN=" + std::atoi(KICKLEN)), command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "TOPICLEN=" + std::atoi(TOPICLEN)), command.getSource());
 }
