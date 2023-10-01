@@ -1,38 +1,5 @@
 #include "irc.hpp"
 
-bool	correct_user(Server server, std::string client)
-{
-	std::map<int, User> userlist = server.getUser();
-	for(std::map<int, User>::iterator *it = userlist.begin(); it != userlist.end(); ++it)
-	{
-		if (client == *it->second.getNName())
-			return true;
-	}
-	return false;
-}
-
-// verif si client est ope
-
-
-// verifie si client sur chan
-bool	on_channel(User client, Channel channel)
-{
-	std::vector<User>	users = channel.getOperators();
-	for (size_t i = 0; i != users.size(); ++i)
-	{
-		if (client.getNName() == users[i].getNName())
-			return true;
-	}
-	users = channel.getUser();
-	for (size_t i = 0; i != users.size(); ++i)
-	{
-		if (client.getNName() == users[i].getNName())
-			return true;
-	}
-	return false;
-}
-
-// collect les arguments qui sont separe par virgule
 std::vector<std::string>	collect_arguments(std::string string)
 {
 	std::vector<std::string>	vector;
@@ -48,40 +15,29 @@ std::vector<std::string>	collect_arguments(std::string string)
 	return (vector);
 }
 
-// verifie si client est dans la liste invite
-bool on_invite(User client, Channel chan)
+std::string	store_message(Command command)
 {
-	std::vector<User>	invite = chan.getInvite();
-	for (size_t i=0; i != invite.size(); ++i)
+	std::string message;
+	for (size_t i = 1; i != command.getParams().size(); ++i)
 	{
-		if (client.getNName() == invite[i])
-			return true;
+		if (!command.getParams()[i].empty())
+		{
+			if (!message.empty())
+				message += " ";
+			message += (command.getParams()[i]);
+		}
 	}
-	return false;
+	return (message);
 }
 
-// si limit, verifie si client peut etre ajoute
-bool	max_user(Channel chan)
+void	handshake(Command command, Server server)
 {
-	size_t	nb_user = 0;
-	std::vector<User> list = chan.getOperator();
-	nb_user = list.size();
-	list = chan.getUser();
-	nb_user += list.size();
-	if ((nb_user + 1) > chan.getlimit())
-		return true;
-	return false;
-}
+	RPL_WELCOME(SERVERNAME, command.getSource().getNName());
+	RPL_YOURHOST(SERVERNAME);
+	RPL_CREATED(SERVERNAME, /*une fonction qui cree le temps*/);
+	RPL_MYINFO(SERVERNAME, CHANMODES);
+	RPL_ISUPPORT(SERVERNAME, "CASEMAPPING=" + CASEMAPPING);
+	
 
-// verifie le nb de chan le client est
-bool	max_channel(User user, std::string chan)
-[
-	std::vector<Channel>	list;
-	if (chan[0] == '#')
-		list = user.getGChannel();
-	else
-		list = user.getLChannel();
-	if ((list.size() + 1) > CHANLIMIT)
-		return true;
-	return false;
-]
+
+}

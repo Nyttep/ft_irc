@@ -28,7 +28,6 @@ class Channel //date creation ?
 		bool				_i;
 		bool				_t;
 		bool				_k;
-		bool				_o;
 		bool				_l;
 
 		Channel();
@@ -38,12 +37,36 @@ class Channel //date creation ?
 		Channel(std::string newName);
 		~Channel();
 		Channel&	operator=(const Channel& rhs);
+
 		std::string	getName();
 		User&		getUser(int	key);
 		bool		addUser(int key, User value);
 		bool		isInChannel(int key);
+		bool		onChannel(User client);
+		void		addOperator(User client);
+		void		removeOperator(User client);
 		bool		isOperator(User client);
 		void		addInvite(User client);
+		void		removeInvite(User client);
+		bool		isInvite(User client);
+
+		void		setKey(std::string key);
+		std::string	getKey();
+		void		setTopic(std::string topic);
+		std::string	getTopic();
+		void		setLimit(size_t limit);
+		size_t		getLimit();
+
+		void		setI(bool value);
+		bool		getI();
+		void		setT(bool value);
+		bool		getT();
+		void		setK(bool value);
+		bool		getK();
+		void		setL(bool value);
+		bool		getL();
+
+		bool		maxUser();
 
 };
 

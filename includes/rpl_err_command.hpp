@@ -5,7 +5,7 @@
 # define VERSION "1.0"
 
 // 001
-# define RPL_WELCOME(client, nick) (client " :Welcome to the " SERVERNAME " Network, " nick "\r\n")
+# define RPL_WELCOME(client, nick) (":" + client + " 001 :Welcome to the " SERVERNAME " Network, " nick "\r\n")
 
 // 002
 # define RPL_YOURHOST(client) (client " :Your host is " SERVERNAME ", running version " VERSION "\r\n")
@@ -14,7 +14,7 @@
 # define RPL_CREATED(client, datetime) (client " :This server was created" datetime "\r\n")
 
 // 004
-# define RPL_MYINFO(client, av_user_mode, av_channel_mode, channel_with_parameter) (client " " SERVERNAME " " VERSION " " av_user_mode " " av_channel_mode " " channel_with_parameter "\r\n")
+# define RPL_MYINFO(client, av_channel_mode) (client " " SERVERNAME " " VERSION " " av_user_mode " " av_channel_mode " " channel_with_parameter "\r\n")
 
 // 005
 # define RPL_ISUPPORT(client, tokens) (client " " tokens " :are supported by this server\r\n")
@@ -243,6 +243,9 @@
 
 // 406
 # define ERR_WASNOSUCHNICK(client) (client " :There was no such nickname\r\n")
+
+// 407
+# define ERR_TOOMANYTARGETS(client) (client " :You selected too many targets\r\n")
 
 // 409
 # define ERR_NOORIGIN(client) (client " :No origin specified\r\n")

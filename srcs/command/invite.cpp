@@ -18,7 +18,7 @@ void	execute_INVITE(Command command, Server server)
 		std::cout << "Too may params" << std::endl;
 		return ;
 	}
-	if (server.chanExist(channel) == false)
+	if (server.chanExist(channel[0]) == false)
 	{
 		std::cerr << "Redirection 403" << std::endl;
 		return;

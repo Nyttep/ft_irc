@@ -60,9 +60,6 @@ void						execute_USER(Command command, Server server);
 
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);
-bool						on_channel(User client, Channel channel);
-bool						correct_user(Server server, std::string client);
-bool						max_user(Channel chan);
-bool						max_channel(User user, std::string chan);
+std::string	                store_message(Command command);
 
 #endif

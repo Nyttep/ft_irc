@@ -30,12 +30,15 @@ class Server //date creation ?
 		bool		isValidPswd(std::string tryPswd);
 		std::string	getPort();
 		User&		getUser(int	key);
+		User&		getUser(std::string name);
 		bool		addUser(int key, User value);
 		bool		removeUser(int key);
+		bool		isUser(std::string name);
 		bool		isRegistered(int key);
 		void		addChan(Channel	newChan);
 		bool		chanExist(std::string name);
 		Channel&	getChan(std::string name);
+		bool		nicknameCollision(std::string nickname);
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	multiple_PRIVMSG(Command command, Server server, std::vector<std::string> targets, size_t i, std::string message)
+void	multiple_MSG(Command command, Server server, std::vector<std::string> targets, size_t i, std::string message)
 {
 	std::string	prefix;
 	if (have_prefix(targets[i][0]) == true)
@@ -15,20 +15,22 @@ void	multiple_PRIVMSG(Command command, Server server, std::vector<std::string> t
 			std::cerr << "Redirection 403" << std::endl;
 			return ;
 		}
-	}
-	else
-	{
-		if (server.isUser(targets[i]) == false)
+		if (on_channel(command.getSource(), server.getChan(targets[i])) == false)
 		{
-			std::cerr << "Redirection 401" << std::endl;
+			std::cerr << "Redirection 404" << std::endl;
 			return ;
 		}
 	}
-	std::string f_message = ":*" + command.getSource().getNName() + "* " + targets[i] + " : " + message + "\r\n";
+	else
+	{
+		std::cerr << "Redirection 403" << std::endl;
+		return ;
+	}
+	std::string f_message = ":" command.getSource().getNName() + " " + targets[i] + " " + message;
 	// send f_message
 }
 
-void	execute_PRIVMSG(Command command, Server server)
+void	execute_MSG(Command command, Server server)
 {
    if (command.getParams().empty() || command.getParams().size() < 2)
 	{
@@ -55,7 +57,7 @@ void	execute_PRIVMSG(Command command, Server server)
 	}
 	for (size_t i = 0; i != targets.size(); ++i)
 	{
-		multiple_PRIVMSG(command, server, targets, i, message);
+		multiple_MSG(command, server, &targets, i, message);
 	}
 }
 // FAIRE une RPL_TOOMANYTARGETS(407), pas dans le manuel

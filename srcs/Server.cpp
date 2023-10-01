@@ -57,6 +57,15 @@ User&	Server::getUser(int key)
 	return (ret);
 }
 
+User&	Server::getUser(std::string name)
+{
+	for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++i)
+	{
+		if (name == it->second.getNName())
+			return (*it);
+	}
+}
+
 Channel&	Server::getChan(std::string name)
 {
 	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
@@ -64,7 +73,6 @@ Channel&	Server::getChan(std::string name)
 		if (name == it->getName())
 			return (*it);
 	}
-	// Attention 
 }
   
 //------------------------- Other Functions -----------------------------
@@ -78,6 +86,16 @@ bool	Server::addUser(int key, User value)
 bool	Server::removeUser(int key)
 {
 	return (_users.erase(key));
+}
+
+bool	Server::isUser(std::string name)
+{
+	for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++it)
+	{
+		if (name == it->second.getNName())
+			return (true);
+	}
+	return (false);
 }
 
 void	Server::addChan(Channel	newChan)
@@ -104,6 +122,20 @@ bool	Server::chanExist(std::string name)
 	for (std::vector<Channel>::iterator	it = _channels.begin(); it != _channels.end(); it++)
 	{
 		if (name == it->getName())
+			return (true);
+	}
+	return (false);
+}
+
+bool	Server::nicknameCollision(std::string nickname)
+{
+	std::string low_nick;
+	for(std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++it)
+	{
+		low_nick = it->second.getNName();
+		for (size_t i = 0; i != low_nick.length(); ++i)
+			low_nick = std::tolower(low_nick[i]);
+		if (nickname == low_nick)
 			return (true);
 	}
 	return (false);

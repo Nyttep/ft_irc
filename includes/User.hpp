@@ -60,6 +60,7 @@ class User
 		bool				setPass(bool value);
 		bool				getRegistered();
 		bool				setRegistered(bool value);
+		bool				maxChannel(std::string channel);
 };
 
 #endif

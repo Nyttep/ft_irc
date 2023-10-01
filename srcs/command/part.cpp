@@ -13,17 +13,17 @@ void	multiple_PART(Command command, Server server, std::vector<std::string> chan
 			return ;
 		}
 		std::string message_channel = command.getSource().getNName() + " has left the channel " + channels[i];
-		std::string messag_user = "You have left the channel " + channels[i];
-		if (command.getParams().size > 1)
+		std::string message_user = "You have left the channel " + channels[i];
+		if (command.getParams().size() > 1)
 		{
 			message_channel += " : ";
-			for (size_t j = 1; j != command.getParam().size(); ++j)
+			for (size_t j = 1; j != command.getParams().size(); ++j)
 			{
-				if (!command.getParam()[j].empty())
-					message_channel += " " + command.getParam()[j];
+				if (!command.getParams()[j].empty())
+					message_channel += " " + command.getParams()[j];
 			}
 		}
-		if (is_operator(command.getSource(), server.getChan(channels[i])) == true)
+		if (server.getChan(channels[i]).isOperator(command.getSource(), server.getChan(channels[i])) == true)
 			server.getChan(channels[i]).removeOperator(command.getSource());
 		else
 			server.getChan(channels[i]).removeUser(command.getSource());
@@ -34,19 +34,19 @@ void	multiple_PART(Command command, Server server, std::vector<std::string> chan
 void	execute_PART(Command command, Server server)
 {
 	std::vector<std::string>	channels;
-	if (comman.getParams().empty() || command.getParams()[0].empty())
+	if (command.getParams().empty() || command.getParams()[0].empty())
 	{
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
-	if (channels.size() > targmax("PART:"))
+	if (channels.size() > targmax(command.getVerb()))
 	{
 		std::cerr << "Too many targets" << std::endl;
 		return ;
 	}
 	for (size_t i = 0; i != channels.size(); ++i)
 	{
-		multiple_PART(command, server, &channels, i);
+		multiple_PART(command, server, channels, i);
 	}
 }

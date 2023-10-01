@@ -35,6 +35,6 @@ void	execute_USER(Command command, Server server)
 		&& command.getSource().getUName().empty() && command.getSource().getRName().empty())
 	{
 		command.setRegistered(true);
-		handshake();
+		handshake(command, server);
 	}
 }

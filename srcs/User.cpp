@@ -160,3 +160,23 @@ bool	User::formatRecvData(std::vector<char>& buff)
 	_extra.append(tmp.substr(pos + 2, tmp.size()));
 	return (1);
 }
+
+bool	User::maxChannel(std::string channel)
+{
+	if (channel[0] == '#')
+	{
+		if ((_gChannel.size() + 1) > chanlimit(channel))
+			return (true);
+		else
+			return (false);
+	}
+	else if (channel[0] == '&')
+	{
+		if ((_lChannel.size() + 1) > chanlimit(channel))
+			return (true);
+		else
+			return (false);
+	}
+	else
+		return (true);
+}

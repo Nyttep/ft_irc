@@ -43,6 +43,7 @@ void	join_chan(Command command, Server server, std::vector<std::string> channels
 	}
 	if (server.getChan(channels[i]).getI() == true && (on_invite(command.getSource(), server.getChan(channels[i])) == false))
 	{
+		
 		std::cerr << "Redirection 473" << std::endl;
 		return ;
 	}
@@ -91,7 +92,7 @@ void	execute_JOIN(Command command, Server server)
 	{
 		if (chantypes(channels[i][0]) == false)
 			std::cerr << "Redirection 403" << std::endl;
-		if (server.chanExist(channels[i]) == false)
+		else if (server.chanExist(channels[i]) == false)
 			create_chan(command, server, channels, keys, i);
 		else
 			join_chan(command, server, channels, keys, i);

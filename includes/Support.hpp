@@ -12,12 +12,13 @@
 # define NETWORK "IRC_NETWORK"
 # define NICKLEN 16
 # define PREFIX "@"
-# define TARGMAX "PRIVMSG:3,JOIN:3,KICK:1,PART:3"
+# define TARGMAX "PRIVMSG:3,MSG:3,JOIN:3,KICK:1,PART:3"
 # define TOPICLEN 64
 # define USERLEN 16
 
 bool	chantypes(char c);
 int		targmax(std::string target);
 int		chanlimit(std::string prefixe);
+bool	have_prefix(char c);
 
 #endif

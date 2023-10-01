@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-int	chanlimit(std::string prefixe)
+int	chanlimit(char prefixe)
 {
 	std::string chanlimit = CHANLIMIT;
 	std::string	res;
@@ -13,11 +13,13 @@ int	chanlimit(std::string prefixe)
 		begin = std::atoi(res.c_str());
 		if (begin != 0)
 			return (begin);
+		else
+			return (INT_MAX - 1);
 	}
-	return (INT_MAX - 1);
+	return (-1);
 }
 
-int	targmax(std::string target) /*modifier pour que saute le :*/
+int	targmax(std::string target)
 {
 	std::string	targmax = TARGMAX;
 	std::string	res;
@@ -37,6 +39,14 @@ bool	chantypes(char c)
 	std::string	chantypes = CHANTYPES;
 	size_t i = chantypes.find(c);
 	if (i != std::string::npos)
+		return (true);
+	return (false);
+}
+
+bool	have_prefix(char c)
+{
+	std::string prefix = PREFIX;
+	if (prefix.find(c) != std::string::npos)
 		return (true);
 	return (false);
 }
