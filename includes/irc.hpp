@@ -44,7 +44,7 @@ extern int g_sig;
 int							getListenerSocket(Server serv);
 std::vector<struct pollfd>	getPfds(int listener);
 void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv, int fdCount);
-bool						sendAll(std::string msg, User &starget);
+bool						sendAll(std::string msg, User &target);
 
 // check_arg
 void						ft_check_arg(int argc, char **argv);

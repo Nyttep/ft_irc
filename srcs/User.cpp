@@ -14,11 +14,11 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _isLogged(false), _fd(0)
+User::User() : _nName(""), _uName(""), _rName(""), _hName(""), _pass(false), _registered(false), _fd(0)
 {
 }
 
-User::User(int newFD) : _fd(newFD) , _isLogged(false)
+User::User(int newFD) : _fd(newFD), _nName(""), _uName(""), _rName(""), _hName(""), _pass(false), _registered(false)
 {
 }
 
@@ -37,7 +37,8 @@ User&	User::operator=(const User& rhs)
 	_nName = rhs._nName;
 	_uName = rhs._uName;
 	_rName = rhs._rName;
-	_isLogged = rhs._isLogged;
+	_hName = rhs._hName;
+
 	return (*this);
 }
 
@@ -73,7 +74,7 @@ void		User::setRName(std::string newRName)
 	_rName = newRName;
 }
 
-Message	User::getMsg()
+std::string	User::getMsg()
 {
 	return (_msg);
 }
@@ -107,9 +108,7 @@ int	User::getFD()
 
 void	User::clearMsg()
 {
-	_msg.raw.clear();
-	_msg.cmd.clear();
-	_msg.args.clear();
+	_msg.clear();
 }
 
 bool	User::formatRecvData(std::vector<char>& buff)
@@ -119,15 +118,15 @@ bool	User::formatRecvData(std::vector<char>& buff)
 
 	if (!_extra.empty())
 	{
-		_msg.raw.append(_extra);
+		_msg.append(_extra);
 		_extra.clear();
 	}
 	if (pos == std::string::npos)
 	{
-		_msg.raw.append(tmp);
+		_msg.append(tmp);
 		return (0);
 	}
-	_msg.raw.append(tmp.substr(0, pos + 2));
+	_msg.append(tmp.substr(0, pos + 2));
 	_extra.append(tmp.substr(pos + 2, tmp.size()));
 	return (1);
 }
