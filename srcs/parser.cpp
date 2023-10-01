@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "irc.hpp"
+=======
+#include "ft_irc.hpp"
+>>>>>>> pdubois
 
 std::string	trim(const std::string &src)
 {

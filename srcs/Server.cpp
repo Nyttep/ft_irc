@@ -26,7 +26,12 @@ Server::Server(const Server& toCopy)
 }
 
 Server::~Server()
-{}
+{
+	for (std::map<int, User*>::iterator it = _users.begin(); it != _users.end(); it++)
+		delete it->second;
+	for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
+		delete *it;
+}
 
 //----------------------- Operators Overloads ---------------------------
 
@@ -52,53 +57,54 @@ std::string	Server::getPort()
 
 User&	Server::getUser(int key)
 {
-	std::map<int, User>::iterator	found = _users.find(key);
-	User&	ret = found->second;
+	std::map<int, User*>::iterator	found = _users.find(key);
+	User&	ret = *found->second;
 	return (ret);
 }
 
 User&	Server::getUser(std::string name)
 {
-	for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++i)
+	for (std::map<int, User *>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
-		if (name == it->second.getNName())
-			return (*it);
+		if (name == it->second->getNName())
+			return (*it->second);
 	}
 }
 
 Channel&	Server::getChan(std::string name)
 {
-	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it)
 	{
-		if (name == it->getName())
-			return (*it);
+		if (name == (*it)->getName())
+			return (*(*it));
 	}
 }
   
 //------------------------- Other Functions -----------------------------
 
-bool	Server::addUser(int key, User value)
+bool	Server::addUser(int key, User *value)
 {
-	std::pair<std::map<int, User>::iterator, bool>	ret = _users.insert(std::pair<int, User>(key, value));
+	std::pair<std::map<int, User*>::iterator, bool>	ret = _users.insert(std::pair<int, User*>(key, value));
 	return (ret.second);
 }
 
 bool	Server::removeUser(int key)
 {
+	delete _users.find(key)->second;
 	return (_users.erase(key));
 }
 
 bool	Server::isUser(std::string name)
 {
-	for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++it)
+	for (std::map<int, User*>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
-		if (name == it->second.getNName())
+		if (name == it->second->getNName())
 			return (true);
 	}
 	return (false);
 }
 
-void	Server::addChan(Channel	newChan)
+void	Server::addChan(Channel	*newChan)
 {
 	_channels.push_back(newChan);
 }
@@ -119,9 +125,9 @@ bool	Server::chanExist(std::string name)
 {
 	if (_channels.empty())
 		return (false);
-	for (std::vector<Channel>::iterator	it = _channels.begin(); it != _channels.end(); it++)
+	for (std::vector<Channel*>::iterator	it = _channels.begin(); it != _channels.end(); it++)
 	{
-		if (name == it->getName())
+		if (name == (*it)->getName())
 			return (true);
 	}
 	return (false);
@@ -130,9 +136,9 @@ bool	Server::chanExist(std::string name)
 bool	Server::nicknameCollision(std::string nickname)
 {
 	std::string low_nick;
-	for(std::map<int, User>::iterator it = _users.begin(); it != _users.end(); ++it)
+	for(std::map<int, User *>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
-		low_nick = it->second.getNName();
+		low_nick = it->second->getNName();
 		for (size_t i = 0; i != low_nick.length(); ++i)
 			low_nick = std::tolower(low_nick[i]);
 		if (nickname == low_nick)

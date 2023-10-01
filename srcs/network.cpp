@@ -12,7 +12,7 @@
 
 #include "irc.hpp"
 
-int	getListenerSocket(Server serv)
+int	getListenerSocket(Server &serv)
 {
 	int	listener = -1;
 	int	yes = 1;
@@ -56,7 +56,7 @@ std::vector<struct pollfd>	getPfds(int listener)
 	std::vector<struct pollfd>	pfds;
 	struct pollfd				listenerStruct;
 
-	memset(&listenerStruct, 0, sizeof(listenerStruct));
+	std::memset(&listenerStruct, 0, sizeof(listenerStruct));
 	pfds.push_back(listenerStruct);
 	pfds[0].fd = listener;
 	pfds[0].events = POLLIN;
@@ -67,7 +67,7 @@ void	addToPfds(int newFD, int& fdCount, std::vector<struct pollfd>& pfds)
 {
 	struct pollfd			newPollFD;
 
-	memset(&newPollFD, 0, sizeof(newPollFD));
+	std::memset(&newPollFD, 0, sizeof(newPollFD));
 	newPollFD.fd = newFD;
 	newPollFD.events = POLLIN;
 	fdCount++;
@@ -80,9 +80,41 @@ void	delFromPfds(std::vector<struct pollfd> pfds, int i, int& fdCount)
 	fdCount--;
 }
 
-void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
+bool	msgTooLong(std::string msg)
 {
-	int						fdCount = 1;
+	if (msg.size() > 512)
+		return (true);
+	return (false);
+}
+
+bool	sendAll(std::string msg, User &target)
+{
+	int	sent = 0;
+	int len = msg.size();
+	int bytesleft = len;
+	int n = 0;
+
+	while (sent < len)
+	{
+		n = send(target.getFD(), msg.data() + sent, bytesleft, 0);
+		if (n == -1)
+			break;
+		sent += n;
+		bytesleft -= n;
+	}
+	if (n == -1)
+		return (0);
+	return (1);
+}
+
+void	closeAll(std::vector<struct pollfd> pfds, int fdCount)
+{
+	for (int i = 0; i < fdCount; i++)
+		close (pfds[i].fd);
+}
+
+void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int fdCount)
+{
 	struct sockaddr_storage	remoteAddr;
 	socklen_t				addrLen;
 	int						newFD;
@@ -91,13 +123,32 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 
 	while (true)
 	{
+		if (g_sig != 0)
+		{
+			if (g_sig == SIGINT)
+				std::cerr << "received SIGINT\nshuting down the server";
+			if (g_sig == SIGQUIT)
+				std::cerr << "received SIGQUIT\nshuting down the server";
+			closeAll(pfds, fdCount);
+			return ;
+		}
 		int pollCount = poll(pfds.data(), fdCount, -1);
+		if (g_sig != 0)
+		{
+			if (g_sig == SIGINT)
+				std::cerr << "received SIGINT\nshuting down the server";
+			if (g_sig == SIGQUIT)
+				std::cerr << "received SIGQUIT\nshuting down the server";
+			closeAll(pfds, fdCount);
+			return ;
+		}
 		if (pollCount == -1)
 		{
-			perror("Error: poll: ");
-			exit(1);
+			std::perror("Error: poll: ");
+			closeAll(pfds, fdCount);
+			return ;
 		}
-		for (int i = 0; i < fdCount; i++)
+		for (int i = 0; i < fdCount && pollCount > 0 ; i++)
 		{
 			if (pfds[i].revents & POLLIN)
 			{
@@ -107,12 +158,13 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					newFD = accept(listener, (struct sockaddr *)&remoteAddr, &addrLen);
 					if (newFD == -1)
 					{
-						perror("Error: Accept: ");
+						std::perror("Error: Accept: ");
+						closeAll(pfds, fdCount);
+						return ;
 					}
 					else
 					{
 						addToPfds(newFD, fdCount, pfds);
-						std::cout << "server: new connection on socket " << newFD << std::endl;
 					}
 				}
 				else
@@ -123,16 +175,16 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					}
 					else
 					{
-						if (!serv.addUser(pfds[i].fd, User()))
+						if (!serv.addUser(pfds[i].fd, new User(pfds[i].fd)))
 						{
 							std::cerr << "Error: unexpected error: couldn't insert element in map";
+							closeAll(pfds, fdCount);
 							return ;
 						}
 						client = &(serv.getUser(pfds[i].fd));
 					}
 					std::fill(buff.begin(), buff.end(), 0);
 					int	nBytes = recv(pfds[i].fd, buff.data(), SIZE_BUFF, 0);
-					std::cout << "buff = " << buff.data();
 					if (nBytes <= 0)
 					{
 						if (nBytes == 0)
@@ -141,7 +193,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 						}
 						else
 						{
-							perror("Error: recv: ");
+							std::perror("Error: recv: ");
 						}
 						serv.removeUser(pfds[i].fd);
 						close (pfds[i].fd);
@@ -151,11 +203,16 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv)
 					{
 						if (client->formatRecvData(buff))
 						{
-							std::cout << pfds[i].fd << "sent: " << client->getMsg() << std::endl;//send cmd
+							if (msgTooLong(client->getMsg().raw))
+							{
+								sendAll(ERR_INPUTTOOLONG(SERVERNAME), *client);
+							}
+							std::cout << pfds[i].fd << "sent: " << client->getMsg().raw << std::endl;//send cmd
 							client->clearMsg();
 						}
 					}
 				}
+				pollCount--;
 			}
 		}
 	}

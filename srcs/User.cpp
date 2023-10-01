@@ -14,15 +14,11 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _isOP(false), _isLogged(false)
+User::User() : _nName(""), _uName(""), _rName(""), _isLogged(false), _fd(0)
 {
 }
 
-User::User(std::string newNName, std::string newUName) : _nName(newNName), _uName(newUName), _rName(""), _isOP(false), _isLogged(false)
-{
-}
-
-User::User(std::string newNName, std::string newUName, std::string newRName) : _nName(newNName), _uName(newUName), _rName(newRName), _isOP(false), _isLogged(false)
+User::User(int newFD) : _fd(newFD) , _isLogged(false)
 {
 }
 
@@ -41,8 +37,7 @@ User&	User::operator=(const User& rhs)
 	_nName = rhs._nName;
 	_uName = rhs._uName;
 	_rName = rhs._rName;
-	_isOP = rhs._isOP;
-	_isOP = rhs._isLogged;
+	_isLogged = rhs._isLogged;
 	return (*this);
 }
 
@@ -78,7 +73,7 @@ void		User::setRName(std::string newRName)
 	_rName = newRName;
 }
 
-std::string	User::getMsg()
+Message	User::getMsg()
 {
 	return (_msg);
 }
@@ -88,7 +83,7 @@ bool		User::getPass()
 	return (_pass);
 }
 
-bool		User::setPass(bool value)
+void		User::setPass(bool value)
 {
 	_pass = value;
 }
@@ -98,47 +93,23 @@ bool		User::getRegistered()
 	return (_registered);
 }
 
-bool		User::setRegistered(bool value)
+void		User::setRegistered(bool value)
 {
 	_registered = value;
 }
 
+int	User::getFD()
+{
+	return (_fd);
+}
+
 //--------------------------- Other Functions ----------------------------
-
-
-bool	User::isOP()
-{
-	return (_isOP);
-}
-
-void	User::makeOP()
-{
-	_isOP = true;
-}
-
-void	User::removeOP()
-{
-	_isOP = false;
-}
-
-bool	User::isLogged()
-{
-	return (_isLogged);
-}
-
-void	User::logIn()
-{
-	_isLogged = true;
-}
-
-void	User::logOut()
-{
-	_isLogged = false;
-}
 
 void	User::clearMsg()
 {
-	_msg.clear();
+	_msg.raw.clear();
+	_msg.cmd.clear();
+	_msg.args.clear();
 }
 
 bool	User::formatRecvData(std::vector<char>& buff)
@@ -148,15 +119,15 @@ bool	User::formatRecvData(std::vector<char>& buff)
 
 	if (!_extra.empty())
 	{
-		_msg.append(_extra);
+		_msg.raw.append(_extra);
 		_extra.clear();
 	}
 	if (pos == std::string::npos)
 	{
-		_msg.append(tmp);
+		_msg.raw.append(tmp);
 		return (0);
 	}
-	_msg.append(tmp.substr(0, pos + 2));
+	_msg.raw.append(tmp.substr(0, pos + 2));
 	_extra.append(tmp.substr(pos + 2, tmp.size()));
 	return (1);
 }

@@ -12,9 +12,15 @@
 
 #include "irc.hpp"
 
+int	g_sig = 0;
 
 int	main(int argc, char** argv)
 {
+	struct sigaction sa;
+	int fdCount = 0;
+
+	if (signals(sa))
+		return (1);
 	if (argc != 3)
 	{
 		std::cerr << "Error: Port and password required" << std::endl;
@@ -26,9 +32,11 @@ int	main(int argc, char** argv)
 	if (listener < 0)
 	{
 		std::cerr << "Error: could not initialize listener socket\n";
+		close(listener);
 		return (1);
 	}
 	std::vector<struct pollfd>	pfds = getPfds(listener);
-	serverLoop(listener, pfds, serv);
+	fdCount++;
+	serverLoop(listener, pfds, serv, fdCount);
 	return (0);
 }

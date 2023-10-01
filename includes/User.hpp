@@ -24,21 +24,20 @@ class User
 		std::string 			_rName; // realname
 		std::string				_hName; // hostname
 
-		std::vector<Channel>	_lChannel; // LocalChan
-		std::vector<Channel>	_gChannel; // GeneralChan
+		std::vector<Channel*>	_lChannel; // LocalChan
+		std::vector<Channel*>	_gChannel; // GeneralChan
 
 		bool					_pass;
 		bool					_registered;
 
-		std::string			_msg;
-		std::string			_extra;
-	public :
+		std::string				_msg;
+		std::string				_extra;
+
 		User();
 		User(const User& toCopy);
 
 	public :
-		User(std::string newNName, std::string newUName);
-		User(std::string newNName, std::string newUName, std::string newRName);
+		User(int newFD);
 		~User();
 		User&				operator=(const User& rhs);
 		std::string			getNName();
@@ -47,19 +46,17 @@ class User
 		void				setUName(std::string newUName);
 		std::string			getRName();
 		void				setRName(std::string newRName);
-		std::string			getMsg();
+		Message				getMsg();
+		int					getFD();
 		void				clearMsg();
-		bool				isOP();
 		bool				isLogged();
 		void				logIn();
 		void				logOut();
-		void				makeOP();
-		void				removeOP();
 		bool				formatRecvData(std::vector<char>& buff);
 		bool				getPass();
-		bool				setPass(bool value);
+		void				setPass(bool value);
 		bool				getRegistered();
-		bool				setRegistered(bool value);
+		void				setRegistered(bool value);
 		bool				maxChannel(std::string channel);
 };
 

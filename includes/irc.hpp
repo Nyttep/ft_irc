@@ -18,6 +18,7 @@
 # include <iostream>
 # include <fstream>
 # include <string>
+# include <utility>
 # include <map>
 # include <vector>
 # include <cstdlib>
@@ -27,6 +28,8 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <unistd.h>
+# include <signal.h>
+# include "rpl_err_command.hpp"
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"
@@ -36,9 +39,12 @@
 
 # define SIZE_BUFF 1024
 
+extern int g_sig;
+
 int							getListenerSocket(Server serv);
 std::vector<struct pollfd>	getPfds(int listener);
-void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv);
+void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv, int fdCount);
+bool						sendAll(std::string msg, User &starget);
 
 // check_arg
 void						ft_check_arg(int argc, char **argv);
@@ -61,5 +67,9 @@ void						execute_USER(Command command, Server server);
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);
 std::string	                store_message(Command command);
+void						ft_check_arg(int argc, char **argv);
+int							ft_atoi(const char *str);
+
+int							signals(struct sigaction &sa);
 
 #endif
