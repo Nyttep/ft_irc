@@ -27,7 +27,6 @@ class User
 		std::vector<Channel*>	_lChannel; // LocalChan
 		std::vector<Channel*>	_gChannel; // GeneralChan
 
-		Message					_msg;
 		std::string				_extra;
 		bool					_isLogged;
 		

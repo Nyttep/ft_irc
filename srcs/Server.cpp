@@ -58,7 +58,7 @@ std::string	Server::getPort()
 User&	Server::getUser(int key)
 {
 	std::map<int, User*>::iterator	found = _users.find(key);
-	User&	ret = found->second;
+	User&	ret = *found->second;
 	return (ret);
 }
   
@@ -72,6 +72,7 @@ bool	Server::addUser(int key, User *value)
 
 bool	Server::removeUser(int key)
 {
+	delete _users.find(key)->second;
 	return (_users.erase(key));
 }
 

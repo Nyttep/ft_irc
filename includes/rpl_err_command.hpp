@@ -149,7 +149,7 @@
 # define RPL_ENDOFINVITELIST(client) (client + " :End of /INVITE list\r\n")
 
 // 338
-# define RPL_WHOISACTUALLY() /* A faire plus tard, pas compris/
+# define RPL_WHOISACTUALLY() /* A faire plus tard, pas compris*/
 
 // 341
 # define RPL_INVITING(client, nick, channel) (client + " " + nick + " " + channel + "\r\n")
