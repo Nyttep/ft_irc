@@ -6,7 +6,8 @@ void	create_chan(Command command, Server server, std::vector<std::string> channe
 	{
 		if (channels[i][j] == ' ' || channels[i][j] == '^G' || channels[i][j] == ',')
 		{
-			std::cerr << "Creer une redirection ERR_ERRONEOUSCHANNAME, base sur 432" << std::endl;
+			sendAll(ERR_NOSUCHCHANNEL(command.getSource().getNName(), channels[i]), server.getSource());
+            std::cerr << "redirection  403" << std::endl;
 			return ;
 		}
 	}
@@ -19,7 +20,8 @@ void	create_chan(Command command, Server server, std::vector<std::string> channe
 		server.getChan(channels[i]).setK(true);
 		server.getChan(channels[i]).setKey(keys[i]);
 	}
-	// Rajouter les messages de bienvenue
+    sendAll(RPL_NOTOPIC(command.getSource().getNName(), server.getChan(channels[i])));
+    std::cout << "Redirection 331" << std::endl;
 }
 
 
@@ -31,29 +33,33 @@ void	join_chan(Command command, Server server, std::vector<std::string> channels
 		{
 			if (server.getChan(channels[i]).getKey() != keys[i])
 			{
-				std::cerr << "Redirection 475" << std::endl;
+				sendAll(ERR_BADCHANNELKEY(command.getSource().getNName(), channels[i]), command.getSource());
+                std::cerr << "Redirection 475" << std::endl;
 				return ;
 			}
 		}
 		else
 		{
+            sendAll(ERR_BADCHANNELKEY(command.getSource().getNName(), channels[i]), command.getSource());
 			std::cerr << "Redirection 475" << std::endl;
 			return ;
 		}
 	}
 	if (server.getChan(channels[i]).getI() == true && (on_invite(command.getSource(), server.getChan(channels[i])) == false))
 	{
-		
+		sendAll(ERR_INVITEONLYCHAN(command.getSource().getNName(), channels[i]), command.getSource());
 		std::cerr << "Redirection 473" << std::endl;
 		return ;
 	}
 	if (server.getChan(channel[i]).getL() == true && (max_user(server.getChan(channels[i])) == true))
 	{
+        sendAll(ERR_CHANNELISFULL(command.getSource().getNName(), channels[i]), command.getSource());
 		std::cerr << "Redirection 471" << std::endl;
 		return ;
 	}
 	if (max_channel(command.getSource(), channels[i]) == true)
 	{   
+        sendAll(ERR_TOOMANYCHANNELS(command.getSource().getNName(), channels[i]), command.getSource());
 		std::cerr << "Redirection 405" << std::endl;
 		return ;
 	}
@@ -70,14 +76,21 @@ void	execute_JOIN(Command command, Server server)
 		if (command.getParams().size() > 2)
 			std::cerr << "Too many params" << std::endl;
 		else
-			std::cerr << "Redirection 461" << std::endl;
-		return;
+        {
+			sendAll(ERR_NEEDMOREPARAMS(command.getSource().getNName(), command.getVerb()), command.getSource());
+            std::cerr << "Redirection 461" << std::endl;
+        }
+        return;
 	}
 	for (size_t i = 0; i != command.getParams().size(), ++i)
 	{
 		if (command.getParams()[0].empty())
+        {
+            sendAll(ERR_NEEDMOREPARAMS(command.getSource().getNName(), command.getVerb()), command.getSource());
 			std::cerr << "Redirection 461" << std::endl;
-	}
+            return ;
+        }
+    }
 	// if (argument[0] == "0")
 	// {
 	//   // Commande qui quitte tous les chans
@@ -91,8 +104,11 @@ void	execute_JOIN(Command command, Server server)
 	for (size_t i = 0; i != channels.size(), ++i)
 	{
 		if (chantypes(channels[i][0]) == false)
-			std::cerr << "Redirection 403" << std::endl;
-		else if (server.chanExist(channels[i]) == false)
+        {
+			sendAll(ERR_NOSUCHCHANNEL(command.getSource().getNName(), channels[i]), command.getSource());
+            std::cerr << "Redirection 403" << std::endl;
+        }
+        else if (server.chanExist(channels[i]) == false)
 			create_chan(command, server, channels, keys, i);
 		else
 			join_chan(command, server, channels, keys, i);
