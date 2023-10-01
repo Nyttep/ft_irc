@@ -13,6 +13,10 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
+# include "irc.hpp"
+
+class User;
+
 class Channel //date creation ?
 {
 	private :

@@ -1,6 +1,8 @@
 #ifndef RPL_ERR_COMMAND_HPP
 # define RPL_ERR_COMMAND_HPP
 
+# include "irc.hpp"
+
 # define SERVERNAME "ft_irc"
 # define VERSION "1.0"
 
@@ -352,7 +354,7 @@
 # define RPL_WHOISSECURE(client, nick) (client + " " + nick + " :is using a secure connection\r\n")
 
 // 691
-# define RPL_STARTTLS(client) (client + " :STARTTLS failed (Wrong moon phase)\r\n")
+# define ERR_STARTTLS(client) (client + " :STARTTLS failed (Wrong moon phase)\r\n")
 
 // 696
 # define RPL_INVALIDMODEPARAM(client, target, mode_char, parameter, description) (client + " " + target + " " + mode_char + " " + parameter + " :" + description + "\r\n")

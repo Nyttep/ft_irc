@@ -1,6 +1,8 @@
 #ifndef SUPPORT_HPP
 # define SUPPORT_HPP
 
+# include "irc.hpp"
+
 # define NETWORK "IRC_NETWORK"
 # define CASEMAPPING "ascii"
 # define CHANTYPES "&#"

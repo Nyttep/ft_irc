@@ -207,7 +207,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 							{
 								sendAll(ERR_INPUTTOOLONG(SERVERNAME), *client);
 							}
-							std::cout << pfds[i].fd << "sent: " << client->getMsg().raw << std::endl;//send cmd
+							parser(client, client.msg, serv);
 							client->clearMsg();
 						}
 					}

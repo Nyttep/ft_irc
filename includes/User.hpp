@@ -13,6 +13,10 @@
 #ifndef USER_HPP
 # define USER_HPP
 
+# include "irc.hpp"
+
+class Channel;
+
 class User
 {
 	private :
@@ -46,7 +50,7 @@ class User
 		void				setUName(std::string newUName);
 		std::string			getRName();
 		void				setRName(std::string newRName);
-		Message				getMsg();
+		std::string			getMsg();
 		int					getFD();
 		void				clearMsg();
 		bool				isLogged();

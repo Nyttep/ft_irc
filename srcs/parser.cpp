@@ -204,18 +204,13 @@ std::string	parsing_cmd(std::string *reception)
 	return (command);
 }
 
-int	main(int argc, char **argv)
+void	parser(User& source, std::string reception, Server& server)
 {
-	// a supprimer
-	if (argc != 2)
-		return (0);
-
-	std::string reception = argv[1]; /*a supprimer, sera la string envoye*/
 	Command	command(source);
 
 	reception = trim(reception);
 	if (reception.empty())
-		return (0);
+		return ;
 	command.setVerb(parsing_cmd(&reception));
 	if (!reception.empty())
 		command.setParams(parsing_arguments(&reception));
@@ -235,6 +230,4 @@ int	main(int argc, char **argv)
 	// fin supprimer
 
 	execute_verb(command, server);
-
-	return (0);
 }

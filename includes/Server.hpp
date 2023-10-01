@@ -13,6 +13,8 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+# include "irc.hpp"
+
 class Server //date creation ?
 {
 	private :

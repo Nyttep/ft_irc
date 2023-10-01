@@ -79,22 +79,22 @@ std::string	User::getMsg()
 	return (_msg);
 }
 
-bool		User::getPass()
+bool	User::getPass()
 {
 	return (_pass);
 }
 
-void		User::setPass(bool value)
+void	User::setPass(bool value)
 {
 	_pass = value;
 }
 
-bool		User::getRegistered()
+bool	User::getRegistered()
 {
 	return (_registered);
 }
 
-void		User::setRegistered(bool value)
+void	User::setRegistered(bool value)
 {
 	_registered = value;
 }
