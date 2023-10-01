@@ -26,7 +26,6 @@ class User
 		std::string				_nName; // nickname
 		std::string 			_uName; // username
 		std::string 			_rName; // realname
-		std::string				_hName; // hostname
 
 		std::vector<Channel*>	_lChannel; // LocalChan
 		std::vector<Channel*>	_gChannel; // GeneralChan

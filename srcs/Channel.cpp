@@ -44,22 +44,29 @@ std::string	Channel::getName()
 	return (_name);
 }
 
-User&	Channel::getUser(int key)
+User&	Channel::getUser(std::string nick)
 {
-	std::map<int, User>::iterator	found = _users.find(key);
-	User&	ret = found->second;
-	return (ret);
+	for (size_t i = 0; i != _operators.size(); ++i)
+	{
+		if (nick == _operators[i]->getNName())
+			return (*_operators[i]);
+	}
+	for (size_t i = 0; i != _users.size(); ++i)
+	{
+		if (nick == _users[i]->getNName())
+			return (*_users[i]);
+	}
+	return ();
 }
 
-bool	Channel::addUser(int key, User value)
+void	Channel::addUser(User* value)
 {
-	if (this->isInChannel(key))
-		return (0);
-	std::pair<std::map<int, User>::iterator, bool>	ret = _users.insert(std::pair<int, User>(key, value));
-	return (ret.second);
+	if (this->onChannel(value->getNName()))
+		return ;
+	_users.push_back(value);
 }
 
-void	Channel::addOperator(User client)
+void	Channel::addOperator(User *client)
 {
 	_operators.push_back(client);
 }
@@ -68,7 +75,7 @@ void	Channel::removeOperator(User client)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
-		if (_operators[i].getNName() == client.getNName())
+		if (_operators[i]->getNName() == client.getNName())
 		{
 			_operators.erase(_operators.begin() + i);
 			return ;
@@ -76,7 +83,7 @@ void	Channel::removeOperator(User client)
 	}
 }
 
-void	Channel::addInvite(User client)
+void	Channel::addInvite(User *client)
 {
 	_invite.push_back(client);
 }
@@ -85,7 +92,7 @@ void	Channel::removeInvite(User client)
 {
 	for (size_t i = 0; i != _invite.size(); ++i)
 	{
-		if (_invite[i].getNName() ==  client.getNName())
+		if (_invite[i]->getNName() ==  client.getNName())
 		{
 			_invite.erase(_invite.begin() + i);
 			return ;
@@ -165,21 +172,16 @@ bool	Channel::getL()
 
 //--------------------------- Other Functions ----------------------------
 
-bool	Channel::isInChannel(int key)
-{
-	return (_users.count(key));
-}
-
-bool	Channel::onChannel(User client)
+bool	Channel::onChannel(std::string nick)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
-		if (client.getNName() == _operators[i].getNName())
+		if (nick == _operators[i]->getNName())
 			return (true);
 	}
 	for (size_t i = 0; i != _users.size(); ++i)
 	{
-		if (client.getNName() == _users[i].getNName())
+		if (nick == _users[i]->getNName())
 			return (true);
 	}
 	return (false);
@@ -189,7 +191,7 @@ bool	Channel::isOperator(User client)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
-		if (client.getNName() == _operators[i].getNName())
+		if (client.getNName() == _operators[i]->getNName())
 			return (true);
 	}
 	return (false);
@@ -199,7 +201,7 @@ bool	Channel::isInvite(User client)
 {
 	for (size_t i = 0; i != _invite.size(); ++i)
 	{
-		if (client.getNName() == _invite[i].getNName())
+		if (client.getNName() == _invite[i]->getNName())
 			return (true);
 	}
 	return (false);

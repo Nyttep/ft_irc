@@ -43,14 +43,13 @@ class Channel //date creation ?
 		Channel&	operator=(const Channel& rhs);
 
 		std::string	getName();
-		User&		getUser(int	key);
-		bool		addUser(int key, User value);
-		bool		isInChannel(int key);
-		bool		onChannel(User client);
-		void		addOperator(User client);
+		User&		getUser(std::string nick);
+		bool		addUser(User* value);
+		bool		onChannel(std::string nick);
+		void		addOperator(User *client);
 		void		removeOperator(User client);
 		bool		isOperator(User client);
-		void		addInvite(User client);
+		void		addInvite(User *client);
 		void		removeInvite(User client);
 		bool		isInvite(User client);
 

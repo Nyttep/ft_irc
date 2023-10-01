@@ -14,11 +14,11 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _hName(""), _pass(false), _registered(false), _fd(0)
+User::User() : _nName(""), _uName(""), _rName(""), _pass(false), _registered(false), _fd(0)
 {
 }
 
-User::User(int newFD) : _fd(newFD), _nName(""), _uName(""), _rName(""), _hName(""), _pass(false), _registered(false)
+User::User(int newFD) : _fd(newFD), _nName(""), _uName(""), _rName(""), _pass(false), _registered(false)
 {
 }
 
@@ -37,8 +37,6 @@ User&	User::operator=(const User& rhs)
 	_nName = rhs._nName;
 	_uName = rhs._uName;
 	_rName = rhs._rName;
-	_hName = rhs._hName;
-
 	return (*this);
 }
 
