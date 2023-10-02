@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-int	chanlimit(char prefixe)
+size_t	chanlimit(char prefixe)
 {
 	std::string chanlimit = CHANLIMIT;
 	std::string	res;
@@ -16,7 +16,7 @@ int	chanlimit(char prefixe)
 		else
 			return (INT_MAX - 1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	targmax(std::string target)

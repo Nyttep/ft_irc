@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_QUIT(Command command, Server server)
+void	execute_QUIT(Command &command, Server &server)
 {
 	std::string	message = "Quit:";
 	if (command.getParams().empty())

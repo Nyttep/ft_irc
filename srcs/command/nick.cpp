@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_NICK(Command command, Server server) /* prendre le serveur en paramètres */
+void	execute_NICK(Command &command, Server &server) /* prendre le serveur en paramètres */
 {
 		// Empty vector
 	if (command.getParams().empty() || command.getParams()[0].empty() || command.getParams().size() != 1)

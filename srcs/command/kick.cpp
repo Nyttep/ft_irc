@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_KICK(Command command, Server server)
+void	execute_KICK(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 2 || \
 		command.getParams()[0].empty() || command.getParams()[1].empty())

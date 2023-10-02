@@ -55,29 +55,32 @@ std::string	Server::getPort()
 	return (_port);
 }
 
-User&	Server::getUser(int key)
+User*	Server::getUser(int key)
 {
 	std::map<int, User*>::iterator	found = _users.find(key);
-	User&	ret = *found->second;
-	return (ret);
+	if (found == _users.end())
+		return (NULL);
+	return (found->second);
 }
 
-User&	Server::getUser(std::string name)
+User*	Server::getUser(std::string name)
 {
 	for (std::map<int, User *>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
 		if (name == it->second->getNName())
-			return (*it->second);
+			return (it->second);
 	}
+	return (NULL);
 }
 
-Channel&	Server::getChan(std::string name)
+Channel*	Server::getChan(std::string name)
 {
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it)
 	{
 		if (name == (*it)->getName())
-			return (*(*it));
+			return (*it);
 	}
+	return (NULL);
 }
   
 //------------------------- Other Functions -----------------------------

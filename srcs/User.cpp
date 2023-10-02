@@ -14,7 +14,7 @@
 
 //---------------------- Constructors & Destructors ----------------------
 
-User::User() : _nName(""), _uName(""), _rName(""), _pass(false), _registered(false), _fd(0)
+User::User()
 {
 }
 

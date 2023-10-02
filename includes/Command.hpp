@@ -18,7 +18,7 @@ class Command
 	~Command();
 	Command&					operator=(const Command& src);
 	void						setSource(User client);
-	User						getSource();
+	User*						getSource();
 	void						setVerb(std::string verb);
 	std::string					getVerb();
 	void						setParams(std::vector<std::string> params);

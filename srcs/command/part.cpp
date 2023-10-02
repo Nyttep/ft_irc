@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	multiple_PART(Command command, Server server, std::vector<std::string> channels, size_t i)
+void	multiple_PART(Command &command, Server &server, std::vector<std::string> channels, size_t i)
 {
 		if (server.chanExist(channels[i]) == false)
 		{
@@ -31,7 +31,7 @@ void	multiple_PART(Command command, Server server, std::vector<std::string> chan
 		std::cout << message_user << std::endl;
 }
 
-void	execute_PART(Command command, Server server)
+void	execute_PART(Command &command, Server &server)
 {
 	std::vector<std::string>	channels;
 	if (command.getParams().empty() || command.getParams()[0].empty())

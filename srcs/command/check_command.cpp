@@ -15,7 +15,7 @@ std::vector<std::string>	collect_arguments(std::string string)
 	return (vector);
 }
 
-std::string	store_message(Command command)
+std::string	store_message(Command &command)
 {
 	std::string message;
 	for (size_t i = 1; i != command.getParams().size(); ++i)
@@ -42,9 +42,9 @@ std::string	DateCreation()
     return (str);
 }
 
-void	handshake(Command command, Server server)
+void	handshake(Command &command, Server &server)
 {
-	RPL_WELCOME(SERVERNAME, command.getSource().getNName());
+	RPL_WELCOME(SERVERNAME, command.getSource()->getNName());
 	RPL_YOURHOST(SERVERNAME);
 	RPL_CREATED(SERVERNAME, /*une fonction qui cree le temps*/);
 	RPL_MYINFO(SERVERNAME, CHANMODES);

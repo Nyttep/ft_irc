@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	multiple_MSG(Command command, Server server, std::vector<std::string> targets, size_t i, std::string message)
+void	multiple_MSG(Command &command, Server &server, std::vector<std::string> targets, size_t i, std::string message)
 {
 	std::string	prefix;
 	if (have_prefix(targets[i][0]) == true)
@@ -30,7 +30,7 @@ void	multiple_MSG(Command command, Server server, std::vector<std::string> targe
 	// send f_message
 }
 
-void	execute_MSG(Command command, Server server)
+void	execute_MSG(Command &command, Server &server)
 {
    if (command.getParams().empty() || command.getParams().size() < 2)
 	{

@@ -44,19 +44,19 @@ std::string	Channel::getName()
 	return (_name);
 }
 
-User&	Channel::getUser(std::string nick)
+User*	Channel::getUser(std::string nick)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
 		if (nick == _operators[i]->getNName())
-			return (*_operators[i]);
+			return (_operators[i]);
 	}
 	for (size_t i = 0; i != _users.size(); ++i)
 	{
 		if (nick == _users[i]->getNName())
-			return (*_users[i]);
+			return (_users[i]);
 	}
-	return ();
+	return (NULL);
 }
 
 void	Channel::addUser(User* value)

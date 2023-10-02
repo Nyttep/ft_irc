@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_PING(Command command, Server server)
+void	execute_PING(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams()[0].empty() || command.getParams().size() != 1)
 	{

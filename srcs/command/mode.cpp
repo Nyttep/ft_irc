@@ -39,7 +39,7 @@ std::string	display_modes(Channel chan)
 	return (message);
 }
 
-void	mode_invite(Command command, Server server, std::vector<std::string> targets)
+void	mode_invite(Command &command, Server &server, std::vector<std::string> targets)
 {
 	if (command.getParams()[1][0] == '-')
 		server.getChan(targets[0]).setI(false);
@@ -49,7 +49,7 @@ void	mode_invite(Command command, Server server, std::vector<std::string> target
 		std::cerr << "Redirection 696" << std::endl;
 }
 
-void	mode_topic(Command command, Server server, std::vector<std::string> targets)
+void	mode_topic(Command &command, Server &server, std::vector<std::string> targets)
 {
 	if (command.getParams()[1][0] == '-')
 		server.getChan(targets[0]).setT(false);
@@ -59,7 +59,7 @@ void	mode_topic(Command command, Server server, std::vector<std::string> targets
 		std::cerr << "Redirection 696" << std::endl;
 }
 
-void	mode_operator(Command command, Server server, std::vector<std::string> targets)
+void	mode_operator(Command &command, Server &server, std::vector<std::string> targets)
 {
 	if (command.getParams().size() != 3 || command.getParams()[2].empty())
 	{
@@ -122,7 +122,7 @@ void	mode_operator(Command command, Server server, std::vector<std::string> targ
 	}
 }
 
-void	mode_key(Command command, Server server, std::vector<std::string> targets)
+void	mode_key(Command &command, Server &server, std::vector<std::string> targets)
 {
 	if (command.getParams()[1][0] == '+')
 	{
@@ -147,7 +147,7 @@ void	mode_key(Command command, Server server, std::vector<std::string> targets)
 
 }
 
-void	mode_limit(Command command, Server server, std::vector<std::string> targets)
+void	mode_limit(Command &command, Server &server, std::vector<std::string> targets)
 {
 	if (command.getParam()[1][0] == '+')
 	{
@@ -176,7 +176,7 @@ void	mode_limit(Command command, Server server, std::vector<std::string> targets
 	}
 }
 
-void	execute_MODE(Command command, Server server)
+void	execute_MODE(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1)
 	{

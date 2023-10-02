@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_TOPIC(Command command, Server server)
+void	execute_TOPIC(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams()[0].empty())
 	{

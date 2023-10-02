@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	execute_USER(Command command, Server server)
+void	execute_USER(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() != 4 || command.getParams()[0].empty() || command.getParams()[1].empty() || command.getParams()[2].empty() || command.getParams()[3].empty())
 	{

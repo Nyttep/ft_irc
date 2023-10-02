@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-void	create_chan(Command command, Server server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
+void	create_chan(Command &command, Server &server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
 {
 	for (size_t j = 0; j != channels[i].length(); ++j)
 	{
@@ -23,7 +23,7 @@ void	create_chan(Command command, Server server, std::vector<std::string> channe
 }
 
 
-void	join_chan(Command command, Server server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
+void	join_chan(Command &command, Server &server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
 {
 	if (server.getChan(channels[i]).getK() == true)
 	{ 
@@ -62,7 +62,7 @@ void	join_chan(Command command, Server server, std::vector<std::string> channels
 }
 
 
-void	execute_JOIN(Command command, Server server)
+void	execute_JOIN(Command &command, Server &server)
 {
 	// check arguments
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams().size() > 2)

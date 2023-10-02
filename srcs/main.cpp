@@ -26,7 +26,7 @@ int	main(int argc, char** argv)
 		std::cerr << "Error: Port and password required" << std::endl;
 		exit(1);
 	}
-	ft_check_arg(argc, argv);
+	ft_check_arg(argv);
 	Server	serv(argv[2], argv[1]);
 	int	listener = getListenerSocket(serv);
 	if (listener < 0)

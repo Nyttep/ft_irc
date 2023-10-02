@@ -20,7 +20,7 @@
 
 bool	chantypes(char c);
 int		targmax(std::string target);
-int		chanlimit(std::string prefixe);
+size_t	chanlimit(std::string prefixe);
 bool	have_prefix(char c);
 
 #endif

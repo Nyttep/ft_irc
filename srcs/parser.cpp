@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 #include "irc.hpp"
-=======
-#include "ft_irc.hpp"
->>>>>>> pdubois
 
 std::string	trim(const std::string &src)
 {
@@ -31,55 +27,55 @@ bool	isascii(const std::string src) /*Inutile, surement a supprimer*/
 	return true;
 }
 
-void	execute_verb(Command command, Server server)
+void	execute_verb(Command& command, Server server)
 {
 	if (command.getVerb() == "NICK")
 	{
-		if (command.getSource().getPass() == true)
+		if (command.getSource()->getPass() == true)
 			execute_NICK(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "USER")
 	{
-		if (command.getSource().getPass() == true && command.getSource().getRegistered() == false)
+		if (command.getSource()->getPass() == true && command.getSource()->getRegistered() == false)
 			execute_USER(command, server);
-		else if (command.getSource().getRegistered() == true)
+		else if (command.getSource()->getRegistered() == true)
 			std::cerr << "Redirection 462" << std::endl;
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "PASS")
 	{
-		if (command.getSource().getRegistered() == false)
+		if (command.getSource()->getRegistered() == false)
 			execute_PASS(command, server);
 		else
 			std::cerr << "Redirection 462" << std::endl;
 	}
 	else if (command.getVerb() == "MODE")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_MODE(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "JOIN")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_JOIN(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "PART")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_PART(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}	
 	else if (command.getVerb() == "PING")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_PING(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
@@ -93,42 +89,42 @@ void	execute_verb(Command command, Server server)
 	// }
 	else if (command.getVerb() == "KICK")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_KICK(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "PRIVMSG")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_PRIVMSG(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "QUIT")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_QUIT(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "INVITE")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_INVITE(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else if (command.getVerb() == "TOPIC")
 	{
-		if (command.getSource().getRegistered() == true)
+		if (command.getSource()->getRegistered() == true)
 			execute_TOPIC(command, server);
 		else
 			std::cerr << "Redirection 451" << std::endl;
 	}
 	else
 	{
-		if (command.getSource().getRegistered() == false)
+		if (command.getSource()->getRegistered() == false)
 			std::cerr << "Redirection 451" << std::endl;
 		else
 			std::cout << "Redirection 421" << std::endl;
@@ -206,7 +202,7 @@ std::string	parsing_cmd(std::string *reception)
 
 void	parser(User& source, std::string reception, Server& server)
 {
-	Command	command(source);
+	Command	command(&source);
 
 	reception = trim(reception);
 	if (reception.empty())
@@ -220,13 +216,13 @@ void	parser(User& source, std::string reception, Server& server)
 		std::cout << "verb : (null)" << std::endl;
 	else	
 		std::cout << "verb : \"" << command.getVerb() << "\"" << std::endl;
-	for (std::vector<std::string>::iterator it = command.getParams().begin(); it != command.getParams().end(); ++it)
-	{
-		if (it->empty())
-			std::cout << "Argument : (null)" << std::endl;
-		else	
-			std::cout << "Argument : \"" << *it << "\"" << std::endl;
-	}
+	// for (std::vector<std::string>::iterator it = command.getParams().begin(); it != command.getParams().end(); ++it)
+	// {
+	// 	if (it->empty())
+	// 		std::cout << "Argument : (null)" << std::endl;
+	// 	else	
+	// 		std::cout << "Argument : \"" << *it << "\"" << std::endl;
+	// }
 	// fin supprimer
 
 	execute_verb(command, server);

@@ -42,33 +42,35 @@
 
 extern int g_sig;
 
-int							getListenerSocket(Server serv);
+int							getListenerSocket(Server &serv);
 std::vector<struct pollfd>	getPfds(int listener);
-void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server serv, int fdCount);
+void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server &serv, int fdCount);
 bool						sendAll(std::string msg, User &target);
 
 // check_arg
 void						ft_check_arg(int argc, char **argv);
 int							ft_atoi(const char *str);
 
+void	parser(User& source, std::string reception, Server& server);
+
 // command
-void						execute_INVITE(Command command, Server server);
-void						execute_JOIN(Command command, Server server);
-void						execute_KICK(Command command, Server server);
-void						execute_MODE(Command command, Server server);
-void						execute_NICK(Command command, Server server);
-void						execute_PART(Command command, Server server);
-void						execute_PASS(Command command, Server server);
-void						execute_PING(Command command, Server server);
-void						execute_PRIVMSG(Command command, Server server);
-void						execute_QUIT(Command command, Server server);
-void						execute_TOPIC(Command command, Server server);
-void						execute_USER(Command command, Server server);
+void						execute_INVITE(Command& command, Server& server);
+void						execute_JOIN(Command& command, Server& server);
+void						execute_KICK(Command& command, Server& server);
+void						execute_MODE(Command& command, Server& server);
+void						execute_NICK(Command& command, Server& server);
+void						execute_PART(Command& command, Server& server);
+void						execute_PASS(Command& command, Server& server);
+void						execute_PING(Command& command, Server& server);
+void						execute_PRIVMSG(Command& command, Server& server);
+void						execute_QUIT(Command& command, Server& server);
+void						execute_TOPIC(Command& command, Server& server);
+void						execute_USER(Command& command, Server& server);
 
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);
-std::string	                store_message(Command command);
-void						ft_check_arg(int argc, char **argv);
+std::string	                store_message(Command &command);
+void						ft_check_arg(char **argv);
 int							ft_atoi(const char *str);
 
 int							signals(struct sigaction &sa);

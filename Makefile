@@ -26,6 +26,7 @@ SRCS_NAME =	main.cpp \
 			parser.cpp \
 			signals.cpp \
 			Support.cpp \
+			check_arg.cpp\
 			command/check_command.cpp \
 			command/invite.cpp \
 			command/join.cpp \

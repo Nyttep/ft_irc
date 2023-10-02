@@ -171,7 +171,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 				{
 					if (serv.isRegistered(pfds[i].fd))
 					{
-						client = &(serv.getUser(pfds[i].fd));
+						client = serv.getUser(pfds[i].fd);
 					}
 					else
 					{
@@ -181,7 +181,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 							closeAll(pfds, fdCount);
 							return ;
 						}
-						client = &(serv.getUser(pfds[i].fd));
+						client = serv.getUser(pfds[i].fd);
 					}
 					std::fill(buff.begin(), buff.end(), 0);
 					int	nBytes = recv(pfds[i].fd, buff.data(), SIZE_BUFF, 0);
@@ -203,11 +203,18 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 					{
 						if (client->formatRecvData(buff))
 						{
-							if (msgTooLong(client->getMsg().raw))
+							if (msgTooLong(client->getMsg()))
 							{
-								sendAll(ERR_INPUTTOOLONG(SERVERNAME), *client);
+								if (client->getNName().empty())
+								{
+									sendAll(ERR_INPUTTOOLONG("guest"), *client);
+								}
+								else
+								{
+									sendAll(ERR_INPUTTOOLONG(client->getNName()), *client);
+								}
 							}
-							parser(client, client.msg, serv);
+							parser(*client, client->getMsg(), serv);
 							client->clearMsg();
 						}
 					}

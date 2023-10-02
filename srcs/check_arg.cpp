@@ -29,7 +29,7 @@ int	ft_atoi(const char *str)
 		return ((int)res);
 }
 
-void	ft_check_arg(int argc, char **argv)
+void	ft_check_arg(char **argv)
 {
 	int i = 0;
 	int port = ft_atoi(argv[1]);

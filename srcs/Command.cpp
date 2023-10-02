@@ -30,7 +30,7 @@ void	Command::setSource(User source)
 	*_source = source;
 }
 
-User	Command::getSource()
+User*	Command::getSource()
 {
 	return (_source);
 }

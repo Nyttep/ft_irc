@@ -43,8 +43,8 @@ class Channel //date creation ?
 		Channel&	operator=(const Channel& rhs);
 
 		std::string	getName();
-		User&		getUser(std::string nick);
-		bool		addUser(User* value);
+		User*		getUser(std::string nick);
+		void		addUser(User* value);
 		bool		onChannel(std::string nick);
 		void		addOperator(User *client);
 		void		removeOperator(User client);
