@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:40:14 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:17:42 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Command
 	Command(const Command &src);
 
 	public:
-	Command(const User &source);
+	Command(User *source);
 	~Command();
 	Command&					operator=(const Command& src);
 	void						setSource(User client);

@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:42:07 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:02:33 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	execute_QUIT(Command &command, Server &server)
 				message += " " + command.getParams()[i];
 		}
 	}
-	command.getSource().leaveAllChan(command, server);
+	command.getSource()->leaveAllChan(command, server);
 	// fonction de deco d'un utilisateur
 }

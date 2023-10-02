@@ -59,6 +59,18 @@ User*	Channel::getUser(std::string nick)
 	return (NULL);
 }
 
+void	Channel::removeUser(User client)
+{
+	for (size_t i = 0; i != _users.size(); ++i)
+	{
+		if (_users[i]->getNName() == client.getNName())
+		{
+			_users.erase(_users.begin() + i);
+			return ;
+		}
+	}
+}
+
 void	Channel::addUser(User* value)
 {
 	if (this->onChannel(value->getNName()))
@@ -216,17 +228,17 @@ bool	Channel::maxUser()
 
 size_t Channel::nbUser()
 {
-	return (_operators.size() + _users.size())
+	return (_operators.size() + _users.size());
 }
 
 void	Channel::sendToChan(std::string message, std::string prefix)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
-		sendAll(message, _operators[i]);
+		sendAll(message, *_operators[i]);
 	if (prefix.empty())
 	{	
 		for (size_t i = 0; i != _users.size(); ++i)
-			sendAll(message, _users[i]);
+			sendAll(message, *_users[i]);
 	}
 }
 
@@ -235,12 +247,12 @@ void	Channel::sendUsersList(User &user)
 	std::string userlist;
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
-		userlist = "@" + _operators[i].getNName();
+		userlist = "@" + _operators[i]->getNName();
 		sendAll(RPL_NAMEREPLY(user.getNName(), _name, userlist), user);
 	}
 	for (size_t i = 0; i != _users.size(); ++i)
 	{
-		sendAll(RPL_NAMEREPLY(user.getNName(), _name, _users[i].getNName()), user);
+		sendAll(RPL_NAMEREPLY(user.getNName(), _name, _users[i]->getNName()), user);
 	}
 	sendAll(RPL_ENDOFNAMES(user.getNName(), _name), user);
 }
