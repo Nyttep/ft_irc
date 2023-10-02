@@ -24,7 +24,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			return ;
 		}
 	}
-	std::string f_message = ":*" + command.getSource().getNName() + "* " + targets[i] + " : " + message + "\r\n";
+	std::string f_message = ":*" + command.getSource()->getNName() + "* " + targets[i] + " : " + message + "\r\n";
 	// send f_message
 }
 

@@ -12,7 +12,7 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 			std::cerr << "Redirection 442" << std::endl;
 			return ;
 		}
-		std::string message_channel = ":" + command.getSource().getNName() + " has left the channel " + channels[i];
+		std::string message_channel = ":" + command.getSource()->getNName() + " has left the channel " + channels[i];
 		std::string message_user = ":You have left the channel " + channels[i];
 		if (command.getParams().size() > 1)
 		{
@@ -23,10 +23,10 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 					message_channel += " " + command.getParams()[j];
 			}
 		}
-		if (server.getChan(channels[i]).isOperator(command.getSource(), server.getChan(channels[i])) == true)
-			server.getChan(channels[i]).removeOperator(command.getSource());
+		if (server.getChan(channels[i])->isOperator(command.getSource(), server.getChan(channels[i])) == true)
+			server.getChan(channels[i])->removeOperator(command.getSource());
 		else
-			server.getChan(channels[i]).removeUser(command.getSource());
+			server.getChan(channels[i])->removeUser(command.getSource());
 		std::cout << message_channel << std::endl;
 		std::cout << message_user << std::endl;
 }

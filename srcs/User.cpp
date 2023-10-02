@@ -37,6 +37,13 @@ User&	User::operator=(const User& rhs)
 	_nName = rhs._nName;
 	_uName = rhs._uName;
 	_rName = rhs._rName;
+	_fd = rhs._fd;
+	_port = rhs._port;
+	_lChannel = rhs._lChannel;
+	_gChannel = rhs._gChannel;
+	_pass = rhs._registered;
+	_msg = rhs._msg;
+	_extra = rhs._extra;
 	return (*this);
 }
 

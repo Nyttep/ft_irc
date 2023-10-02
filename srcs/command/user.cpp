@@ -28,11 +28,11 @@ void	execute_USER(Command &command, Server &server)
 			real_name += (command.getParam()[i]);
 		}
 	}
-	if (command.getSource().getUName().empty())
-		command.getSource().setUName(command.getParams()[0]);
-	command.getSource().setRName(real_name);
-	if (command.getSource().getRegistered() == false && command.getSource().getNName().empty() \
-		&& command.getSource().getUName().empty() && command.getSource().getRName().empty())
+	if (command.getSource()->getUName().empty())
+		command.getSource()->setUName(command.getParams()[0]);
+	command.getSource()->setRName(real_name);
+	if (command.getSource()->getRegistered() == false && command.getSource()->getNName().empty() \
+		&& command.getSource()->getUName().empty() && command.getSource()->getRName().empty())
 	{
 		command.setRegistered(true);
 		handshake(command, server);

@@ -27,7 +27,6 @@ SRCS_NAME =	main.cpp \
 			signals.cpp \
 			Support.cpp \
 			check_arg.cpp\
-			command/check_command.cpp \
 			command/invite.cpp \
 			command/join.cpp \
 			command/kick.cpp \
@@ -41,6 +40,7 @@ SRCS_NAME =	main.cpp \
 			command/quit.cpp \
 			command/topic.cpp \
 			command/user.cpp
+			# command/check_command.cpp
 SRCS_PATH =	srcs
 SRCS = $(addprefix $(SRCS_PATH)/, $(SRCS_NAME))
 

@@ -26,7 +26,7 @@ void	multiple_MSG(Command &command, Server &server, std::vector<std::string> tar
 		std::cerr << "Redirection 403" << std::endl;
 		return ;
 	}
-	std::string f_message = ":" command.getSource().getNName() + " " + targets[i] + " " + message;
+	std::string f_message = ":" command.getSource()->getNName() + " " + targets[i] + " " + message;
 	// send f_message
 }
 

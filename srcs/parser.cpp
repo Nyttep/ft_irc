@@ -82,7 +82,7 @@ void	execute_verb(Command& command, Server server)
 	}
 	// else if (command.getVerb() == "PONG") 				Est-ce qu'on le fait ? 
 	// {													Seulement quand il a entre ou fait PASS, 
-	// 	if (command.getSource().getRegistered() == true)	le serveur peut envoyer au client PING 
+	// 	if (command.getSource()->getRegistered() == true)	le serveur peut envoyer au client PING 
 	// 		execute_PONG(command, server);					et attends la reponse
 	// 	else
 	// 		std::cerr << "Redirection 451" << std::endl;

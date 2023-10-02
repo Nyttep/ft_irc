@@ -12,9 +12,9 @@ void	execute_PASS(Command &command, Server &server)
 	}
 	if (command.getParams()[0] != server.getPswd())
 	{
-		command.getSource().setPass() == false;
+		command.getSource()->setPass() == false;
 		std::cerr << "Redirection 464" << std::endl;
 		return ;
 	}
-	command.getSource().setPass() == true;
+	command.getSource()->setPass() == true;
 }

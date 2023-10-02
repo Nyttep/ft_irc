@@ -61,7 +61,7 @@ User*	Channel::getUser(std::string nick)
 
 void	Channel::addUser(User* value)
 {
-	if (this->onChannel(value->getNName()))
+	if (this->onChannel(value))
 		return ;
 	_users.push_back(value);
 }
@@ -172,16 +172,16 @@ bool	Channel::getL()
 
 //--------------------------- Other Functions ----------------------------
 
-bool	Channel::onChannel(std::string nick)
+bool	Channel::onChannel(User *client)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
-		if (nick == _operators[i]->getNName())
+		if (client->getNName() == _operators[i]->getNName())
 			return (true);
 	}
 	for (size_t i = 0; i != _users.size(); ++i)
 	{
-		if (nick == _users[i]->getNName())
+		if (client->getNName() == _users[i]->getNName())
 			return (true);
 	}
 	return (false);
