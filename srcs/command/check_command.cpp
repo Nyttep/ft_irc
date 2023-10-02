@@ -15,9 +15,6 @@ std::vector<std::string>	collect_arguments(std::string string)
 	return (vector);
 }
 
-<<<<<<< HEAD
-std::string	store_message(Command &command)
-=======
 bool	correct_nick_chan(std::string name)
 {
 	if (chantypes(name[0]) == true)
@@ -52,7 +49,6 @@ bool	correct_nick_chan(std::string name)
 }
 
 std::string	store_message(Command command)
->>>>>>> mportrai
 {
 	std::string message;
 	for (size_t i = 1; i != command.getParams().size(); ++i)
