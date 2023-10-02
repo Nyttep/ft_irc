@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:25:47 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:53:34 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,98 +41,132 @@ bool	isascii(const std::string src) /*Inutile, surement a supprimer*/
 
 void	execute_verb(Command& command, Server &server)
 {
-	if (command.getVerb() == "NICK")
+	if (command.getVerb().empty())
+		return ;
+	else if (command.getVerb() == "NICK")
 	{
 		if (command.getSource()->getPass() == true)
 			execute_NICK(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "USER")
 	{
 		if (command.getSource()->getPass() == true && command.getSource()->getRegistered() == false)
 			execute_USER(command, server);
-		else if (command.getSource()->getRegistered() == true)
+		else (command.getSource()->getRegistered() == true)
+		{
+			sendAll(ERR_ALREADYREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 462" << std::endl;
-		else
-			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "PASS")
 	{
 		if (command.getSource()->getRegistered() == false)
 			execute_PASS(command, server);
 		else
+		{
+			sendAll(ERR_ALREADYREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 462" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "MODE")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_MODE(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "JOIN")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_JOIN(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "PART")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_PART(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}	
 	else if (command.getVerb() == "PING")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_PING(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "KICK")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_KICK(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "PRIVMSG")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_PRIVMSG(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "QUIT")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_QUIT(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "INVITE")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_INVITE(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else if (command.getVerb() == "TOPIC")
 	{
 		if (command.getSource()->getRegistered() == true)
 			execute_TOPIC(command, server);
 		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
 			std::cerr << "Redirection 451" << std::endl;
+		}
 	}
 	else
 	{
-		if (command.getSource()->getRegistered() == false)
-			std::cerr << "Redirection 451" << std::endl;
-		else
-			std::cout << "Redirection 421" << std::endl;
+		sendAll(ERR_UNKNOWNCOMMAND(command.getSource()->getNName(), command.getVerb()), *command.getSource())
+		std::cout << "Redirection 421" << std::endl;
 	}
 }
 
