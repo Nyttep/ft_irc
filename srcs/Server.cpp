@@ -149,3 +149,11 @@ bool	Server::nicknameCollision(std::string nickname)
 	}
 	return (false);
 }
+
+void		Server::allUsersMessage(std::string message)
+{
+	for (std::map<int, User *>::iterator it = _users.begin(); it != _users.end(); ++it)
+	{
+		sendAll(message, *it->second);
+	}
+}

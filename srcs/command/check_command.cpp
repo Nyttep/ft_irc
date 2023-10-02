@@ -12,6 +12,8 @@ std::vector<std::string>	collect_arguments(std::string string)
 		vector.push_back(buff);
 		begin = end +1; 
 	}
+    buff = string.substr(begin, end - begin);
+    vector.push_back(buff);
 	return (vector);
 }
 

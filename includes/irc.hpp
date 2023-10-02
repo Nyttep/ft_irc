@@ -69,9 +69,11 @@ void						execute_USER(Command& command, Server& server);
 
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);
-std::string	                store_message(Command &command);
+bool                    	correct_nick_chan(std::string name);
+std::string	                store_message(Command& command);
 void						ft_check_arg(char **argv);
 int							ft_atoi(const char *str);
+void                        handshake(Command command, Server server);
 
 int							signals(struct sigaction &sa);
 

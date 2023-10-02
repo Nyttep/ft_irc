@@ -16,6 +16,8 @@
 # include "irc.hpp"
 
 class Channel;
+class Command;
+class Server;
 
 class User
 {
@@ -61,6 +63,7 @@ class User
 		bool				getRegistered();
 		void				setRegistered(bool value);
 		bool				maxChannel(std::string channel);
+		void				leaveAllChan(Command command, Server server);
 };
 
 #endif

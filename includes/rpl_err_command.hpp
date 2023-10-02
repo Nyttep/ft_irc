@@ -129,7 +129,7 @@
 # define RPL_LISTEND(client) (std::string(":") + SERVERNAME + " 323 " + client + " :End of /LIST\r\n")
 
 // 324
-# define RPL_CHANNELMODEIS(client, channel, modestring, mode_arguments) (std::string(":") + SERVERNAME + " 324 " + client + " " + channel + " " + modestring + " " + mode_arguments + "\r\n")
+# define RPL_CHANNELMODEIS(client, channel, modestring) (std::string(":") + SERVERNAME + "324" + client + " " + channel + " " + modestring + "\r\n")
 
 // 329
 # define RPL_CREATIONTIME(client, channel, creationtime) (std::string(":") + SERVERNAME + " 329 " + client + " " + channel + " " + creationtime + "\r\n")
@@ -177,7 +177,7 @@
 # define RPL_WHOREPLY(client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(":") + SERVERNAME + " 352 " + client + " " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname + "\r\n")
 
 // 353
-# define RPL_NAMEREPLY(client, symbol, channel, nick) (std::string(":") + SERVERNAME + " 353 " + client + " " + symbol + " " + channel + " :" + nick + "\r\n")
+# define RPL_NAMEREPLY(client, channel, nick) (std::string(":") + SERVERNAME + " 353 " + client + " " + channel + " :" + nick + "\r\n")
 
 // 364
 # define RPL_LINKS(client, server, hopcount, server_info) (std::string(":") + SERVERNAME + " 364 " + client + " " + server + " :" + hopcount + " " + server_info + "\r\n")
@@ -228,7 +228,7 @@
 # define RPL_TIME(client, server, timestamp, TS_offset, time) (std::string(":") + SERVERNAME + " 391 " + client + " " + server + " " + timestamp + " " + TS_offset + " :" + time + "\r\n")
 
 // 400
-# define ERR_UNKNOWNERROR(client, command, subcommand, info) (std::string(":") + SERVERNAME + " 400 " + client + " " + command + " " + subcommand + " :" + info + "\r\n")
+# define ERR_UNKNOWNERROR(client, command, info) (std::string(":") + SERVERNAME + " 400 " + client + " " + command + " :" + info + "\r\n")
 
 // 401
 # define ERR_NOSUCHNICK(client, nickname) (std::string(":") + SERVERNAME + " 401 " + client + " " + nickname + " :No such nick/channel\r\n")

@@ -17,7 +17,6 @@
 # define KICKLEN 64
 # define TOPICLEN 64
 
-
 bool	chantypes(char c);
 int		targmax(std::string target);
 size_t	chanlimit(std::string prefixe);

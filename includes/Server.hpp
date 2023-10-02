@@ -41,6 +41,7 @@ class Server //date creation ?
 		bool		chanExist(std::string name);
 		Channel*	getChan(std::string name);
 		bool		nicknameCollision(std::string nickname);
+		void		allUsersMessage(std::string message);
 };
 
 #endif

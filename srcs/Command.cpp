@@ -6,11 +6,8 @@ Command::Command()
 Command::~Command()
 {}
 
-Command::Command(User *source)
-{
-	_source = source;
-	_verb = "";
-}
+Command::Command(const User& source) : _source(source)
+{}
 
 Command::Command(const Command& src)
 {

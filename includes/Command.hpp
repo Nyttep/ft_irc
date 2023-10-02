@@ -14,7 +14,7 @@ class Command
 	Command(const Command &src);
 
 	public:
-	Command(User *source);
+	Command(const User &source);
 	~Command();
 	Command&					operator=(const Command& src);
 	void						setSource(User client);
