@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   kick.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
+/*   Updated: 2023/10/02 16:41:33 by mportrai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "irc.hpp"
 
 void	multiple_KICK(Command &command, Server &server, std::vector<std::string> targets, size_t i)

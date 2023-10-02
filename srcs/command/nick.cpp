@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nick.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
+/*   Updated: 2023/10/02 16:41:46 by mportrai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "irc.hpp"
 
 void	execute_NICK(Command &command, Server &server) /* prendre le serveur en paramètres */

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   privmsg.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
+/*   Updated: 2023/10/02 16:42:04 by mportrai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "irc.hpp"
 
 void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string> targets, size_t i, std::string message)

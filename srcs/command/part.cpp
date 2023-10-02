@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   part.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
+/*   Updated: 2023/10/02 16:41:49 by mportrai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "irc.hpp"
 
 void	multiple_PART(Command &command, Server &server, std::vector<std::string> channels, size_t i)
