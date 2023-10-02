@@ -4,19 +4,19 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 {
 	if (correct_nick_chan(targets[i]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource().getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), channels[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.isUser(targets[i]) == false)
 	{
-		sendAll(ERR_NOSUCHNICK(command.getSource().getNName(), targets[i]), *command.getSource());
+		sendAll(ERR_NOSUCHNICK(command.getSource()->getNName(), targets[i]), *command.getSource());
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0]).onChannel(server.getUser(targets[i])) == false)
 	{
-		sendAll(ERR_USERNOTINCHANNEL(command.getSource().getNName(), targets[i], command.getParams()[0]), *command.getSource());
+		sendAll(ERR_USERNOTINCHANNEL(command.getSource()->getNName(), targets[i], command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 441" << std::endl;
 		return ;
 	}
@@ -24,8 +24,8 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		server.getChan(command.getParams()[0]).removeOperator(server.getUser(targets[i]));	
 	else
 		server.getChan(command.getParams()[0]).removeUser(server.getUser(targets[i]));
-	std::string	message_chan = ":" + SERVERNAME + " @" + command.getSource().getNName() + " " + targets[i] + " " + command.getParams()[0] " :User was kicked from channel";
-	std::string message_kick = ":" + SERVERNAME + " @" + command.getSource().getNName() + " " + targets[i] + " " + command.getParams()[0] " :You were kicked from channel";
+	std::string	message_chan = ":" + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] " :User was kicked from channel";
+	std::string message_kick = ":" + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] " :You were kicked from channel";
 	if (command.getParams().size() == 2)
 	{
 		message_kick += "\r\n";
@@ -67,7 +67,7 @@ void	execute_KICK(Command& command, Server& server)
 	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource().getNName(), channels[i]), command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), channels[i]), command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
@@ -93,7 +93,7 @@ void	execute_KICK(Command& command, Server& server)
 	std::vector<std::string>	targets = collect_arguments(command.getParams()[1]);
 	if (targets.size() > targmax(command.getVerb()))
 	{
-		sendAll(ERR_TOOMANYTARGETS(command.getSource().getNName(), command.getParams()[0]), command.getSource());
+		sendAll(ERR_TOOMANYTARGETS(command.getSource()->getNName(), command.getParams()[0]), command.getSource());
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}

@@ -75,19 +75,19 @@ void	mode_operator(Command &command, Server &server)
 	}
 	if (correct_nick_chan(command.getParams()[2]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource().getNName(), command.getParams()[2]), command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), command.getParams()[2]), command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.isUser(command.getParams()[2]) == false)
 	{
-		sendAll(ERR_NOSUCHNICK(command.getSource().getNName(), command.getParams()[2]), command.getSource());
+		sendAll(ERR_NOSUCHNICK(command.getSource()->getNName(), command.getParams()[2]), command.getSource());
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0]).onChannel(server.getUser(command.getParams()[2])) == false)
 	{
-		sendAll(ERR_USERNOTINCHANNEL(command.getSource().getNName(), command.getParams()[2], command.getParams()[0]), command.getSource());
+		sendAll(ERR_USERNOTINCHANNEL(command.getSource()->getNName(), command.getParams()[2], command.getParams()[0]), command.getSource());
 		std::cerr << "Redirection 441" << std::endl;
 		return ;
 	}
@@ -177,39 +177,39 @@ void	execute_MODE(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams()[0].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(command.getSource().getNName(), command.getVerb()), command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource().getNName(), command.getParams()[0]), command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), command.getParams()[0]), command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.chanExist(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_NOSUCHCHANNEL(command.getSource().getNName(), command.getParams()[0].getName()), command.getSource());
+		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
 		std::cout << "Redirection 403" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0]).onChannel(command.getSource()) == false)
 	{
-		sendAll(ERR_NOTONCHANNEL(command.getSource().getNName(), command.getParams()[0].getName()), command.getSource());
+		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
 	if (command.getParams().size() == 1)
 	{
 		std::string message = display_mode(server.getChan(command.getParams()[0]));
-		sendAll(RPL_CHANNELMODEIS(command.getSource().getNName(), command.getParams()[0], message), command.getSource());
+		sendAll(RPL_CHANNELMODEIS(command.getSource()->getNName(), command.getParams()[0], message), command.getSource());
 		std::cout << "Redirection 324" << std::endl;
 	}
 	else
 	{
 		if (server.getChan(command.getParams()[0]).isOperator(command.getSource()) == false)
 		{
-			sendAll(ERR_CHANPRIVSNEEDED(command.getSource().getNName(), command.getParams()[0].getName()), command.getSource());
+			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
 			std::cerr << "Redirection 482" << std::endl;
 			return ;
 		}

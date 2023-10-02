@@ -164,7 +164,7 @@ void	User::leaveAllChan(Command command, Server server)
 	while (!_lChannel.empty())
 	{
 		if (_lChannel[0].isOperator(*this) == true)
-			nick = "@" + command.getSource().getNName();
+			nick = "@" + command.getSource()->getNName();
 		std::string message_channel = ":" + SERVERNAME + " " + nick + " " + channels[i] " :User has left the channel";
 		std::string message_user = ":" + SERVERNAME + " " + nick + " " + channels[i] " :You have left the channel";
 		if (command.getParams().size() > 1)
@@ -193,9 +193,9 @@ void	User::leaveAllChan(Command command, Server server)
 	while (!_gChannel.empty())
 	{
 		if (_gChannel[0].isOperator(*this) == true)
-			nick = "@" + command.getSource().getNName();
+			nick = "@" + command.getSource()->getNName();
 		else
-			nick = command.getSource().getNName();
+			nick = command.getSource()->getNName();
 		std::string message_channel = ":" + SERVERNAME + " " + nick + " " + channels[i] " :User has left the channel";
 		std::string message_user = ":" + SERVERNAME + " " + nick + " " + channels[i] " :You have left the channel";
 		if (command.getParams().size() > 1)

@@ -13,6 +13,6 @@ void	execute_QUIT(Command &command, Server &server)
 				message += " " + command.getParams()[i];
 		}
 	}
-	command.getSource().leaveAllChan(command, server);
+	command.getSource()->leaveAllChan(command, server);
 	// fonction de deco d'un utilisateur
 }
