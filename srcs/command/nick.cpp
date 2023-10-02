@@ -41,8 +41,8 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 		std::cerr << "Redirection 433" << std::endl;
 		return ;
 	}
-	if (command.getSource().getRegistered() == false && command.getSource().getNName().empty() \
-        && command.getSource().getUName().empty() && command.getSource().getRName().empty())
+	if (command.getSource().getRegistered() == false && !command.getSource().getNName().empty() \
+        && !command.getSource().getUName().empty() && !command.getSource().getRName().empty())
     {
         command.getSource().setRegistered(true);
         handshake(command, server);
