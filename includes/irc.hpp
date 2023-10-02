@@ -31,11 +31,11 @@
 # include <netdb.h>
 # include <unistd.h>
 # include <signal.h>
+# include "Support.hpp"
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"
 # include "Command.hpp"
-# include "Support.hpp"
 # include "rpl_err_command.hpp"
 
 # define SIZE_BUFF 1024
@@ -48,7 +48,7 @@ void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server &serv
 bool						sendAll(std::string msg, User &target);
 
 // check_arg
-void						ft_check_arg(int argc, char **argv);
+void						ft_check_arg(char **argv);
 int							ft_atoi(const char *str);
 
 void	parser(User& source, std::string reception, Server& server);
@@ -61,9 +61,9 @@ void						execute_MODE(Command& command, Server& server);
 void						execute_NICK(Command& command, Server& server);
 void						execute_PART(Command& command, Server& server);
 void						execute_PASS(Command& command, Server& server);
-void						execute_PING(Command& command, Server& server);
+void						execute_PING(Command& command);
 void						execute_PRIVMSG(Command& command, Server& server);
-void						execute_QUIT(Command& command, Server& server);
+void						execute_QUIT(Command& command);
 void						execute_TOPIC(Command& command, Server& server);
 void						execute_USER(Command& command, Server& server);
 
@@ -73,8 +73,6 @@ bool                    	correct_nick_chan(std::string name);
 std::string	                store_message(Command& command);
 std::string                 empty_param(std::vector<std::string> params, size_t i);
 bool	                    analyse_param(std::string param, Command &command);
-void						ft_check_arg(char **argv);
-int							ft_atoi(const char *str);
 void                        handshake(Command &command, Server &server);
 
 int							signals(struct sigaction &sa);

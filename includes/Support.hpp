@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Support.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:53:39 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:41:57 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 bool	chantypes(char c);
 size_t	targmax(std::string target);
-size_t	chanlimit(std::string prefixe);
+size_t	chanlimit(char prefixe);
 bool	have_prefix(char c);
 
 #endif

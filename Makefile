@@ -20,12 +20,12 @@ RM = rm -rf
 SRCS_NAME =	main.cpp \
 			Channel.cpp \
 			Server.cpp \
+			Support.cpp \
 			User.cpp \
 			network.cpp \
 			Command.cpp \
 			parser.cpp \
 			signals.cpp \
-			Support.cpp \
 			check_arg.cpp\
 			command/invite.cpp \
 			command/join.cpp \
@@ -39,17 +39,17 @@ SRCS_NAME =	main.cpp \
 			command/privmsg.cpp \
 			command/quit.cpp \
 			command/topic.cpp \
-			command/user.cpp
-			# command/check_command.cpp
+			command/user.cpp \
+			command/check_command.cpp
 SRCS_PATH =	srcs
 SRCS = $(addprefix $(SRCS_PATH)/, $(SRCS_NAME))
 
 INCS_NAME =	irc.hpp \
 			Channel.hpp \
 			Server.hpp \
+			Support.hpp \
 			User.hpp \
 			Command.hpp \
-			Support.hpp \
 			rpl_err_command.hpp
 INCS_PATH =	includes
 INCS = $(addprefix $(INCS_PATH)/, $(INCS_NAME))

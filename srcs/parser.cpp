@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:53:34 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:52:37 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	execute_verb(Command& command, Server &server)
 	else if (command.getVerb() == "PING")
 	{
 		if (command.getSource()->getRegistered() == true)
-			execute_PING(command, server);
+			execute_PING(command);
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
@@ -136,7 +136,7 @@ void	execute_verb(Command& command, Server &server)
 	else if (command.getVerb() == "QUIT")
 	{
 		if (command.getSource()->getRegistered() == true)
-			execute_QUIT(command, server);
+			execute_QUIT(command);
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));

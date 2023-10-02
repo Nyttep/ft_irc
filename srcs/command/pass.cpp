@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:53 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:23:55 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/02 18:45:14 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_PASS(Command &command, Server &server)
 	}
 	if (command.getParams()[0] != server.getPswd())
 	{
-		command.getSource()->setPass() == false;
+		command.getSource()->setPass(false);
 		if (command.getSource()->getNName().empty())
 			sendAll(ERR_PASSWDMISMATCH("guest"), *command.getSource());
 		else
@@ -30,5 +30,5 @@ void	execute_PASS(Command &command, Server &server)
 		std::cerr << "Redirection 464" << std::endl;
 		return ;
 	}
-	command.getSource()->setPass() == true;
+	command.getSource()->setPass(true);
 }

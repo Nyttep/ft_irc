@@ -18,10 +18,12 @@
 class Server //date creation ?
 {
 	private :
+		std::string				_time;
 		std::string				_pswd;
 		std::string				_port;
 		std::map<int, User*>	_users;
 		std::vector<Channel*>	_channels;
+		void		_setTime();
 		Server();
 	public :
 		Server(std::string newPswd, std::string newPort);
@@ -42,6 +44,7 @@ class Server //date creation ?
 		Channel*	getChan(std::string name);
 		bool		nicknameCollision(std::string nickname);
 		void		allUsersMessage(std::string message);
+		std::string	getTime();
 };
 
 #endif

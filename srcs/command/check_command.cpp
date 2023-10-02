@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:41:12 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:23:27 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,23 @@ bool	analyse_param(std::string param, Command &command)
 {
 	if (param.size() != 2)
 	{
-		sendAll(RPL_INVALIDMODEPARAN("@" + command.getSource(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM("@" + command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	if (param[0] != '+' && param[0] != '-')
 	{
-		sendAll(RPL_INVALIDMODEPARAN("@" + command.getSource(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM("@" + command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	return (true);
 }
 
-std::string	DateCreation()
+std::string	itoa(int value)
 {
-	std::string str;
-    std::stringstream stream;
-	std::time_t time = std::time(NULL);
-
-	std::tm *tm = std::localtime(&time);
-    stream << tm->tm_hour << ":" << tm->tm_min << " " << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100;
-    str += stream.str();
-    return (str);
+	std::stringstream stream;
+	
+	stream << value;
+	return (stream.str());
 }
 
 void	handshake(Command &command, Server &server)
@@ -122,12 +118,12 @@ void	handshake(Command &command, Server &server)
 	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANTYPES=" + CHANTYPES), *command.getSource());
 	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANLIMIT=" + CHANLIMIT), *command.getSource());
 	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANMODES=" + CHANMODES), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "MODE=" + std::itoa(MODES)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "MODE=" + itoa(MODES)), *command.getSource());
 	sendAll(RPL_ISUPPORT(SERVERNAME, "PREFIX=" + PREFIX), *command.getSource());
 	sendAll(RPL_ISUPPORT(SERVERNAME, "TARGMAX=" + TARGMAX), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "NICKLEN=" + std::itoa(NICKLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "USERLEN=" + std::itoa(USERLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANNELLEN=" + std::itoa(CHANNELLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "KICKLEN=" + std::itoa(KICKLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "TOPICLEN=" + std::itoa(TOPICLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "NICKLEN=" + itoa(NICKLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "USERLEN=" + itoa(USERLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANNELLEN=" + itoa(CHANNELLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "KICKLEN=" + itoa(KICKLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(SERVERNAME, "TOPICLEN=" + itoa(TOPICLEN)), *command.getSource());
 }
