@@ -39,9 +39,9 @@ class User
 		std::string				_extra;
 
 		User();
-		User(const User& toCopy);
 
 	public :
+		User(const User& toCopy);
 		User(int newFD);
 		~User();
 		User&				operator=(const User& rhs);

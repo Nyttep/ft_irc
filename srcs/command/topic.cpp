@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:02:33 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:24:37 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void	execute_TOPIC(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams()[0].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (server.chanExist(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0]), command.getSource());
+		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 403" << std::endl;
 		return;
 	}
 	if (on_channel(command.getSource(), server.getChan(command.getParams()[0])) == false)
 	{
-		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0]), command.getSource());
+		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
@@ -41,12 +41,12 @@ void	execute_TOPIC(Command &command, Server &server)
 			nick = command.getSource()->getNName();
 		if (server.getChan(command.getParams()[0]).getTopic().empty())
 		{
-			sendAll(RPL_NOTOPIC(nick, command.getParams()[0]), command.getSource());
+			sendAll(RPL_NOTOPIC(nick, command.getParams()[0]), *command.getSource());
 			std::cout << "Redirection 331" << std::endl;
 		}
 		else
 		{
-			sendAll(RPL_TOPIC(nick, command.getParams()[0], server.getChan(command.getParams()[0]).getTopic()), command.getSource());;
+			sendAll(RPL_TOPIC(nick, command.getParams()[0], server.getChan(command.getParams()[0]).getTopic()), *command.getSource());;
 			std::cout << "Redirection 332 suivi de 333(optionnel)" << std::endl;
 		}
 	}
@@ -54,7 +54,7 @@ void	execute_TOPIC(Command &command, Server &server)
 	{
 		if (server.getChan(command.getParams()[0]).getT() == true && is_operator(command.getSource(), server.getChan(command.getParams()[0])) == false)
 		{
-			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
+			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0].getName()), *command.getSource());
 			std::cerr << "Redirection 482" << std::endl;
 			return;
 		}

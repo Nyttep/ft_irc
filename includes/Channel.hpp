@@ -46,7 +46,7 @@ class Channel //date creation ?
 		User*		getUser(std::string nick);
 		void		addUser(User* value);
 		void		removeUser(User client);
-		bool		onChannel(std::string nick);
+		bool		onChannel(User *client);
 		void		addOperator(User *client);
 		void		removeOperator(User client);
 		bool		isOperator(User client);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:18 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:02:33 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:23:28 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	execute_INVITE(Command &command, Server &server)
 	}
 	if (server.getChan(command.getParams()[1]).isOperator(command.getSource()) == false)
 	{
-		sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getSource()->getNName()), command.getSource());
+		sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getSource()->getNName()), *command.getSource());
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
 	}

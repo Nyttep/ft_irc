@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:02:33 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:23:41 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	{ 
 		if (!keys.empty() && (keys.size() >= i))
 		{
-			if (server.getChan(channels[i]).getKey() != keys[i])
+			if (server.getChan(channels[i])->getKey() != keys[i])
 			{
 				sendAll(ERR_BADCHANNELKEY(command.getSource()->getNName(), channels[i]), command.getSource());
 				std::cerr << "Redirection 475" << std::endl;
@@ -63,7 +63,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	}
 	if (server.getChan(channels[i]).getI() == true && (server.getChan(channels[i]).isInvite(command.getSource()) == false))
 	{
-		sendAll(ERR_INVITEONLYCHAN(command.getSource()->getNName(), channels[i]), command.getSource());
+		sendAll(ERR_INVITEONLYCHAN(command.getSource()->getNName(), channels[i]), *command.getSource());
 		std::cerr << "Redirection 473" << std::endl;
 		return ;
 	}
