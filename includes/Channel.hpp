@@ -70,7 +70,9 @@ class Channel //date creation ?
 		bool		getL();
 
 		bool		maxUser();
-
+		size_t		nbUser();
+		void		sendToChan(std::string message, std::string prefix);
+		void		sendUsersList(User &user);
 };
 
 #endif

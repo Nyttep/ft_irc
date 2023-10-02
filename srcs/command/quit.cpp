@@ -13,6 +13,6 @@ void	execute_QUIT(Command &command, Server &server)
 				message += " " + command.getParams()[i];
 		}
 	}
-	std::cout << "Envoie du message" << std::endl;
-	// Fonction de deconnexion
+	command.getSource().leaveAllChan(command, server);
+	// fonction de deco d'un utilisateur
 }
