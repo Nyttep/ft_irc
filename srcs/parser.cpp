@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 19:58:10 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 20:34:00 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	execute_verb(Command& command, Server &server)
 {
 	if (command.getVerb().empty())
 		return ;
+	else if (command.getVerb() == "CAP")
+		return;
 	else if (command.getVerb() == "NICK")
 	{
 		if (command.getSource()->getPass() == true)
