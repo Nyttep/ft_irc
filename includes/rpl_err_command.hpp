@@ -129,7 +129,7 @@
 # define RPL_LISTEND(client) (client + " :End of /LIST\r\n")
 
 // 324
-# define RPL_CHANNELMODEIS(client, channel, modestring, mode_arguments) (client + " " + channel + " " + modestring + " " + mode_arguments + "\r\n")
+# define RPL_CHANNELMODEIS(client, channel, modestring) (client + " " + channel + " " + modestring + "\r\n")
 
 // 329
 # define RPL_CREATIONTIME(client, channel, creationtime) (client + " " + channel + " " + creationtime + "\r\n")
@@ -177,7 +177,7 @@
 # define RPL_WHOREPLY(client, channel, username, host, server, nick, flags, hopcount, realname) (client + " " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname + "\r\n")
 
 // 353
-# define RPL_NAMEREPLY(client, symbol, channel, nick) (client + " " + symbol + " " + channel + " :" + nick + "\r\n")
+# define RPL_NAMEREPLY(client, channel, nick) (client + " " + channel + " :" + nick + "\r\n")
 
 // 364
 # define RPL_LINKS(client, server, hopcount, server_info) (client + " " + server + " :" + hopcount + " " + server_info + "\r\n")
@@ -228,7 +228,7 @@
 # define RPL_TIME(client, server, timestamp, TS_offset, time) (client + " " + server + " " + timestamp + " " + TS_offset + " :" + time + "\r\n")
 
 // 400
-# define ERR_UNKNOWNERROR(client, command, subcommand, info) (client + " " + command + " " + subcommand + " :" + info + "\r\n")
+# define ERR_UNKNOWNERROR(client, command, info) (client + " " + command + " :" + info + "\r\n")
 
 // 401
 # define ERR_NOSUCHNICK(client, nickname) (client + " " + nickname + " :No such nick/channel\r\n")
@@ -249,7 +249,7 @@
 # define ERR_WASNOSUCHNICK(client) (client + " :There was no such nickname\r\n")
 
 // 407
-# define ERR_TOOMANYTARGETS(client) (client " :You selected too many targets\r\n")
+# define ERR_TOOMANYTARGETS(client, channel) (":" + SERVERNAME + " " + client + " " + channel + " :Too many targets\r\n")
 
 // 409
 # define ERR_NOORIGIN(client) (client + " :No origin specified\r\n")
@@ -273,7 +273,7 @@
 # define ERR_NONICKNAMEGIVEN(client) (client + " :No nickname given\r\n")
 
 // 432
-# define ERR_ERRONEUSNICKNAME(client, nick) (client + " " + nick + " :Erroneus nickname\r\n")
+# define ERR_ERRONEUSNICKNAME(client, nick) (client + " " + nick + " :Erroneus nickname/channel\r\n")
 
 // 433
 # define ERR_NICKNAMEINUSE(client, nick) (client + " " + nick + " :Nickname is already in use\r\n")

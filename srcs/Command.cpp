@@ -6,11 +6,8 @@ Command::Command()
 Command::~Command()
 {}
 
-Command::Command(User *source)
-{
-	_source = source;
-	_verb = "";
-}
+Command::Command(const User &source) : _source(source)
+{}
 
 Command::Command(const Command& src)
 {
@@ -25,12 +22,7 @@ Command&	Command::operator=(const Command &src)
 	return (*this);
 }
 
-void	Command::setSource(User source)
-{
-	*_source = source;
-}
-
-User	Command::getSource()
+User&	Command::getSource()
 {
 	return (_source);
 }
