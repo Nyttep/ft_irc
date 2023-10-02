@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rpl_err_command.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:40:24 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:52:19 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@
 # define ERR_WASNOSUCHNICK(client) (std::string(":") + SERVERNAME + " 406 " + client + " :There was no such nickname\r\n")
 
 // 407
-# define ERR_TOOMANYTARGETS(client) (std::string(":") + SERVERNAME + " 407 " + client " :You selected too many targets\r\n")
+# define ERR_TOOMANYTARGETS(client) (std::string(":") + SERVERNAME + " 407 " + client + " :You selected too many targets\r\n")
 
 // 409
 # define ERR_NOORIGIN(client) (std::string(":") + SERVERNAME + " 409 " + client + " :No origin specified\r\n")

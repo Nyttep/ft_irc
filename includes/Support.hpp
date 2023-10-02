@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Support.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:40:32 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:53:39 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define TOPICLEN 64
 
 bool	chantypes(char c);
-int		targmax(std::string target);
+size_t	targmax(std::string target);
 size_t	chanlimit(std::string prefixe);
 bool	have_prefix(char c);
 

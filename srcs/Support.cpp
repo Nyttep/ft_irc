@@ -19,7 +19,7 @@ size_t	chanlimit(char prefixe)
 	return (0);
 }
 
-int	targmax(std::string target)
+size_t	targmax(std::string target)
 {
 	std::string	targmax = TARGMAX;
 	std::string	res;

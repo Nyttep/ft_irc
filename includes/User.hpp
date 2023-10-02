@@ -63,7 +63,7 @@ class User
 		bool				getRegistered();
 		void				setRegistered(bool value);
 		bool				maxChannel(std::string channel);
-		void				leaveAllChan(Command command);
+		void				leaveAllChan(Command &command);
 };
 
 #endif

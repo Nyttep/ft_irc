@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:42:36 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:25:47 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	isascii(const std::string src) /*Inutile, surement a supprimer*/
 	return true;
 }
 
-void	execute_verb(Command& command, Server server)
+void	execute_verb(Command& command, Server &server)
 {
 	if (command.getVerb() == "NICK")
 	{

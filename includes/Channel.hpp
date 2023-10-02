@@ -45,14 +45,14 @@ class Channel //date creation ?
 		std::string	getName();
 		User*		getUser(std::string nick);
 		void		addUser(User* value);
-		void		removeUser(User client);
+		void		removeUser(User *client);
 		bool		onChannel(User *client);
 		void		addOperator(User *client);
-		void		removeOperator(User client);
-		bool		isOperator(User client);
+		void		removeOperator(User *client);
+		bool		isOperator(User *client);
 		void		addInvite(User *client);
-		void		removeInvite(User client);
-		bool		isInvite(User client);
+		void		removeInvite(User *client);
+		bool		isInvite(User *client);
 
 		void		setKey(std::string key);
 		std::string	getKey();

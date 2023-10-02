@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:02:33 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:51:40 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 {
 	if (correct_nick_chan(targets[i]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), targets[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
@@ -26,24 +26,24 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams()[0]).onChannel(server.getUser(targets[i])) == false)
+	if (server.getChan(command.getParams()[0])->onChannel(server.getUser(targets[i])) == false)
 	{
 		sendAll(ERR_USERNOTINCHANNEL(command.getSource()->getNName(), targets[i], command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 441" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams().isOperator(sevrer.getUser(targets[i]))) == true)
-		server.getChan(command.getParams()[0]).removeOperator(server.getUser(targets[i]));	
+	if (server.getChan(command.getParams()[0])->isOperator(server.getUser(targets[i])) == true)
+		server.getChan(command.getParams()[0])->removeOperator(server.getUser(targets[i]));	
 	else
-		server.getChan(command.getParams()[0]).removeUser(server.getUser(targets[i]));
-	std::string	message_chan = ":" + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] " :User was kicked from channel";
-	std::string message_kick = ":" + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] " :You were kicked from channel";
+		server.getChan(command.getParams()[0])->removeUser(server.getUser(targets[i]));
+	std::string	message_chan = std::string(":") + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] + " :User was kicked from channel";
+	std::string message_kick = std::string(":") + SERVERNAME + " @" + command.getSource()->getNName() + " " + targets[i] + " " + command.getParams()[0] + " :You were kicked from channel";
 	if (command.getParams().size() == 2)
 	{
 		message_kick += "\r\n";
 		message_chan += "\r\n";
 		sendAll(message_kick, *server.getUser(targets[i]));
-		server.getChan(command.getParams()[0]).sendToChan(message_chan, "");
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "");
 		std::cout << message_chan << std::endl;
 		std::cout << message_kick << std::endl;
 	}
@@ -51,7 +51,7 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 	{
 		message_kick += " :";
 		message_chan += " :";
-		for (size_t i = 2; i != command.getParam().size(); ++i)
+		for (size_t i = 2; i != command.getParams().size(); ++i)
 		{
 			if (!command.getParams()[i].empty())
 			{
@@ -61,8 +61,8 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		}
 		message_kick += "\r\n";
 		message_chan += "\r\n";
-		sendAll(message_kick, server.getUser(targets[i]));
-		server.getChan(command.getParams()[0]).sendToChan(message_chan, "");
+		sendAll(message_kick, *server.getUser(targets[i]));
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "");
 		std::cout << message_chan << std::endl;
 		std::cout << message_kick << std::endl;
 	}
@@ -73,31 +73,31 @@ void	execute_KICK(Command& command, Server& server)
 	if (command.getParams().empty() || command.getParams().size() < 2 || \
 		command.getParams()[0].empty() || command.getParams()[1].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cout << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), channels[i]), command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.chanExist(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
+		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 403" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams()[0]).onChannel(command.getSource()) == false)
+	if (server.getChan(command.getParams()[0])->onChannel(command.getSource()) == false)
 	{
-		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
+		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams()[0]).isOperator(command.getSource()) == false)
+	if (server.getChan(command.getParams()[0])->isOperator(command.getSource()) == false)
 	{
-		sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0].getName()), command.getSource());
+		sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
 	}
@@ -105,7 +105,7 @@ void	execute_KICK(Command& command, Server& server)
 	std::vector<std::string>	targets = collect_arguments(command.getParams()[1]);
 	if (targets.size() > targmax(command.getVerb()))
 	{
-		sendAll(ERR_TOOMANYTARGETS(command.getSource()->getNName(), command.getParams()[0]), command.getSource());
+		sendAll(ERR_TOOMANYTARGETS(command.getSource()->getNName()), *command.getSource());
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}
