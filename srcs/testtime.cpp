@@ -1,28 +1,38 @@
 #include <iostream>
-#include <ctime>
 #include <string>
-#include <sstream>
+#include <vector>
 
-std::string	DateCreation()
+std::vector<std::string>	collect_arguments(std::string string)
 {
-	std::string str;
-    std::stringstream stream;
-	std::time_t time = std::time(NULL);
+	std::vector<std::string>	vector;
+	std::string					buff;
+	size_t						begin = 0, end = 0;
 
-	std::tm *tm = std::localtime(&time);
-    stream << tm->tm_hour << ":" << tm->tm_min << " " << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100;
-    str += stream.str();
-    return (str);
+	while ((end = string.find(',', begin)) != std::string::npos)
+	{
+		buff = string.substr(begin, end - begin);
+		vector.push_back(buff);
+		begin = end +1; 
+	}
+    buff = string.substr(begin, end - begin);
+    vector.push_back(buff);
+	return (vector);
 }
 
-# define ERR_INPUTTOOLONG(client) (":" client " :Input line was too long\r\n")
-# define SERVERNAME "ft_irc"
+int main(int argc, char **argv) {
 
-int main() {
+    if (argc != 2)
+        return (0);
+    std::string mess = argv[1];
+    std::vector<std::string> res;
 
-
-    std::string dateHeure = DateCreation();
-    std::cout << "Date et heure actuelles : " << dateHeure << std::endl;
-    std::cout << ERR_INPUTTOOLONG(SERVERNAME) << std::endl;
+    res = collect_arguments(mess);
+    for (std::vector<std::string>::iterator it = res.begin(); it != res.end(); ++it)
+	{
+		if (it->empty())
+			std::cout << "Argument : (null)" << std::endl;
+		else	
+			std::cout << "Argument : \"" << *it << "\"" << std::endl;
+	}
     return 0;
 }
