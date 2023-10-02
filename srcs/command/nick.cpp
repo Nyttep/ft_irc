@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:31:06 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 20:05:23 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 	}
 	else if (command.getSource()->getUName().empty() && command.getSource()->getRName().empty())
 	{
+		command.getSource()->setNName(command.getParams()[0]);
 		return ;
 	}
 	else
 	{
 		command.getSource()->setRegistered(true);
+		command.getSource()->setNName(command.getParams()[0]);
 		handshake(command, server);
 	}
 }
