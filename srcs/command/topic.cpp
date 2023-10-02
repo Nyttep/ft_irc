@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:24:37 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/02 18:58:40 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	execute_TOPIC(Command &command, Server &server)
 		std::cerr << "Redirection 403" << std::endl;
 		return;
 	}
-	if (on_channel(command.getSource(), server.getChan(command.getParams()[0])) == false)
+	if (server.getChan(command.getParams()[0])->onChannel(command.getSource()) == false)
 	{
 		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 442" << std::endl;
@@ -35,49 +35,49 @@ void	execute_TOPIC(Command &command, Server &server)
 	if (command.getParams().size() == 1)
 	{
 		std::string	nick;
-		if (server.getChan(command.getParams()[0]).isOperator(command.getSource()) == true)
+		if (server.getChan(command.getParams()[0])->isOperator(command.getSource()) == true)
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		if (server.getChan(command.getParams()[0]).getTopic().empty())
+		if (server.getChan(command.getParams()[0])->getTopic().empty())
 		{
 			sendAll(RPL_NOTOPIC(nick, command.getParams()[0]), *command.getSource());
 			std::cout << "Redirection 331" << std::endl;
 		}
 		else
 		{
-			sendAll(RPL_TOPIC(nick, command.getParams()[0], server.getChan(command.getParams()[0]).getTopic()), *command.getSource());;
+			sendAll(RPL_TOPIC(nick, command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), *command.getSource());;
 			std::cout << "Redirection 332 suivi de 333(optionnel)" << std::endl;
 		}
 	}
 	else
 	{
-		if (server.getChan(command.getParams()[0]).getT() == true && is_operator(command.getSource(), server.getChan(command.getParams()[0])) == false)
+		if (server.getChan(command.getParams()[0])->getT() == true && server.getChan(command.getParams()[0])->isOperator(command.getSource()) == false)
 		{
-			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0].getName()), *command.getSource());
+			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 			std::cerr << "Redirection 482" << std::endl;
 			return;
 		}
 		std::string new_topic;
 		for (size_t i = 1; i <= command.getParams().size(); ++i)
 		{
-	 		if (!command.getParam()[i].empty())
+	 		if (!command.getParams()[i].empty())
 	   		{
 				if (!new_topic.empty())
 					new_topic += " ";
-				new_topic += (command.getParam()[i]);
+				new_topic += (command.getParams()[i]);
 			}
 		}
 		if (new_topic.empty())
-			server.getChan(command.getParams()[0]).setTopic("");
+			server.getChan(command.getParams()[0])->setTopic("");
 		else
-			server.getChan(command.getParams()[0]).setTopic(new_topic);
+			server.getChan(command.getParams()[0])->setTopic(new_topic);
 		std::string	nick;
-		if (server.getChan(command.getParams()[0]).isOperator(command.getSource()) == true)
+		if (server.getChan(command.getParams()[0])->isOperator(command.getSource()) == true)
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string f_message = ":" + SERVERNAME + " " + nick + " " + command.getParams()[0].getName() + " :Topic changed :" + server.getChan(command.getParams()[0]).getTopic() + "\r\n";
-		server.getChan(command.getParams()[0]).sendToChan(f_message, "");
+		std::string f_message = std::string(":") + SERVERNAME + " " + nick + " " + command.getParams()[0] + " :Topic changed :" + server.getChan(command.getParams()[0])->getTopic() + "\r\n";
+		server.getChan(command.getParams()[0])->sendToChan(f_message, "");
 	}
 }

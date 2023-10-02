@@ -15,10 +15,14 @@
 //---------------------- Constructors & Destructors ----------------------
 
 Server::Server()
-{}
+{
+	_setTime();
+}
 
 Server::Server(std::string newPswd, std::string newPort) : _pswd(newPswd), _port(newPort)
-{}
+{
+	_setTime();
+}
 
 Server::Server(const Server& toCopy)
 {
@@ -82,7 +86,12 @@ Channel*	Server::getChan(std::string name)
 	}
 	return (NULL);
 }
-  
+
+std::string	Server::getTime()
+{
+	return (_time);
+}
+
 //------------------------- Other Functions -----------------------------
 
 bool	Server::addUser(int key, User *value)
@@ -156,4 +165,16 @@ void		Server::allUsersMessage(std::string message)
 	{
 		sendAll(message, *it->second);
 	}
+}
+
+void	Server::_setTime()
+{
+	std::string str;
+    std::stringstream stream;
+	std::time_t time = std::time(NULL);
+
+	std::tm *tm = std::localtime(&time);
+    stream << tm->tm_hour << ":" << tm->tm_min << " " << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100;
+    str += stream.str();
+    this->_time = str;
 }

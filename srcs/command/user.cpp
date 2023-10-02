@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:24:49 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/02 18:59:08 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	execute_USER(Command &command, Server &server)
 	std::string real_name;
 	for (size_t i = 3; i < command.getParams().size(); ++i)
 	{
-		if (!command.getParam()[i].empty())
+		if (!command.getParams()[i].empty())
 		{
 			if (!real_name.empty())
 				real_name += " ";
-			real_name += (command.getParam()[i]);
+			real_name += (command.getParams()[i]);
 		}
 	}
 	if (command.getSource()->getUName().empty())
@@ -45,7 +45,7 @@ void	execute_USER(Command &command, Server &server)
 	if (command.getSource()->getRegistered() == false && !command.getSource()->getNName().empty() \
 		&& !command.getSource()->getUName().empty() && !command.getSource()->getRName().empty())
 	{
-		command.setRegistered(true);
+		command.getSource()->setRegistered(true);
 		handshake(command, server);
 	}
 }

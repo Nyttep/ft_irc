@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rpl_err_command.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:52:19 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:09:55 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define RPL_CREATED(client, datetime) (std::string(":") + SERVERNAME + " 003 " + client + " :This server was created" + datetime + "\r\n")
 
 // 004
-# define RPL_MYINFO(client, av_user_mode, av_channel_mode, channel_with_parameter) (std::string(":") + SERVERNAME + " 004 " + client + " " + SERVERNAME + " " + VERSION + " " + av_user_mode + " " + av_channel_mode + " " + channel_with_parameter + "\r\n")
+# define RPL_MYINFO(client, av_channel_mode) (std::string(":") + SERVERNAME + " 004 " + client + " " + SERVERNAME + " " + VERSION + " available user mode: available channel mode: " + av_channel_mode + "\r\n")
 
 // 005
 # define RPL_ISUPPORT(client, tokens) (std::string(":") + SERVERNAME + " 005 " + client + " " + tokens + " :are supported by this server\r\n")

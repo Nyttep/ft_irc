@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:24:19 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/02 18:49:13 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			return ;
 		}
 		std::string	nick;
-		if (server.getChan(channels[i]).isOperator(command.getSource()) == true)
+		if (server.getChan(targets[i])->isOperator(command.getSource()) == true)
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
 		std::string f_message = ":" + nick + " " + targets[i] + " :" + message;
-		server.getChan(targets[i]).sendToChan(f_message, prefix);
+		server.getChan(targets[i])->sendToChan(f_message, prefix);
 	}
 	else
 	{
@@ -51,7 +51,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			return ;
 		}
 		std::string	nick;
-		if (server.getChan(channels[i]).isOperator(command.getSource()) == true)
+		if (server.getChan(targets[i])->isOperator(command.getSource()) == true)
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
@@ -78,7 +78,7 @@ void	execute_PRIVMSG(Command &command, Server &server)
 	targets = collect_arguments(command.getParams()[0]);
 	if (targets.size() > targmax(command.getVerb()))
 	{
-		sendAll(ERR_TOOMANYTARGETS(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_TOOMANYTARGETS(command.getSource()->getNName()), *command.getSource());
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}
