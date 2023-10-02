@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 19:52:37 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/02 19:58:10 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,15 @@ void	execute_verb(Command& command, Server &server)
 	{
 		if (command.getSource()->getPass() == true && command.getSource()->getRegistered() == false)
 			execute_USER(command, server);
-		else (command.getSource()->getRegistered() == true)
+		else if (command.getSource()->getRegistered() == true)
 		{
 			sendAll(ERR_ALREADYREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 462" << std::endl;
+		}
+		else
+		{
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "PASS")
@@ -79,7 +84,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_MODE(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -89,7 +94,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_JOIN(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -99,7 +104,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PART(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}	
@@ -109,7 +114,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PING(command);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -119,7 +124,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_KICK(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -129,7 +134,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PRIVMSG(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -139,7 +144,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_QUIT(command);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -149,7 +154,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_INVITE(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -159,13 +164,13 @@ void	execute_verb(Command& command, Server &server)
 			execute_TOPIC(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName(), *command.getSource()));
+			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else
 	{
-		sendAll(ERR_UNKNOWNCOMMAND(command.getSource()->getNName(), command.getVerb()), *command.getSource())
+		sendAll(ERR_UNKNOWNCOMMAND(command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cout << "Redirection 421" << std::endl;
 	}
 }
