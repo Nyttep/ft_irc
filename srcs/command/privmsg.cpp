@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 13:16:45 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 15:41:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string> targets, size_t i, std::string message)
 {
 	std::string	prefix("");
+	std::cout << "ma target sera :" << targets[i] << std::endl;
 	if (have_prefix(targets[i][0]) == true)
 	{
 		std::cout << "Je suis passe par la" << std::endl;
@@ -29,6 +30,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 	}
 	if (chantypes(targets[i][0]) == true)
 	{
+		std::cout << "c'est un chan" << std::endl;
 		if (server.chanExist(targets[i]) == false)
 		{
 			sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), targets[i]), *command.getSource());
@@ -40,24 +42,21 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string f_message = ":" + nick + " " + targets[i] + " :" + message + "\r\n";
-		sendAll(f_message, *command.getSource());
+		std::string f_message = ":" + nick + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
+		// sendAll(f_message, *command.getSource());
 		server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 	}
 	else
 	{
+		std::cout << "c'est un user" << std::endl;
 		if (server.isUser(targets[i]) == false)
 		{
 			sendAll(ERR_NOSUCHNICK(command.getSource()->getNName(), targets[i]), *command.getSource());
 			std::cerr << "Redirection 401" << std::endl;
 			return ;
 		}
-		std::string	nick;
-		if (server.getChan(targets[i])->isOperator(command.getSource()) == true)
-			nick = "@" + command.getSource()->getNName();
-		else
-			nick = command.getSource()->getNName();
-		std::string f_message = ":" + nick + " " + targets[i] + " :" + message + "\r\n";
+		std::string	nick = command.getSource()->getNName();
+		std::string f_message = std::string(":") + nick + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
 		sendAll(f_message, *server.getUser(targets[i]));
 	}
 }

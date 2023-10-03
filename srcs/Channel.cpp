@@ -241,8 +241,8 @@ void	Channel::sendToChan(std::string message, std::string prefix, std::string or
 	if (prefix.empty())
 	{	
 		for (size_t i = 0; i != _users.size(); ++i)
-		{
-			if (origin != _users[i]->getNName())
+		{	
+			if (origin != _operators[i]->getNName())
 				sendAll(message, *_users[i]);
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 13:36:46 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:53:25 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,13 +252,13 @@ void	parser(User& source, std::string reception, Server& server)
 		std::cout << "verb : (null)" << std::endl;
 	else	
 		std::cout << "verb : \"" << command.getVerb() << "\"" << std::endl;
-	// for (std::vector<std::string>::iterator it = command.getParams().begin(); it != command.getParams().end(); ++it)
-	// {
-	// 	if (it->empty())
-	// 		std::cout << "Argument : (null)" << std::endl;
-	// 	else	
-	// 		std::cout << "Argument : \"" << *it << "\"" << std::endl;
-	// }
+	for (size_t it = 0; it != command.getParams().size(); ++it)
+	{
+		if (command.getParams().empty())
+			std::cout << "Argument : (null)" << std::endl;
+		else	
+			std::cout << "Argument : \"" << command.getParams()[it] << "\"" << std::endl;
+	}
 	// fin supprimer
 
 	execute_verb(command, server);
