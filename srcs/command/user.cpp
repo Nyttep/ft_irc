@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 12:27:07 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:19:22 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	execute_USER(Command &command, Server &server)
 	{
 		command.setPParams(0, command.getParams()[0].erase(USERLEN, command.getParams()[0].length() - USERLEN));
 	}
+	// std::string hostname = command.getSource()->getNName() + "!" + command.getSource()->getNName() + "@" + command.getParams()[2];
+	// std::cout << hostname << std::endl;
+	// command.getSource()->setHName(hostname);
+	command.getSource()->setHName(command.getParams()[2]);
 	std::string real_name;
 	for (size_t i = 3; i < command.getParams().size(); ++i)
 	{

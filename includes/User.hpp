@@ -28,6 +28,7 @@ class User
 		std::string				_nName; // nickname
 		std::string 			_uName; // username
 		std::string 			_rName; // realname
+		std::string				_hName; // hostname
 
 		std::vector<Channel*>	_lChannel; // LocalChan
 		std::vector<Channel*>	_gChannel; // GeneralChan
@@ -51,6 +52,8 @@ class User
 		void				setUName(std::string newUName);
 		std::string			getRName();
 		void				setRName(std::string newRName);
+		void				setHName(std::string newHName);
+		std::string			getHName();
 		std::string			getMsg();
 		int					getFD();
 		void				clearMsg();

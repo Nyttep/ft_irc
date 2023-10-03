@@ -70,6 +70,8 @@ void						execute_PRIVMSG(Command& command, Server& server);
 void						execute_QUIT(Command& command, Server& serv);
 void						execute_TOPIC(Command& command, Server& server);
 void						execute_USER(Command& command, Server& server);
+void	                    execute_WHOIS(Command &command, Server &server);
+
 
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);

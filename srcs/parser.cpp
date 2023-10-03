@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 13:53:25 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:59:19 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,7 @@ void	execute_verb(Command& command, Server &server)
 	}
 	else if (command.getVerb() == "QUIT")
 	{
-		if (command.getSource()->getRegistered() == true)
 			execute_QUIT(command, server);
-		else
-		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
-		}
 	}
 	else if (command.getVerb() == "INVITE")
 	{
@@ -160,6 +154,16 @@ void	execute_verb(Command& command, Server &server)
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
+	// else if (command.getVerb() == "WHOIS")
+	// {
+	// 	if (command.getSource()->getRegistered() == true)
+	// 		execute_WHOIS(command, server);
+	// 	else
+	// 	{
+	// 		sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+	// 		std::cerr << "Redirection 451" << std::endl;
+	// 	}
+	// }
 	else
 	{
 		sendAll(ERR_UNKNOWNCOMMAND(command.getSource()->getNName(), command.getVerb()), *command.getSource());
@@ -248,6 +252,7 @@ void	parser(User& source, std::string reception, Server& server)
 		command.setParams(parsing_arguments(&reception));
 
 	// un simple check  a supprimer
+	std::cout << "source :" << command.getSource()->getNName() << std::endl;
 	if (command.getVerb().empty())
 		std::cout << "verb : (null)" << std::endl;
 	else	

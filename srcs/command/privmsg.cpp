@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 15:41:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:23:11 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,10 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			return ;
 		}
 		std::string	nick;
-		if (server.getChan(targets[i])->isOperator(command.getSource()) == true)
-			nick = "@" + command.getSource()->getNName();
-		else
-			nick = command.getSource()->getNName();
+		nick = command.getSource()->getNName();
 		std::string f_message = ":" + nick + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
 		// sendAll(f_message, *command.getSource());
+		std::cout << f_message << std::endl;
 		server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 	}
 	else
@@ -57,6 +55,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 		}
 		std::string	nick = command.getSource()->getNName();
 		std::string f_message = std::string(":") + nick + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
+		std::cout << f_message << std::endl;
 		sendAll(f_message, *server.getUser(targets[i]));
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rpl_err_command.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 19:09:55 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 17:12:15 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@
 # define RPL_WHOISREGNICK(client, nick) (std::string(":") + SERVERNAME + " 307 " + client + " " + nick + " :has identified for this nick\r\n")
 
 // 311
-# define RPL_WHOISUSER(client, nick, username, host, realname) (std::string(":") + SERVERNAME + " 311 " + client + " " + nick + " " + username + " " + host + " * :" + realname + "\r\n")
+# define RPL_WHOISUSER(client, nick, username, host, realname) (std::string(":") + client + " 311 " + nick + " " + username + " " + host + " * :" + realname + "\r\n")
 
 // 312
 # define RPL_WHOISSERVER(client, nick, server, server_info) (std::string(":") + SERVERNAME + " 312 " + client + " " + nick + " " + server + " :" + server_info + "\r\n")
