@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:31 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:17:00 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:50:17 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Command::Command()
 Command::~Command()
 {}
 
-Command::Command(User *source) : _source(source)
+Command::Command(User *source) : _source(source), _verb("")
 {}
 
 Command::Command(const Command& src)

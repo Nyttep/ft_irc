@@ -17,7 +17,7 @@
 Channel::Channel()
 {}
 
-Channel::Channel(std::string newName) : _name(newName)
+Channel::Channel(std::string newName) : _name(newName), _limit(0), _i(false), _t(false), _k(false), _l(false)
 {}
 
 Channel::Channel(const Channel& toCopy)

@@ -161,7 +161,7 @@ bool	User::maxChannel(std::string channel)
 		return (true);
 }
 
-void	User::leaveAllChan(Command &command)
+void	User::leaveAllChanQUIT(Command &command)
 {
 	std::string	message_user;
 	std::string message_chan;
@@ -225,5 +225,23 @@ void	User::leaveAllChan(Command &command)
 		sendAll(message_user, *this);
 		_gChannel[0]->sendToChan(message_channel, "", this->getNName());
 		_gChannel.erase(_gChannel.begin());
+	}
+}
+
+void	User::leaveAllChan()
+{
+	while (!_lChannel.empty())
+	{
+		if (_lChannel[0]->isOperator(this) == true)
+			_lChannel[0]->removeOperator(this);
+		else
+			_lChannel[0]->removeUser(this);
+	}
+	while (!_gChannel.empty())
+	{
+		if (_gChannel[0]->isOperator(this) == true)
+			_gChannel[0]->removeOperator(this);
+		else
+			_gChannel[0]->removeUser(this);
 	}
 }

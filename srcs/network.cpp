@@ -101,6 +101,7 @@ void	closeAll(std::vector<struct pollfd> pfds, int& fdCount)
 		close (pfds[i].fd);
 }
 
+
 void	serverLoop(int listener, Server& serv)
 {
 	struct sockaddr_storage	remoteAddr;
@@ -184,9 +185,7 @@ void	serverLoop(int listener, Server& serv)
 						{
 							std::perror("Error: recv: ");
 						}
-						serv.removeUser(serv.getPfds()[i].fd);
-						close(serv.getPfds()[i].fd);
-						serv.delFromPfds(serv.getPfds()[i].fd);
+						serv.disconnectUser(serv.getPfds()[i].fd);
 					}
 					else
 					{

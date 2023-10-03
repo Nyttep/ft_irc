@@ -51,6 +51,7 @@ class Server //date creation ?
 		std::vector<struct pollfd>&	getPfds();
 		void						initPfds(int listener);
 		void						delFromPfds(int fd);
+		void						disconnectUser(int fd);
 		int&						getFDCount();
 };
 
