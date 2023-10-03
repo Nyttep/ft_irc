@@ -26,7 +26,7 @@ size_t	targmax(std::string target)
 	size_t begin = targmax.find(target + ':');
 	if (begin != std::string::npos)
 	{
-		begin += target.length();
+		begin += target.length() + 1;
 		size_t end = targmax.find(",", begin);
 			res = targmax.substr(begin, end - begin);
 			return (std::atoi(res.c_str()));
