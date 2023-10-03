@@ -120,6 +120,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 	int						newFD;
 	std::vector<char>		buff(SIZE_BUFF);
 	User*					client;
+	int						ret = -1;
 
 	while (true)
 	{
@@ -183,7 +184,6 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 						}
 						client = serv.getUser(pfds[i].fd);
 					}
-					std::fill(buff.begin(), buff.end(), 0);
 					int	nBytes = recv(pfds[i].fd, buff.data(), SIZE_BUFF, 0);
 					if (nBytes <= 0)
 					{
@@ -201,7 +201,9 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 					}
 					else
 					{
-						if (client->formatRecvData(buff))
+						ret = client->formatRecvData(buff);
+						std::fill(buff.begin(), buff.end(), 0);
+						while (ret != EOT_NOT_FOUND)
 						{
 							if (msgTooLong(client->getMsg()))
 							{
@@ -216,6 +218,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 							}
 							parser(*client, client->getMsg(), serv);
 							client->clearMsg();
+							ret = client->formatRecvData(buff);
 						}
 					}
 				}

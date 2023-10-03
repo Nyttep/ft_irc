@@ -38,7 +38,10 @@
 # include "Command.hpp"
 # include "rpl_err_command.hpp"
 
-# define SIZE_BUFF 1024
+# define SIZE_BUFF 10240
+# define EOT_NOT_FOUND 0
+# define FOUND_EXTRA 1
+# define EOT 2
 
 extern int g_sig;
 
