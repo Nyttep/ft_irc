@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 20:34:00 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:05:08 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	execute_verb(Command& command, Server &server)
 	else if (command.getVerb() == "QUIT")
 	{
 		if (command.getSource()->getRegistered() == true)
-			execute_QUIT(command);
+			execute_QUIT(command, server);
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());

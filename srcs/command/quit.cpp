@@ -6,13 +6,20 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:50:01 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 12:52:34 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "irc.hpp"
 
-void	execute_QUIT(Command &command)
+void	disconnectUser(Command& cmd, Server& serv)
+{
+	close(cmd.getSource()->getFD());
+	serv.delFromPfds(cmd.getSource()->getFD());
+	serv.removeUser(cmd.getSource()->getFD());
+}
+
+void	execute_QUIT(Command &command, Server& serv)
 {
 	std::string	message = "Quit:";
 	if (command.getParams().empty())
@@ -26,5 +33,5 @@ void	execute_QUIT(Command &command)
 		}
 	}
 	command.getSource()->leaveAllChan(command);
-	// fonction de deco d'un utilisateur
+	disconnectUser(command, serv);
 }
