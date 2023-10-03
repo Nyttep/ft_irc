@@ -119,21 +119,26 @@ void	User::clearMsg()
 bool	User::formatRecvData(std::vector<char>& buff)
 {
 	std::string				tmp(buff.data());
-	std::string::size_type	pos = tmp.find("\r\n");
 
 	if (!_extra.empty())
 	{
-		_msg.append(_extra);
+		tmp.append(_extra);
 		_extra.clear();
 	}
+
+	std::string::size_type	pos = tmp.find("\r\n");
+
+	std::cout << "BUFFER RECEIVED = " << tmp << std::endl;
 	if (pos == std::string::npos)
 	{
 		_msg.append(tmp);
-		return (0);
+		return (EOT_NOT_FOUND);
 	}
 	_msg.append(tmp.substr(0, pos + 2));
-	_extra.append(tmp.substr(pos + 2, tmp.size()));
-	return (1);
+	_extra = tmp.substr(pos + 2, tmp.size());
+	if (!_extra.empty())
+		return (FOUND_EXTRA);
+	return (EOT);
 }
 
 bool	User::maxChannel(std::string channel)
