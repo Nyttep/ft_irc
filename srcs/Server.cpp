@@ -19,7 +19,7 @@ Server::Server()
 	_setTime();
 }
 
-Server::Server(std::string newPswd, std::string newPort) : _pswd(newPswd), _port(newPort)
+Server::Server(std::string newPswd, std::string newPort) : _pswd(newPswd), _port(newPort), _fdCount(0)
 {
 	_setTime();
 }
@@ -90,6 +90,16 @@ Channel*	Server::getChan(std::string name)
 std::string	Server::getTime()
 {
 	return (_time);
+}
+
+std::vector<struct pollfd>&	Server::getPfds()
+{
+	return (_pfds);
+}
+
+int&	Server::getFDCount()
+{
+	return (_fdCount);
 }
 
 //------------------------- Other Functions -----------------------------
@@ -177,4 +187,28 @@ void	Server::_setTime()
     stream << tm->tm_hour << ":" << tm->tm_min << " " << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100;
     str += stream.str();
     this->_time = str;
+}
+
+void	Server::initPfds(int listener)
+{
+	struct pollfd				listenerStruct;
+
+	std::memset(&listenerStruct, 0, sizeof(listenerStruct));
+	_pfds.push_back(listenerStruct);
+	_pfds[0].fd = listener;
+	_pfds[0].events = POLLIN;
+	_fdCount++;
+}
+
+void	Server::delFromPfds(int fd)
+{
+	for (std::vector<struct pollfd>::iterator it = _pfds.begin(); it != _pfds.end(); it++)
+	{
+		if (it->fd == fd)
+		{
+			_pfds.erase(it);
+			_fdCount--;
+			return ;
+		}
+	}
 }

@@ -47,7 +47,7 @@ extern int g_sig;
 
 int							getListenerSocket(Server &serv);
 std::vector<struct pollfd>	getPfds(int listener);
-void						serverLoop(int listener, std::vector<struct pollfd> pfds, Server &serv, int fdCount);
+void						serverLoop(int listener, Server &serv);
 bool						sendAll(std::string msg, User &target);
 
 // check_arg
@@ -66,7 +66,7 @@ void						execute_PART(Command& command, Server& server);
 void						execute_PASS(Command& command, Server& server);
 void						execute_PING(Command& command);
 void						execute_PRIVMSG(Command& command, Server& server);
-void						execute_QUIT(Command& command);
+void						execute_QUIT(Command& command, Server& serv);
 void						execute_TOPIC(Command& command, Server& server);
 void						execute_USER(Command& command, Server& server);
 

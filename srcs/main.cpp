@@ -17,7 +17,6 @@ int	g_sig = 0;
 int	main(int argc, char** argv)
 {
 	struct sigaction sa;
-	int fdCount = 0;
 
 	if (signals(sa))
 		return (1);
@@ -35,8 +34,7 @@ int	main(int argc, char** argv)
 		close(listener);
 		return (1);
 	}
-	std::vector<struct pollfd>	pfds = getPfds(listener);
-	fdCount++;
-	serverLoop(listener, pfds, serv, fdCount);
+	serv.initPfds(listener);
+	serverLoop(listener, serv);
 	return (0);
 }

@@ -51,18 +51,6 @@ int	getListenerSocket(Server &serv)
 	return (listener);
 }
 
-std::vector<struct pollfd>	getPfds(int listener)
-{
-	std::vector<struct pollfd>	pfds;
-	struct pollfd				listenerStruct;
-
-	std::memset(&listenerStruct, 0, sizeof(listenerStruct));
-	pfds.push_back(listenerStruct);
-	pfds[0].fd = listener;
-	pfds[0].events = POLLIN;
-	return (pfds);
-}
-
 void	addToPfds(int newFD, int& fdCount, std::vector<struct pollfd>& pfds)
 {
 	struct pollfd			newPollFD;
@@ -74,11 +62,11 @@ void	addToPfds(int newFD, int& fdCount, std::vector<struct pollfd>& pfds)
 	pfds.push_back(newPollFD);
 }
 
-void	delFromPfds(std::vector<struct pollfd> pfds, int i, int& fdCount)
-{
-	pfds[i] = pfds[fdCount - 1];
-	fdCount--;
-}
+// void	delFromPfds(std::vector<struct pollfd> pfds, int i, int& fdCount)
+// {
+	// pfds[i] = pfds[fdCount - 1];
+	// fdCount--;
+// }
 
 bool	msgTooLong(std::string msg)
 {
@@ -107,13 +95,13 @@ bool	sendAll(std::string msg, User &target)
 	return (1);
 }
 
-void	closeAll(std::vector<struct pollfd> pfds, int fdCount)
+void	closeAll(std::vector<struct pollfd> pfds, int& fdCount)
 {
 	for (int i = 0; i < fdCount; i++)
 		close (pfds[i].fd);
 }
 
-void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int fdCount)
+void	serverLoop(int listener, Server& serv)
 {
 	struct sockaddr_storage	remoteAddr;
 	socklen_t				addrLen;
@@ -121,6 +109,7 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 	std::vector<char>		buff(SIZE_BUFF);
 	User*					client;
 	int						ret = -1;
+	int						oldFDCount = 0;
 
 	while (true)
 	{
@@ -130,74 +119,74 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 				std::cerr << "received SIGINT\nshuting down the server";
 			if (g_sig == SIGQUIT)
 				std::cerr << "received SIGQUIT\nshuting down the server";
-			closeAll(pfds, fdCount);
+			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
-		int pollCount = poll(pfds.data(), fdCount, -1);
+		int pollCount = poll(serv.getPfds().data(), serv.getFDCount(), -1);
 		if (g_sig != 0)
 		{
 			if (g_sig == SIGINT)
 				std::cerr << "received SIGINT\nshuting down the server";
 			if (g_sig == SIGQUIT)
 				std::cerr << "received SIGQUIT\nshuting down the server";
-			closeAll(pfds, fdCount);
+			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
 		if (pollCount == -1)
 		{
 			std::perror("Error: poll: ");
-			closeAll(pfds, fdCount);
+			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
-		for (int i = 0; i < fdCount && pollCount > 0 ; i++)
+		for (int i = 0; i < serv.getFDCount() && pollCount > 0 ; i++)
 		{
-			if (pfds[i].revents & POLLIN)
+			if (serv.getPfds()[i].revents & POLLIN)
 			{
-				if (pfds[i].fd == listener)
+				if (serv.getPfds()[i].fd == listener)
 				{
 					addrLen = sizeof(remoteAddr);
 					newFD = accept(listener, (struct sockaddr *)&remoteAddr, &addrLen);
 					if (newFD == -1)
 					{
 						std::perror("Error: Accept: ");
-						closeAll(pfds, fdCount);
+						closeAll(serv.getPfds(), serv.getFDCount());
 						return ;
 					}
 					else
 					{
-						addToPfds(newFD, fdCount, pfds);
+						addToPfds(newFD, serv.getFDCount(), serv.getPfds());
 					}
 				}
 				else
 				{
-					if (serv.isRegistered(pfds[i].fd))
+					if (serv.isRegistered(serv.getPfds()[i].fd))
 					{
-						client = serv.getUser(pfds[i].fd);
+						client = serv.getUser(serv.getPfds()[i].fd);
 					}
 					else
 					{
-						if (!serv.addUser(pfds[i].fd, new User(pfds[i].fd)))
+						if (!serv.addUser(serv.getPfds()[i].fd, new User(serv.getPfds()[i].fd)))
 						{
 							std::cerr << "Error: unexpected error: couldn't insert element in map";
-							closeAll(pfds, fdCount);
+							closeAll(serv.getPfds(), serv.getFDCount());
 							return ;
 						}
-						client = serv.getUser(pfds[i].fd);
+						client = serv.getUser(serv.getPfds()[i].fd);
 					}
-					int	nBytes = recv(pfds[i].fd, buff.data(), SIZE_BUFF, 0);
+					int	nBytes = recv(serv.getPfds()[i].fd, buff.data(), SIZE_BUFF, 0);
 					if (nBytes <= 0)
 					{
 						if (nBytes == 0)
 						{
-							std::cout << "server: socket " << pfds[i].fd << "hung up" << std::endl; //dire au serv
+							std::cout << "server: socket " << serv.getPfds()[i].fd << "hung up" << std::endl; //dire au serv
 						}
 						else
 						{
 							std::perror("Error: recv: ");
 						}
-						serv.removeUser(pfds[i].fd);
-						close (pfds[i].fd);
-						delFromPfds(pfds, i, fdCount);
+						serv.removeUser(serv.getPfds()[i].fd);
+						close(serv.getPfds()[i].fd);
+						serv.delFromPfds(serv.getPfds()[i].fd);
 					}
 					else
 					{
@@ -216,9 +205,17 @@ void	serverLoop(int listener, std::vector<struct pollfd> pfds, Server& serv, int
 									sendAll(ERR_INPUTTOOLONG(client->getNName()), *client);
 								}
 							}
+							oldFDCount = serv.getFDCount();
 							parser(*client, client->getMsg(), serv);
-							client->clearMsg();
-							ret = client->formatRecvData(buff);
+							if (oldFDCount == serv.getFDCount())
+							{
+								client->clearMsg();
+								ret = client->formatRecvData(buff);
+							}
+							else
+							{
+								ret = EOT_NOT_FOUND;	
+							}
 						}
 					}
 				}
