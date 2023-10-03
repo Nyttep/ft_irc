@@ -231,14 +231,20 @@ size_t Channel::nbUser()
 	return (_operators.size() + _users.size());
 }
 
-void	Channel::sendToChan(std::string message, std::string prefix)
+void	Channel::sendToChan(std::string message, std::string prefix, std::string origin)
 {
 	for (size_t i = 0; i != _operators.size(); ++i)
-		sendAll(message, *_operators[i]);
+	{
+		if (origin != _operators[i]->getNName())
+			sendAll(message, *_operators[i]);
+	}
 	if (prefix.empty())
 	{	
 		for (size_t i = 0; i != _users.size(); ++i)
-			sendAll(message, *_users[i]);
+		{
+			if (origin != _users[i]->getNName())
+				sendAll(message, *_users[i]);
+		}
 	}
 }
 

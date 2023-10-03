@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:49:13 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:16:45 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string> targets, size_t i, std::string message)
 {
-	std::string	prefix;
+	std::string	prefix("");
 	if (have_prefix(targets[i][0]) == true)
 	{
+		std::cout << "Je suis passe par la" << std::endl;
 		prefix = targets[i].substr(0, 1);
 		targets[i].erase(0, 1);
 	}
-	if (correct_nick_chan(command.getParams()[0]) == false)
+	if (correct_nick_chan(targets[i]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), targets[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
@@ -39,8 +40,9 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string f_message = ":" + nick + " " + targets[i] + " :" + message;
-		server.getChan(targets[i])->sendToChan(f_message, prefix);
+		std::string f_message = ":" + nick + " " + targets[i] + " :" + message + "\r\n";
+		sendAll(f_message, *command.getSource());
+		server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 	}
 	else
 	{
@@ -55,7 +57,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string f_message = ":" + nick + " " + targets[i] + " :" + message;
+		std::string f_message = ":" + nick + " " + targets[i] + " :" + message + "\r\n";
 		sendAll(f_message, *server.getUser(targets[i]));
 	}
 }

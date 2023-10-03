@@ -152,7 +152,7 @@ bool	Server::nicknameCollision(std::string nickname)
 	{
 		low_nick = it->second->getNName();
 		for (size_t i = 0; i != low_nick.length(); ++i)
-			low_nick = std::tolower(low_nick[i]);
+			low_nick[i] = std::tolower(low_nick[i]);
 		if (nickname == low_nick)
 			return (true);
 	}

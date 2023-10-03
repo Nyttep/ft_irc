@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:59:08 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 12:27:07 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	execute_USER(Command &command, Server &server)
 		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
-	}
-	if (command.getParams()[1] != "0" && command.getParams()[2] != "*")
-	{
-		sendAll(ERR_UNKNOWNERROR(command.getSource()->getNName(), command.getVerb(), " :0 * required\r\n"), *command.getSource());
-		std::cerr << "Redirection 400" << std::endl;
 	}
 	if (command.getParams()[0].length() > USERLEN)
 	{

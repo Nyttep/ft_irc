@@ -46,6 +46,7 @@ bool	chantypes(char c)
 bool	have_prefix(char c)
 {
 	std::string prefix = PREFIX;
+	std::cout << "le char c est : " << c << std::endl;
 	if (prefix.find(c) != std::string::npos)
 		return (true);
 	return (false);

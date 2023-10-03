@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:17 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 16:42:18 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:54:23 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ int	ft_atoi(const char *str)
 void	ft_check_arg(char **argv)
 {
 	int i = 0;
-	int port = ft_atoi(argv[1]);
 	std::string password = argv[2];
+	std::string ports = argv[1];
 
+	if (ports.empty() || password.empty())
+	{
+		std::cerr << "Error: Empty argument" << std::endl;
+		exit (1);
+	}
 	while (argv[1][i])
 	{
 		if (isdigit(argv[1][i]) == 0)
@@ -56,6 +61,7 @@ void	ft_check_arg(char **argv)
 		}
 		i++;
 	}
+	int port = ft_atoi(argv[1]);
 	if (port < 0 || port > 65535 || port <= 1024)
 	{
 		if (port >= 0 && port <= 1024)
@@ -68,9 +74,17 @@ void	ft_check_arg(char **argv)
 		}
 		exit(1);
 	}
-	if (password.length() > 510)
+	if (password.length() > 255)
 	{
 		std::cerr << "Error: Password too long" << std::endl;
 		exit(1);
+	}
+	for (size_t i = 0; i != password.length(); ++i)
+	{
+		if (std::isspace(password[i]))
+		{
+			std::cerr << "Error: Whitespaces forbidden" << std::endl;
+			exit (1);
+		}
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 20:05:23 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 12:18:52 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 	if (command.getParams()[0].length() > NICKLEN)
 		command.setPParams(0, command.getParams()[0].erase(NICKLEN, command.getParams()[0].length() - NICKLEN));
 	std::string	low_nick = command.getParams()[0];
+	std::cout << low_nick << std::endl;
 	for (size_t i = 0; i != low_nick.length(); ++i)
 		low_nick[i] = std::tolower(low_nick[i]);
+	std::cout << low_nick << std::endl;
 	if (server.nicknameCollision(low_nick) == true)
 	{
 		if (command.getSource()->getNName().empty())

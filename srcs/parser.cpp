@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 20:34:00 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:45:04 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ std::string	trim(const std::string &src)
 	if (end != std::string::npos)
 		res = res.erase(end + 1);
 	return (res);
-}
-
-bool	isascii(const std::string src) /*Inutile, surement a supprimer*/
-{
-	for (size_t i = 0; i != src.length(); ++i)
-	{
-		if (static_cast<unsigned char>(src[i]) > 127)
-			return false;
-	}
-	return true;
 }
 
 void	execute_verb(Command& command, Server &server)
