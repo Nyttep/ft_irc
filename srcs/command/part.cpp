@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:44:18 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:32:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 	else
 		server.getChan(channels[i])->removeUser(command.getSource());
 	sendAll(message_user, *command.getSource());
-	server.getChan(channels[i])->sendToChan(message_channel, "");
+	server.getChan(channels[i])->sendToChan(message_channel, "", command.getSource()->getNName());
 	std::cout << message_channel << std::endl;
 	std::cout << message_user << std::endl;
 }

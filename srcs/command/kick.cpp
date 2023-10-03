@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:51:40 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:34:37 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		message_kick += "\r\n";
 		message_chan += "\r\n";
 		sendAll(message_kick, *server.getUser(targets[i]));
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "");
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", command.getSource()->getNName());
 		std::cout << message_chan << std::endl;
 		std::cout << message_kick << std::endl;
 	}
@@ -62,7 +62,7 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		message_kick += "\r\n";
 		message_chan += "\r\n";
 		sendAll(message_kick, *server.getUser(targets[i]));
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "");
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", command.getSource()->getNName());
 		std::cout << message_chan << std::endl;
 		std::cout << message_kick << std::endl;
 	}

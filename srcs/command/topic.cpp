@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:58:40 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:34:58 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	execute_TOPIC(Command &command, Server &server)
 		else
 			nick = command.getSource()->getNName();
 		std::string f_message = std::string(":") + SERVERNAME + " " + nick + " " + command.getParams()[0] + " :Topic changed :" + server.getChan(command.getParams()[0])->getTopic() + "\r\n";
-		server.getChan(command.getParams()[0])->sendToChan(f_message, "");
+		sendAll(f_message, *command.getSource());
+		server.getChan(command.getParams()[0])->sendToChan(f_message, "", command.getSource()->getNName());
 	}
 }

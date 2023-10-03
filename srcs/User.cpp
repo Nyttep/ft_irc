@@ -192,7 +192,7 @@ void	User::leaveAllChan(Command &command)
 		else
 			_lChannel[0]->removeUser(this);
 		sendAll(message_user, *this);
-		_lChannel[0]->sendToChan(message_channel, "");
+		_lChannel[0]->sendToChan(message_channel, "", this->getNName());
 		_lChannel.erase(_lChannel.begin());
 	}
 	while (!_gChannel.empty())
@@ -223,7 +223,7 @@ void	User::leaveAllChan(Command &command)
 		else
 			_gChannel[0]->removeUser(this);
 		sendAll(message_user, *this);
-		_gChannel[0]->sendToChan(message_channel, "");
+		_gChannel[0]->sendToChan(message_channel, "", this->getNName());
 		_gChannel.erase(_gChannel.begin());
 	}
 }

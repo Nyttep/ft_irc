@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:40 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 18:29:54 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:34:52 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	multiple_MSG(Command &command, Server &server, std::vector<std::string> tar
 	else
 		nick = command.getSource()->getNName();
 	std::string f_message = ":" + nick + " " + targets[i] + " :" + message;
-	server.getChan(targets[i])->sendToChan(f_message, prefix);
+	sendAll(f_message, *command.getSource());
+	server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 }
 
 void	execute_MSG(Command &command, Server &server)

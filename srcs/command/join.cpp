@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 17:44:14 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:33:28 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	}
 	std::string message = std::string(":") + SERVERNAME + " " + command.getSource()->getNName() + " " + channels[i] + " :User has joined the channel\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
-	server.getChan(channels[i])->sendToChan(message, "");
+	sendAll(message, *command.getSource());
+	server.getChan(channels[i])->sendToChan(message, "", command.getSource()->getNName());
 	if (server.getChan(channels[i])->getTopic().empty())
 		sendAll(RPL_NOTOPIC(command.getSource()->getNName(), channels[i]), *command.getSource());
 	else
