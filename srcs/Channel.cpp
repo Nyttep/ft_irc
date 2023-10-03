@@ -61,6 +61,7 @@ User*	Channel::getUser(std::string nick)
 
 void	Channel::removeUser(User *client)
 {
+	client->quitChan(*this);
 	for (size_t i = 0; i != _users.size(); ++i)
 	{
 		if (_users[i]->getNName() == client->getNName())
@@ -85,6 +86,7 @@ void	Channel::addOperator(User *client)
 
 void	Channel::removeOperator(User *client)
 {
+	client->quitChan(*this);
 	for (size_t i = 0; i != _operators.size(); ++i)
 	{
 		if (_operators[i]->getNName() == client->getNName())
@@ -107,7 +109,6 @@ void	Channel::removeInvite(User *client)
 		if (_invite[i]->getNName() ==  client->getNName())
 		{
 			_invite.erase(_invite.begin() + i);
-			return ;
 		}
 	}
 }
@@ -242,7 +243,7 @@ void	Channel::sendToChan(std::string message, std::string prefix, std::string or
 	{	
 		for (size_t i = 0; i != _users.size(); ++i)
 		{	
-			if (origin != _operators[i]->getNName())
+			if (origin != _users[i]->getNName())
 				sendAll(message, *_users[i]);
 		}
 	}

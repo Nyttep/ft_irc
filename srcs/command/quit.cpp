@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 14:26:05 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 19:46:15 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,8 @@ void	execute_QUIT(Command &command, Server& serv)
 		}
 	}
 	command.getSource()->leaveAllChanQUIT(command);
-	serv.disconnectUser(command.getSource()->getFD());
+	close(command.getSource()->getFD());
+	serv.delFromPfds(command.getSource()->getFD());
+	serv.removeUser(command.getSource()->getFD());
+	// serv.disconnectUser(command.getSource()->getFD());
 }

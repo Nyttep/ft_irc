@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:40 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 15:03:53 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:05:38 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	multiple_MSG(Command &command, Server &server, std::vector<std::string> tar
 		nick = "@" + command.getSource()->getNName();
 	else
 		nick = command.getSource()->getNName();
-	std::string f_message = ":" + nick + " " + targets[i] + " :" + message;
+	std::string f_message = ":" + command.getSource()->getNName() + " " + targets[i] + " :" + message;
 	sendAll(f_message, *command.getSource());
 	server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 }

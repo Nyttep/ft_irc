@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 15:41:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:06:20 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string f_message = ":" + nick + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
+		std::string f_message = ":" + /*nick*/command.getSource()->getNName() + " " + command.getVerb() + " " + targets[i] + " :" + message + "\r\n";
 		// sendAll(f_message, *command.getSource());
 		server.getChan(targets[i])->sendToChan(f_message, prefix, command.getSource()->getNName());
 	}

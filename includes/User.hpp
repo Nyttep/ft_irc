@@ -63,7 +63,9 @@ class User
 		bool				getRegistered();
 		void				setRegistered(bool value);
 		bool				maxChannel(std::string channel);
+		void				joinChan(Channel* chan);
 		void				leaveAllChanQUIT(Command &command);
+		void				quitChan(Channel& chan);
 		void				leaveAllChan();
 };
 

@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 19:09:55 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 19:17:24 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@
 # define RPL_WHOREPLY(client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(":") + SERVERNAME + " 352 " + client + " " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname + "\r\n")
 
 // 353
-# define RPL_NAMEREPLY(client, channel, nick) (std::string(":") + SERVERNAME + " 353 " + client + " " + channel + " :" + nick + "\r\n")
+# define RPL_NAMEREPLY(client, channel, nick) (std::string(":") + SERVERNAME + " 353 " + client + " = " + channel + " :" + nick + "\r\n")
 
 // 364
 # define RPL_LINKS(client, server, hopcount, server_info) (std::string(":") + SERVERNAME + " 364 " + client + " " + server + " :" + hopcount + " " + server_info + "\r\n")

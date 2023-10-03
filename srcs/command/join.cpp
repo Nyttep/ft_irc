@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 16:00:54 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/03 19:49:33 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 {
 	server.addChan(new Channel(channels[i]));
 	server.getChan(channels[i])->addOperator(command.getSource());
+	command.getSource()->joinChan(server.getChan(channels[i]));
 	if (channels[i][0] == '#')
 		server.getChan(channels[i])->setT(true);
 	if (!keys.empty() && (keys.size() >= i))
@@ -85,6 +86,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	}
 	std::string message = std::string(":") + command.getSource()->getNName() + " JOIN " + channels[i] + "\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
+	command.getSource()->joinChan(server.getChan(channels[i]));
 	sendAll(message, *command.getSource());
 	server.getChan(channels[i])->sendToChan(message, "", command.getSource()->getNName());
 	if (server.getChan(channels[i])->getTopic().empty())
