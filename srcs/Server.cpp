@@ -212,3 +212,11 @@ void	Server::delFromPfds(int fd)
 		}
 	}
 }
+
+void	Server::disconnectUser(int fd)
+{
+	_users.find(fd)->second->leaveAllChan();
+	close(fd);
+	delFromPfds(fd);
+	removeUser(fd);
+}

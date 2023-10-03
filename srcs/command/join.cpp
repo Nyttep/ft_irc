@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 15:03:41 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:00:54 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	{
 		server.getChan(channels[i])->removeInvite(command.getSource());
 	}
-	std::string message = std::string(":") + SERVERNAME + " " + command.getSource()->getNName() + " " + channels[i] + " :User has joined the channel\r\n";
+	std::string message = std::string(":") + command.getSource()->getNName() + " JOIN " + channels[i] + "\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
 	sendAll(message, *command.getSource());
 	server.getChan(channels[i])->sendToChan(message, "", command.getSource()->getNName());
@@ -105,7 +105,7 @@ void	execute_JOIN(Command &command, Server &server)
 	}
 	if ((command.getParams().size() == 1) && (command.getParams()[0] == "0"))
 	{
-		command.getSource()->leaveAllChan(command);
+		command.getSource()->leaveAllChanQUIT(command);
 		return;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);

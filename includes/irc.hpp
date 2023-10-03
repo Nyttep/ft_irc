@@ -45,6 +45,7 @@
 
 extern int g_sig;
 
+void						disconnectUser(int fd, Server& serv);
 int							getListenerSocket(Server &serv);
 std::vector<struct pollfd>	getPfds(int listener);
 void						serverLoop(int listener, Server &serv);
