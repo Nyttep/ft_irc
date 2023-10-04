@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 13:34:07 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 16:32:38 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 	server.getChan(channels[i])->addOperator(command.getSource());
 	sendAll(US_JOIN(setUserAddress(*command.getSource()), channels[i]), *command.getSource());
 	command.getSource()->joinChan(server.getChan(channels[i]));
-	sendAll(US_MODE(setUserAddress(*command.getSource()), channels[i], "+o", command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_MODE(HOSTNAME, channels[i], "+o", command.getSource()->getNName()), *command.getSource());
 	if (channels[i][0] == '#')
 	{
 		server.getChan(channels[i])->setT(true);
-		sendAll(US_MODE(HOSTNAME, channels[i], "+t", ""), *command.getSource());
+		sendAll(RPL_MODE(HOSTNAME, channels[i], "+t", ""), *command.getSource());
 	}
 	if (!keys.empty() && (keys.size() >= i))
 	{
@@ -34,11 +34,11 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 		{
 			server.getChan(channels[i])->setK(true);
 			server.getChan(channels[i])->setKey(keys[i]);
-			sendAll(US_MODE(HOSTNAME, channels[i], "+k", keys[i]), *command.getSource());
+			sendAll(RPL_MODE(HOSTNAME, channels[i], "+k", keys[i]), *command.getSource());
 		}
 	}
 	sendAll(RPL_NOTOPIC(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
-	sendAll(RPL_NAMEREPLY(HOSTNAME, command.getSource()->getNName(), channels[i], command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_NAMEREPLY(HOSTNAME, command.getSource()->getNName(), channels[i], std::string("@") + command.getSource()->getNName()), *command.getSource());
 	sendAll(RPL_ENDOFNAMES(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 	std::cout << "Redirection 331, 353, 366" << std::endl;
 }
