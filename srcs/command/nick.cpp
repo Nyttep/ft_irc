@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 14:24:43 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:08:04 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 {
 	if (command.getParams().empty() || command.getParams()[0].empty())
 	{
-		sendAll(ERR_NONICKNAMEGIVEN(HOSTNAME, command.getSource()->getNName()), *command.getSource());
+		if (command.getSource()->getNName().empty())
+		{
+			sendAll(ERR_NONICKNAMEGIVEN(HOSTNAME, "*"), *command.getSource());
+		}
+		else
+		{
+			sendAll(ERR_NONICKNAMEGIVEN(HOSTNAME, command.getSource()->getNName()), *command.getSource());
+		}
 		std::cerr << "Redirection 431" << std::endl;
 		return ;
 	}
@@ -35,7 +42,14 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 	std::cout << low_nick << std::endl;
 	if (server.nicknameCollision(low_nick) == true)
 	{
-		sendAll(ERR_NICKNAMEINUSE(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		if (command.getSource()->getNName().empty())
+		{
+			sendAll(ERR_NICKNAMEINUSE(HOSTNAME, "*", command.getParams()[0]), *command.getSource());
+		}
+		else
+		{
+			sendAll(ERR_NICKNAMEINUSE(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		}
 		std::cerr << "Redirection 433" << std::endl;
 		return ;
 	}
