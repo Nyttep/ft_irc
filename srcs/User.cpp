@@ -269,11 +269,11 @@ void	User::sendToAllChan(std::string	message)
 {
 	for (size_t i = 0; i != _lChannel.size(); ++i)
 	{
-		_lChannel[i]->sendToChan(message, "", "");
+		_lChannel[i]->sendToChan(message, "", _nName);
 	}
 	for (size_t i = 0; i != _gChannel.size(); ++i)
 	{
-		_gChannel[i]->sendToChan(message, "", "");
+		_gChannel[i]->sendToChan(message, "", _nName);
 	}
 }
 

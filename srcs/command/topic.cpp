@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 15:10:06 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:28:46 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	execute_TOPIC(Command &command, Server &server)
 	}
 	if (command.getParams().size() == 1)
 	{
-		std::string	nick;
-		nick = setUserAddress(*command.getSource());
 		if (server.getChan(command.getParams()[0])->getTopic().empty())
 		{
 			sendAll(RPL_NOTOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
@@ -56,15 +54,8 @@ void	execute_TOPIC(Command &command, Server &server)
 			return;
 		}
 		std::string new_topic;
-		for (size_t i = 1; i <= command.getParams().size(); ++i)
-		{
-	 		if (!command.getParams()[i].empty())
-	   		{
-				if (!new_topic.empty())
-					new_topic += " ";
-				new_topic += (command.getParams()[i]);
-			}
-		}
+		if (command.getParams().size() > 1)
+			new_topic = std::string(" :") + command.getParams()[1];
 		if (new_topic.empty())
 			server.getChan(command.getParams()[0])->setTopic("");
 		else

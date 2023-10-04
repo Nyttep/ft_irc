@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 16:38:35 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 19:10:40 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 	server.getChan(channels[i])->addOperator(command.getSource());
 	sendAll(US_JOIN(setUserAddress(*command.getSource()), channels[i]), *command.getSource());
 	command.getSource()->joinChan(server.getChan(channels[i]));
-	sendAll(RPL_MODE(HOSTNAME, channels[i], "+o", command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_MODE(HOSTNAME, channels[i], "+o", std::string(" ") + command.getSource()->getNName()), *command.getSource());
 	if (channels[i][0] == '#')
 	{
 		server.getChan(channels[i])->setT(true);
@@ -43,7 +43,6 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 	std::cout << "Redirection 331, 353, 366" << std::endl;
 }
 
-
 void	join_chan(Command &command, Server &server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
 {
 	if (server.getChan(channels[i])->onChannel(command.getSource()) == true)
@@ -54,51 +53,47 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 		{
 			if (server.getChan(channels[i])->getKey() != keys[i])
 			{
-				sendAll(ERR_BADCHANNELKEY(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+				sendAll(ERR_BADCHANNELKEY(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 				std::cerr << "Redirection 475" << std::endl;
 				return ;
 			}
 		}
 		else
 		{
-			sendAll(ERR_BADCHANNELKEY(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+			sendAll(ERR_BADCHANNELKEY(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 			std::cerr << "Redirection 475" << std::endl;
 			return ;
 		}
 	}
 	if (server.getChan(channels[i])->getI() == true && (server.getChan(channels[i])->isInvite(command.getSource()) == false))
 	{
-		sendAll(ERR_INVITEONLYCHAN(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_INVITEONLYCHAN(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 		std::cerr << "Redirection 473" << std::endl;
 		return ;
 	}
 	if (server.getChan(channels[i])->getL() == true && (server.getChan(channels[i])->maxUser() == true))
 	{
-		sendAll(ERR_CHANNELISFULL(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_CHANNELISFULL(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 		std::cerr << "Redirection 471" << std::endl;
 		return ;
 	}
 	if (command.getSource()->maxChannel(channels[i]) == true)
 	{   
-		sendAll(ERR_TOOMANYCHANNELS(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_TOOMANYCHANNELS(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 		std::cerr << "Redirection 405" << std::endl;
 		return ;
 	}
 	if (server.getChan(channels[i])->isInvite(command.getSource()) == true)
-	{
 		server.getChan(channels[i])->removeInvite(command.getSource());
-	}
-	std::string message = std::string(":") + setUserAddress(*command.getSource()) + " JOIN " + channels[i] + "\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
 	command.getSource()->joinChan(server.getChan(channels[i]));
 	server.getChan(channels[i])->sendToChan(US_JOIN(setUserAddress(*command.getSource()), channels[i]), "", "");
 	if (server.getChan(channels[i])->getTopic().empty())
-		sendAll(RPL_NOTOPIC(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(RPL_NOTOPIC(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 	else
-		sendAll(RPL_TOPIC(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i], server.getChan(channels[i])->getTopic()), *command.getSource());
+		sendAll(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), channels[i], server.getChan(channels[i])->getTopic()), *command.getSource());
 	server.getChan(channels[i])->sendUsersList(*command.getSource());
 }
-
 
 void	execute_JOIN(Command &command, Server &server)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 17:04:36 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 19:31:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,9 @@ void	execute_USER(Command &command, Server &server)
 		command.setPParams(0, command.getParams()[0].erase(USERLEN, command.getParams()[0].length() - USERLEN));
 	}
 	command.getSource()->setHName(command.getParams()[2]);
-	std::string real_name;
-	for (size_t i = 3; i != command.getParams().size(); ++i)
-	{
-		if (!command.getParams()[i].empty())
-		{
-			if (!real_name.empty())
-				real_name += " ";
-			real_name += (command.getParams()[i]);
-		}
-	}
 	if (command.getSource()->getUName().empty())
 		command.getSource()->setUName(command.getParams()[0]);
-	command.getSource()->setRName(real_name);
+	command.getSource()->setRName(command.getParams()[3]);
 	if (command.getSource()->getRegistered() == false && !command.getSource()->getNName().empty() \
 		&& !command.getSource()->getUName().empty() && !command.getSource()->getRName().empty())
 	{

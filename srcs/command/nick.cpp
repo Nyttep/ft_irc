@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 17:08:04 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 19:12:43 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "irc.hpp"
 
-void	execute_NICK(Command &command, Server &server) /* prendre le serveur en paramètres */
+void	execute_NICK(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams()[0].empty())
 	{
