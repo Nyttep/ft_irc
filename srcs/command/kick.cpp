@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 12:56:16 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 16:38:41 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,26 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		server.getChan(command.getParams()[0])->removeOperator(server.getUser(targets[i]));	
 	else
 		server.getChan(command.getParams()[0])->removeUser(server.getUser(targets[i]));
-	std::string	message_chan = std::string(":") + setUserAddress(*command.getSource()) + " " + targets[i] + " " + command.getParams()[0] + " :User was kicked from channel";
-	std::string message_kick = std::string(":") + setUserAddress(*command.getSource()) + " " + targets[i] + " " + command.getParams()[0] + " :You were kicked from channel";
+	std::string	message_chan = std::string(":") + setUserAddress(*command.getSource()) + " KICK " + command.getParams()[0] + " " + targets[i];
 	if (command.getParams().size() == 2)
 	{
-		message_kick += "\r\n";
 		message_chan += "\r\n";
-		sendAll(message_kick, *server.getUser(targets[i]));
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", command.getSource()->getNName());
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", "");
 		std::cout << message_chan << std::endl;
-		std::cout << message_kick << std::endl;
 	}
 	else
 	{
-		message_kick += " :";
 		message_chan += " :";
 		for (size_t i = 2; i != command.getParams().size(); ++i)
 		{
 			if (!command.getParams()[i].empty())
 			{
 				message_chan += " " + command.getParams()[i];
-				message_kick += " " + command.getParams()[i];
 			}
 		}
-		message_kick += "\r\n";
 		message_chan += "\r\n";
-		sendAll(message_kick, *server.getUser(targets[i]));
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", command.getSource()->getNName());
+		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", "");
 		std::cout << message_chan << std::endl;
-		std::cout << message_kick << std::endl;
 	}
 }
 

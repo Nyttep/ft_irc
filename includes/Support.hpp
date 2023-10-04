@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Support.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 12:15:48 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 16:37:27 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define CASEMAPPING "ascii"
 # define CHANTYPES "&#"
 # define CHANLIMIT "&#:4"
-# define CHANMODES "i, t, k, o, l"
+# define CHANMODES ",o,kl,it"
 # define MODES 1
 # define PREFIX "@"
 # define TARGMAX "PRIVMSG:3,MSG:3,JOIN:3,KICK:1,PART:3"
