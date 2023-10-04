@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:50:57 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:32:57 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
+	
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());

@@ -69,6 +69,7 @@ class User
 		void				joinChan(Channel* chan);
 		void				leaveAllChanQUIT(Command &command);
 		void				quitChan(Channel& chan);
+		void				sendToAllChan(std::string message);
 		void				leaveAllChan();
 };
 

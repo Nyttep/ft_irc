@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:52:01 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:24:43 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,15 @@
 
 void	execute_NICK(Command &command, Server &server) /* prendre le serveur en paramètres */
 {
-		// Empty vector
 	if (command.getParams().empty() || command.getParams()[0].empty())
 	{
-		if (command.getSource()->getNName().empty())
-			sendAll(ERR_NONICKNAMEGIVEN("guest", command.getSource()->getNName()), *command.getSource());
-		else
-			sendAll(ERR_NONICKNAMEGIVEN(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
+		sendAll(ERR_NONICKNAMEGIVEN(HOSTNAME, command.getSource()->getNName()), *command.getSource());
 		std::cerr << "Redirection 431" << std::endl;
 		return ;
 	}
-	// Invalid character
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		return ;
 	}
 	
@@ -40,10 +35,7 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 	std::cout << low_nick << std::endl;
 	if (server.nicknameCollision(low_nick) == true)
 	{
-		if (command.getSource()->getNName().empty())
-			sendAll(ERR_NICKNAMEINUSE("guest", command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
-		else
-			sendAll(ERR_NICKNAMEINUSE(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_NICKNAMEINUSE(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 433" << std::endl;
 		return ;
 	}
@@ -51,8 +43,7 @@ void	execute_NICK(Command &command, Server &server) /* prendre le serveur en par
 	{
 		std::string formername = command.getSource()->getNName();
 		command.getSource()->setNName(command.getParams()[0]);
-		std::string message = std::string(":") + SERVERNAME + " :" + formername + " changed his nickname to " + command.getSource()->getNName() + "\r\n";
-		server.allUsersMessage(message);
+		server.allUsersMessage(US_NICK(formername, command.getSource()->getNName()));
 	}
 	else if (command.getSource()->getUName().empty() && command.getSource()->getRName().empty())
 	{

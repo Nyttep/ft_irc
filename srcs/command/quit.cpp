@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 19:46:15 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 15:14:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	execute_QUIT(Command &command, Server& serv)
 				message += " " + command.getParams()[i];
 		}
 	}
-	command.getSource()->leaveAllChanQUIT(command);
+	command.getSource()->sendToAllChan(US_QUIT(setUserAddress(*command.getSource()), message));
+	command.getSource()->leaveAllChan();
+	// command.getSource()->leaveAllChanQUIT(command);
 	close(command.getSource()->getFD());
 	serv.delFromPfds(command.getSource()->getFD());
 	serv.removeUser(command.getSource()->getFD());

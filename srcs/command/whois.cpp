@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 17:05:29 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:55:54 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:12:31 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	execute_WHOIS(Command &command, Server &server)
 {
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
@@ -24,7 +24,7 @@ void	execute_WHOIS(Command &command, Server &server)
 	{
 		if (server.chanExist(command.getParams()[0]) == false)
 		{
-			sendAll(ERR_NOSUCHCHANNEL(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+			sendAll(ERR_NOSUCHCHANNEL(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 			std::cerr << "Redirection 403" << std::endl;
 			return ;
 		}
@@ -33,10 +33,10 @@ void	execute_WHOIS(Command &command, Server &server)
 	{
 		if (server.isUser(command.getParams()[0]) == false)
 		{
-			sendAll(ERR_NOSUCHNICK(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+			sendAll(ERR_NOSUCHNICK(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 			std::cerr << "Redirection 401" << std::endl;
 			return ;
 		}
-		sendAll(RPL_WHOISUSER(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getSource()->getNName(), command.getSource()->getUName(), command.getSource()->getHName(), command.getSource()->getRName()), *command.getSource());
+		sendAll(RPL_WHOISUSER(HOSTNAME, command.getSource()->getNName(), command.getSource()->getNName(), command.getSource()->getUName(), command.getSource()->getHName(), command.getSource()->getRName()), *command.getSource());
 	}
 }

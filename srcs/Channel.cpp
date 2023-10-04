@@ -253,13 +253,8 @@ void	Channel::sendUsersList(User &user)
 {
 	std::string userlist;
 	for (size_t i = 0; i != _operators.size(); ++i)
-	{
-		userlist = "@" + _operators[i]->getNName();
-		sendAll(RPL_NAMEREPLY(setUserAddress(user), user.getNName(), _name, userlist), user);
-	}
+		sendAll(RPL_NAMEREPLY(HOSTNAME, user.getNName(), _name, _operators[i]->getNName()), user);
 	for (size_t i = 0; i != _users.size(); ++i)
-	{
-		sendAll(RPL_NAMEREPLY(setUserAddress(user), user.getNName(), _name, _users[i]->getNName()), user);
-	}
-	sendAll(RPL_ENDOFNAMES(setUserAddress(user), user.getNName(), _name), user);
+		sendAll(RPL_NAMEREPLY(HOSTNAME, user.getNName(), _name, _users[i]->getNName()), user);
+	sendAll(RPL_ENDOFNAMES(HOSTNAME, user.getNName(), _name), user);
 }

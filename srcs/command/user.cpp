@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:55:26 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:11:19 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	execute_USER(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 4 || command.getParams()[0].empty() || command.getParams()[1].empty() || command.getParams()[2].empty() || command.getParams()[3].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getVerb()), *command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
@@ -24,12 +24,9 @@ void	execute_USER(Command &command, Server &server)
 	{
 		command.setPParams(0, command.getParams()[0].erase(USERLEN, command.getParams()[0].length() - USERLEN));
 	}
-	// std::string hostname = command.getSource()->getNName() + "!" + command.getSource()->getNName() + "@" + command.getParams()[2];
-	// std::cout << hostname << std::endl;
-	// command.getSource()->setHName(hostname);
 	command.getSource()->setHName(command.getParams()[2]);
 	std::string real_name;
-	for (size_t i = 3; i < command.getParams().size(); ++i)
+	for (size_t i = 3; i != command.getParams().size(); ++i)
 	{
 		if (!command.getParams()[i].empty())
 		{

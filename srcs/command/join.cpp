@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 11:42:19 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 13:34:07 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,26 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 {
 	server.addChan(new Channel(channels[i]));
 	server.getChan(channels[i])->addOperator(command.getSource());
+	sendAll(US_JOIN(setUserAddress(*command.getSource()), channels[i]), *command.getSource());
 	command.getSource()->joinChan(server.getChan(channels[i]));
+	sendAll(US_MODE(setUserAddress(*command.getSource()), channels[i], "+o", command.getSource()->getNName()), *command.getSource());
 	if (channels[i][0] == '#')
+	{
 		server.getChan(channels[i])->setT(true);
+		sendAll(US_MODE(HOSTNAME, channels[i], "+t", ""), *command.getSource());
+	}
 	if (!keys.empty() && (keys.size() >= i))
 	{
 		if (!keys[i].empty())
 		{
 			server.getChan(channels[i])->setK(true);
 			server.getChan(channels[i])->setKey(keys[i]);
+			sendAll(US_MODE(HOSTNAME, channels[i], "+k", keys[i]), *command.getSource());
 		}
 	}
-	std::string nick = command.getSource()->getNName();
-	sendAll(std::string(":") + setUserAddress(*command.getSource()) + " PRIVMSG " + channels[i] + " :User has joined the channel\r\n", *command.getSource());
-	sendAll(RPL_NOTOPIC(setUserAddress(*command.getSource()), nick, channels[i]), *command.getSource());
-	sendAll(RPL_NAMEREPLY(setUserAddress(*command.getSource()), nick, channels[i], nick), *command.getSource());
-	sendAll(RPL_ENDOFNAMES(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+	sendAll(RPL_NOTOPIC(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
+	sendAll(RPL_NAMEREPLY(HOSTNAME, command.getSource()->getNName(), channels[i], command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_ENDOFNAMES(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 	std::cout << "Redirection 331, 353, 366" << std::endl;
 }
 
@@ -87,8 +91,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	std::string message = std::string(":") + setUserAddress(*command.getSource()) + " JOIN " + channels[i] + "\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
 	command.getSource()->joinChan(server.getChan(channels[i]));
-	sendAll(message, *command.getSource());
-	server.getChan(channels[i])->sendToChan(message, "", setUserAddress(*command.getSource()));
+	server.getChan(channels[i])->sendToChan(US_JOIN(setUserAddress(*command.getSource()), channels[i]), "", "");
 	if (server.getChan(channels[i])->getTopic().empty())
 		sendAll(RPL_NOTOPIC(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
 	else
@@ -101,7 +104,7 @@ void	execute_JOIN(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams()[0].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getVerb()), *command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return;
 	}
@@ -118,12 +121,12 @@ void	execute_JOIN(Command &command, Server &server)
 	{
 		if (channels[i].empty())
 		{
-			sendAll(ERR_NEEDMOREPARAMS(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getVerb()), *command.getSource());
+			sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 			std::cerr << "Redirection 461" << std::endl;
 		}
 		else if (chantypes(channels[i][0]) == false || correct_nick_chan(channels[i]) == false)
 		{
-			sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), channels[i]), *command.getSource());
+			sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
 			std::cerr << "Redirection 432" << std::endl;
 		}
 		else if (server.chanExist(channels[i]) == false)

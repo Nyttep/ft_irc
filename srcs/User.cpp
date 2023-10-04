@@ -265,6 +265,18 @@ void	User::quitChan(Channel& chan)
 	}
 }
 
+void	User::sendToAllChan(std::string	message)
+{
+	for (size_t i = 0; i != _lChannel.size(); ++i)
+	{
+		_lChannel[i]->sendToChan(message, "", "");
+	}
+	for (size_t i = 0; i != _gChannel.size(); ++i)
+	{
+		_gChannel[i]->sendToChan(message, "", "");
+	}
+}
+
 void	User::leaveAllChan()
 {
 	while (!_lChannel.empty())
