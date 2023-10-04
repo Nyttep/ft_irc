@@ -170,6 +170,11 @@ bool	User::maxChannel(std::string channel)
 	else
 		return (true);
 }
+  
+void	User::joinChan(Channel* chan)
+{
+	_lChannel.push_back(chan);
+}
 
 void	User::leaveAllChanQUIT(Command &command)
 {
@@ -180,30 +185,32 @@ void	User::leaveAllChanQUIT(Command &command)
 	{
 		if (_lChannel[0]->isOperator(this) == true)
 			nick = "@" + command.getSource()->getNName();
-		std::string message_channel = std::string(":") + SERVERNAME + " " + nick + " " + _lChannel[0]->getName() + " :User has left the channel";
-		std::string message_user = std::string (":") + SERVERNAME + " " + nick + " " + _lChannel[0]->getName() + " :You have left the channel";
+		else
+			nick = command.getSource()->getNName();
+		std::string message_channel = std::string(":") + nick + " PART " + _lChannel[0]->getName();
+		// std::string message_user = std::string (":") + SERVERNAME + " " + nick + " " + _lChannel[0]->getName() + " :You have left the channel";
 		if (command.getParams().size() > 1)
 		{
 			message_channel += " :";
-			message_user += " :";
+			// message_user += " :";
 			for (size_t j = 1; j != command.getParams().size(); ++j)
 			{
 				if (!command.getParams()[j].empty())
 				{
 					message_channel += " " + command.getParams()[j];
-					message_user += " " + command.getParams()[j];
+					// message_user += " " + command.getParams()[j];
 				}
 			}
 		}
 		message_channel += "\r\n";
-		message_user += "\r\n";
+		// message_user += "\r\n";
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
 		else
 			_lChannel[0]->removeUser(this);
-		sendAll(message_user, *this);
+		sendAll(message_channel, *this);
 		_lChannel[0]->sendToChan(message_channel, "", command.getSource()->getNName());
-		_lChannel.erase(_lChannel.begin());
+		// _lChannel.erase(_lChannel.begin());
 	}
 	while (!_gChannel.empty())
 	{
@@ -211,30 +218,50 @@ void	User::leaveAllChanQUIT(Command &command)
 			nick = "@" + command.getSource()->getNName();
 		else
 			nick = command.getSource()->getNName();
-		std::string message_channel = std::string(":") + SERVERNAME + " " + nick + " " + _gChannel[0]->getName() +  " :User has left the channel";
-		std::string message_user = std::string(":") + SERVERNAME + " " + nick + " " + _gChannel[0]->getName() +  " :You have left the channel";
+		std::string message_channel = std::string(":") + nick + " PART " + _lChannel[0]->getName();
+		// std::string message_user = std::string(":") + SERVERNAME + " " + nick + " " + _gChannel[0]->getName() +  " :You have left the channel";
 		if (command.getParams().size() > 1)
 		{
 			message_channel += " :";
-			message_user += " :";
+			// message_user += " :";
 			for (size_t j = 1; j != command.getParams().size(); ++j)
 			{
 				if (!command.getParams()[j].empty())
 				{
 					message_channel += " " + command.getParams()[j];
-					message_user += " " + command.getParams()[j];
+					// message_user += " " + command.getParams()[j];
 				}
 			}
 		}
 		message_channel += "\r\n";
-		message_user += "\r\n";
+		// message_user += "\r\n";
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
 		else
 			_gChannel[0]->removeUser(this);
-		sendAll(message_user, *this);
+		sendAll(message_channel, *this);
 		_gChannel[0]->sendToChan(message_channel, "", command.getSource()->getNName());
-		_gChannel.erase(_gChannel.begin());
+		// _gChannel.erase(_gChannel.begin());
+	}
+}
+
+void	User::quitChan(Channel& chan)
+{
+	for (std::vector<Channel*>::iterator it = _lChannel.begin(); it != _lChannel.end(); it++)
+	{
+		if ((*it)->getName() == chan.getName())
+		{
+			_lChannel.erase(it);
+			return ;
+		}
+	}
+	for (std::vector<Channel*>::iterator it = _gChannel.begin(); it != _gChannel.end(); it++)
+	{
+		if ((*it)->getName() == chan.getName())
+		{
+			_gChannel.erase(it);
+			return ;
+		}
 	}
 }
 

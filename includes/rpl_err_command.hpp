@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rpl_err_command.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 11:26:17 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:42:12 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@
 # define RPL_WHOREPLY(ipaddress, client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(":") + ipaddress + " 352 " + client + " " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname + "\r\n")
 
 // 353
-# define RPL_NAMEREPLY(ipaddress, client, channel, nick) (std::string(":") + ipaddress + " 353 " + client + " " + channel + " :" + nick + "\r\n")
+# define RPL_NAMEREPLY(ipaddress, client, channel, nick) (std::string(":") + ipaddress + " 353 " + client + " = " + channel + " :" + nick + "\r\n")
 
 // 364
 # define RPL_LINKS(ipaddress, client, server, hopcount, server_info) (std::string(":") + ipaddress + " 364 " + client + " " + server + " :" + hopcount + " " + server_info + "\r\n")

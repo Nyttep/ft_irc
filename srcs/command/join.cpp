@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:46:13 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:42:19 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	create_chan(Command &command, Server &server, std::vector<std::string> chan
 {
 	server.addChan(new Channel(channels[i]));
 	server.getChan(channels[i])->addOperator(command.getSource());
+	command.getSource()->joinChan(server.getChan(channels[i]));
 	if (channels[i][0] == '#')
 		server.getChan(channels[i])->setT(true);
 	if (!keys.empty() && (keys.size() >= i))
@@ -85,6 +86,7 @@ void	join_chan(Command &command, Server &server, std::vector<std::string> channe
 	}
 	std::string message = std::string(":") + setUserAddress(*command.getSource()) + " JOIN " + channels[i] + "\r\n";
 	server.getChan(channels[i])->addUser(command.getSource());
+	command.getSource()->joinChan(server.getChan(channels[i]));
 	sendAll(message, *command.getSource());
 	server.getChan(channels[i])->sendToChan(message, "", setUserAddress(*command.getSource()));
 	if (server.getChan(channels[i])->getTopic().empty())
