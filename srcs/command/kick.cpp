@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 16:38:41 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 17:39:40 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,29 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		server.getChan(command.getParams()[0])->removeOperator(server.getUser(targets[i]));	
 	else
 		server.getChan(command.getParams()[0])->removeUser(server.getUser(targets[i]));
-	std::string	message_chan = std::string(":") + setUserAddress(*command.getSource()) + " KICK " + command.getParams()[0] + " " + targets[i];
+	
 	if (command.getParams().size() == 2)
 	{
-		message_chan += "\r\n";
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", "");
-		std::cout << message_chan << std::endl;
+		server.getChan(command.getParams()[0])->sendToChan(RPL_KICK(HOSTNAME, command.getParams()[0], targets[i], ":No reason given"), "", "");
+		sendAll(RPL_KICK(HOSTNAME, command.getParams()[0], targets[i], ":No reason given"), *server.getUser(targets[i]));
+		std::cout << "US_KICK DEFAULT " << std::endl;
 	}
 	else
 	{
-		message_chan += " :";
+		std:: string message;
 		for (size_t i = 2; i != command.getParams().size(); ++i)
 		{
 			if (!command.getParams()[i].empty())
 			{
-				message_chan += " " + command.getParams()[i];
+				if (!message.empty())
+					message += " " + command.getParams()[i];
+				else
+					message = std::string(":");
 			}
 		}
-		message_chan += "\r\n";
-		server.getChan(command.getParams()[0])->sendToChan(message_chan, "", "");
-		std::cout << message_chan << std::endl;
+		server.getChan(command.getParams()[0])->sendToChan(RPL_KICK(HOSTNAME, command.getParams()[0], targets[i], message), "", "");
+		sendAll(RPL_KICK(HOSTNAME, command.getParams()[0], targets[i], message), *server.getUser(targets[i]));
+		std::cout << "Custom kick" << std::endl;
 	}
 }
 
