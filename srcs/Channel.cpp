@@ -104,11 +104,12 @@ void	Channel::addInvite(User *client)
 
 void	Channel::removeInvite(User *client)
 {
-	for (size_t i = 0; i != _invite.size(); ++i)
+	for (size_t i = 0; i < _invite.size(); ++i)
 	{
 		if (_invite[i]->getNName() ==  client->getNName())
 		{
 			_invite.erase(_invite.begin() + i);
+			return ;
 		}
 	}
 }

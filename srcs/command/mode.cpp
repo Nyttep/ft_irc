@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 16:39:03 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 19:09:19by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,15 @@ std::string	display_modes(Channel *chan)
 void	mode_invite(Command &command, Server &server, std::vector<std::string> currParams)
 {
 	if (currParams[1][0] == '-')
+	{
 		server.getChan(currParams[0])->setI(false);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
+	}
 	else if (currParams[1][0] == '+')
+	{
 		server.getChan(currParams[0])->setI(true);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
+	}
 	else
 	{
 		sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), currParams[0], currParams[1], "", " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
@@ -61,9 +67,15 @@ void	mode_invite(Command &command, Server &server, std::vector<std::string> curr
 void	mode_topic(Command &command, Server &server, std::vector<std::string> currParams)
 {
 	if (currParams[1][0] == '-')
+	{
 		server.getChan(currParams[0])->setT(false);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
+	}
 	else if (currParams[1][0] == '+')
+	{
 		server.getChan(currParams[0])->setT(true);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
+	}
 	else
 	{
 		sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), currParams[0], currParams[1], "", " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
@@ -103,7 +115,7 @@ void	mode_operator(Command &command, Server &server, std::vector<std::string> cu
 			return ;
 		server.getChan(currParams[0])->addOperator(server.getUser(currParams[2]));
 		server.getChan(currParams[0])->removeUser(server.getUser(currParams[2]));
-
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], std::string(" ") + currParams[2]), "", "");
 	}
 	else if (currParams[1][0] == '-')
 	{
@@ -111,6 +123,7 @@ void	mode_operator(Command &command, Server &server, std::vector<std::string> cu
 			return ;
 		server.getChan(currParams[0])->removeOperator(server.getUser(currParams[2]));
 		server.getChan(currParams[0])->addUser(server.getUser(currParams[2]));
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], std::string(" ") + currParams[2]), "", "");
 	}
 	else
 	{
@@ -131,11 +144,13 @@ void	mode_key(Command &command, Server &server, std::vector<std::string> currPar
 		}
 		server.getChan(currParams[0])->setK(true);
 		server.getChan(currParams[0])->setKey(currParams[2]);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], std::string(" ") + currParams[2]), "", "");
 	}
 	else if (currParams[1][0] == '-')
 	{
 		server.getChan(currParams[0])->setK(false);
 		server.getChan(currParams[0])->setKey("");
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
 	}
 	else
 	{
@@ -169,9 +184,13 @@ void	mode_limit(Command &command, Server &server, std::vector<std::string> currP
 		}
 		server.getChan(currParams[0])->setL(true);
 		server.getChan(currParams[0])->setLimit(limit);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], std::string(" ") + currParams[2]), "", "");
 	}
 	else if (currParams[1][0] == '-')
+	{
 		server.getChan(currParams[0])->setL(false);
+		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams[1], " "), "", "");
+	}
 	else
 	{
 		sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), currParams[0], currParams[1], empty_param(currParams[2], 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
