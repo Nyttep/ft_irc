@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 11:42:12 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 12:56:38 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # define SERVERNAME "ft_irc"
 # define VERSION "1.0"
+# define HOSTNAME "127.0.0.1"
 
 //# define RPL_WELCOME(client, nick) (":" + client + " 001 :Welcome to the " SERVERNAME " Network, " nick "\r\n")
 

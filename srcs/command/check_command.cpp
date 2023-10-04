@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 10:39:14 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:30:03 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,28 @@ std::string	store_message(Command &command)
 	return (message);
 }
 
-std::string empty_param(std::vector<std::string> params, size_t i)
+std::string empty_param(std::string param, size_t i)
 {
-	if (params.size() < i)
+	if (param.size() < i)
 		return ("");
-	return (params[i]);
+	return (param);
 }
 
 bool	analyse_param(std::string param, Command &command)
 {
 	if (param.size() != 2)
 	{
-		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		return (false);
+	}
+	if (param.empty())
+	{
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	if (param[0] != '+' && param[0] != '-')
 	{
-		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	return (true);
