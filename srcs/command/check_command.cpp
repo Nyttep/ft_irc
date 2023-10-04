@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 15:58:05 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:39:14 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ bool	analyse_param(std::string param, Command &command)
 {
 	if (param.size() != 2)
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@" + command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	if (param[0] != '+' && param[0] != '-')
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@" + command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	return (true);
@@ -109,21 +109,20 @@ std::string	itoa(int value)
 
 void	handshake(Command &command, Server &server)
 {
-	sendAll(RPL_WELCOME(SERVERNAME, command.getSource()->getNName()), *command.getSource());
-	sendAll(RPL_YOURHOST(SERVERNAME), *command.getSource());
-	sendAll(RPL_CREATED(SERVERNAME, server.getTime()), *command.getSource());
-	sendAll(RPL_MYINFO(SERVERNAME, CHANMODES), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, NETWORK), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CASEMAPPING=" + CASEMAPPING), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANTYPES=" + CHANTYPES), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANLIMIT=" + CHANLIMIT), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANMODES=" + CHANMODES), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "MODE=" + itoa(MODES)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "PREFIX=" + PREFIX), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "TARGMAX=" + TARGMAX), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "NICKLEN=" + itoa(NICKLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "USERLEN=" + itoa(USERLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "CHANNELLEN=" + itoa(CHANNELLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "KICKLEN=" + itoa(KICKLEN)), *command.getSource());
-	sendAll(RPL_ISUPPORT(SERVERNAME, "TOPICLEN=" + itoa(TOPICLEN)), *command.getSource());
+	sendAll(RPL_WELCOME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_YOURHOST(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
+	sendAll(RPL_CREATED(setUserAddress(*command.getSource()), command.getSource()->getNName(), server.getTime()), *command.getSource());
+	sendAll(RPL_MYINFO(setUserAddress(*command.getSource()), command.getSource()->getNName(), CHANMODES), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CASEMAPPING=" + CASEMAPPING), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANTYPES=" + CHANTYPES), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANLIMIT=" + CHANLIMIT), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANMODES=" + CHANMODES), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "MODE=" + itoa(MODES)), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "PREFIX=" + PREFIX), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "TARGMAX=" + TARGMAX), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "NICKLEN=" + itoa(NICKLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "USERLEN=" + itoa(USERLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANNELLEN=" + itoa(CHANNELLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "KICKLEN=" + itoa(KICKLEN)), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "TOPICLEN=" + itoa(TOPICLEN)), *command.getSource());
 }

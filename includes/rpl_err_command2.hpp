@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 17:12:15 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:30:34 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@
 # include "irc.hpp"
 
 # define SERVERNAME "ft_irc"
+# define LOCALHOST "127.0.0.1"
 # define VERSION "1.0"
 
 //# define RPL_WELCOME(client, nick) (":" + client + " 001 :Welcome to the " SERVERNAME " Network, " nick "\r\n")
 
 // 001
-# define RPL_WELCOME(client, nick) (std::string(":")  + client + "001 :Welcome to the " + SERVERNAME + " Network, " + nick + "\r\n")
+# define RPL_WELCOME(client, nick) (std::string(":")  + client + " 001 " + nick + " :Welcome to the " + SERVERNAME + " Network, " + nick + "\r\n")
 
 // 002
-# define RPL_YOURHOST(client) (std::string(":") + client + "002 :Your host is " + SERVERNAME + ", running version " + VERSION + "\r\n")
+# define RPL_YOURHOST(client) (std::string(":") + client + " 002 " + " :Your host is " + LOCALHOST + ", running version " + VERSION + "\r\n")
 
 // 003
-# define RPL_CREATED(client, datetime) (std::string(":") + client + "003 :This server was created" + datetime + "\r\n")
+# define RPL_CREATED(client, datetime) (std::string(":") + client + " 003 :This server was created " + datetime + "\r\n")
 
 // 004
 # define RPL_MYINFO(client, av_channel_mode) (std::string(":") + client + " 004 " + SERVERNAME + " " + VERSION + " available user mode: available channel mode: " + av_channel_mode + "\r\n")
@@ -36,10 +37,10 @@
 # define RPL_ISUPPORT(client, tokens) (std::string(":") + client + " 005 " + tokens + " :are supported by this server\r\n")
 
 // 010
-# define RPL_BOUNCE(client, hostname, port, info) (std::string(":") " 010 " + client + " " + hostname + " " + port + " :" + info + "\r\n")
+# define RPL_BOUNCE(client, hostname, port, info) (std::string(":") + " 010 " + client + " " + hostname + " " + port + " :" + info + "\r\n")
 
 // 212
-# define RPL_STATSCOMMANDS(client, command, count) (std::string(":")" 212 " + client + " 212 " + command + " " + count + "\r\n")
+# define RPL_STATSCOMMANDS(client, command, count) (std::string(":") + " 212 " + client + " 212 " + command + " " + count + "\r\n")
 
 // 219
 # define RPL_ENDOFSTATS(client, stats_letter) (std::string(":") + client + " 219 " + stats_letter + " :End of /STATS report\r\n")

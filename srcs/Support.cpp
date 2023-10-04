@@ -51,3 +51,8 @@ bool	have_prefix(char c)
 		return (true);
 	return (false);
 }
+
+std::string	setUserAddress(User &user)
+{
+	return (user.getNName() + "!" + user.getUName() + "@" + user.getHName());
+}

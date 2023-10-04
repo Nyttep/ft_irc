@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 17:59:19 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:01:06 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,28 @@ std::string	trim(const std::string &src)
 	return (res);
 }
 
+bool	ignored_cmd(std::string verb)
+{
+	if (verb=="CAP" || verb=="AUTHENTICATE" || verb=="PONG" || verb=="OPER" || verb=="ERROR" \
+		|| verb=="NAMES" || verb=="LIST" || verb=="MOTD" || verb=="VERSION" || verb=="ADMIN" || verb=="CONNECT" \
+		|| verb=="LUSERS" || verb=="TIME" || verb=="STATS" || verb=="HELP" || verb=="INFO" || verb=="NOTICE" || \
+		verb=="WHO" || verb=="WHOIS" || verb=="WHOWAS" || verb=="KILL" || verb=="REHASH" || verb=="RESTART" || \
+		verb=="SQUIT" || verb=="AWAY" || verb=="LIMKS" || verb=="USERHOST" || verb=="WALLOPS")
+		return (true);
+	return (false);
+}
+
 void	execute_verb(Command& command, Server &server)
 {
 	if (command.getVerb().empty())
 		return ;
-	else if (command.getVerb() == "CAP")
-		return;
 	else if (command.getVerb() == "NICK")
 	{
 		if (command.getSource()->getPass() == true)
 			execute_NICK(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -51,12 +60,12 @@ void	execute_verb(Command& command, Server &server)
 			execute_USER(command, server);
 		else if (command.getSource()->getRegistered() == true)
 		{
-			sendAll(ERR_ALREADYREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_ALREADYREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 462" << std::endl;
 		}
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -66,7 +75,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PASS(command, server);
 		else
 		{
-			sendAll(ERR_ALREADYREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_ALREADYREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 462" << std::endl;
 		}
 	}
@@ -76,7 +85,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_MODE(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -86,7 +95,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_JOIN(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -96,7 +105,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PART(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}	
@@ -106,7 +115,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PING(command);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -116,7 +125,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_KICK(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -126,7 +135,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_PRIVMSG(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -140,7 +149,7 @@ void	execute_verb(Command& command, Server &server)
 			execute_INVITE(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
@@ -150,9 +159,13 @@ void	execute_verb(Command& command, Server &server)
 			execute_TOPIC(command, server);
 		else
 		{
-			sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+			sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 			std::cerr << "Redirection 451" << std::endl;
 		}
+	}
+	else if (ignored_cmd(command.getVerb()) == true)
+	{
+		return ;	
 	}
 	// else if (command.getVerb() == "WHOIS")
 	// {
@@ -160,13 +173,13 @@ void	execute_verb(Command& command, Server &server)
 	// 		execute_WHOIS(command, server);
 	// 	else
 	// 	{
-	// 		sendAll(ERR_NOTREGISTERED(command.getSource()->getNName()), *command.getSource());
+	// 		sendAll(ERR_NOTREGISTERED(setUserAddress(*command.getSource()), command.getSource()->getNName()), *command.getSource());
 	// 		std::cerr << "Redirection 451" << std::endl;
 	// 	}
 	// }
 	else
 	{
-		sendAll(ERR_UNKNOWNCOMMAND(command.getSource()->getNName(), command.getVerb()), *command.getSource());
+		sendAll(ERR_UNKNOWNCOMMAND(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cout << "Redirection 421" << std::endl;
 	}
 }

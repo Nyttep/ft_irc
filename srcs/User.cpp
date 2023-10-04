@@ -109,12 +109,12 @@ int	User::getFD()
 	return (_fd);
 }
 
-void				User::setHName(std::string newHName)
+void	User::setHName(std::string newHName)
 {
 	_hName = newHName;
 }
 
-std::string			User::getHName()
+std::string	User::getHName()
 {
 	return (_hName);
 }

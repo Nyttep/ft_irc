@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 14:19:45 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:50:57 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	mode_invite(Command &command, Server &server)
 		server.getChan(command.getParams()[0])->setI(true);
 	else
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 	}
 }
@@ -66,7 +66,7 @@ void	mode_topic(Command &command, Server &server)
 		server.getChan(command.getParams()[0])->setT(true);
 	else
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 	}
 }
@@ -75,25 +75,25 @@ void	mode_operator(Command &command, Server &server)
 {
 	if (command.getParams().size() < 3 || command.getParams()[2].empty())
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : (+/-)o <target>\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : (+/-)o <target>\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 		return;
 	}
 	if (correct_nick_chan(command.getParams()[2]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), command.getParams()[2]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[2]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.isUser(command.getParams()[2]) == false)
 	{
-		sendAll(ERR_NOSUCHNICK(command.getSource()->getNName(), command.getParams()[2]), *command.getSource());
+		sendAll(ERR_NOSUCHNICK(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[2]), *command.getSource());
 		std::cerr << "Redirection 401" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0])->onChannel(server.getUser(command.getParams()[2])) == false)
 	{
-		sendAll(ERR_USERNOTINCHANNEL(command.getSource()->getNName(), command.getParams()[2], command.getParams()[0]), *command.getSource());
+		sendAll(ERR_USERNOTINCHANNEL(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[2], command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 441" << std::endl;
 		return ;
 	}
@@ -114,7 +114,7 @@ void	mode_operator(Command &command, Server &server)
 	}
 	else
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 	}
 }
@@ -125,7 +125,7 @@ void	mode_key(Command &command, Server &server)
 	{
 		if (command.getParams().size() < 3 || command.getParams()[2].empty())
 		{
-			sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : +k <key>\r\n"), *command.getSource());
+			sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : +k <key>\r\n"), *command.getSource());
 			std::cerr << "Redirection 696" << std::endl;
 			return ;
 		}
@@ -139,7 +139,7 @@ void	mode_key(Command &command, Server &server)
 	}
 	else
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 	}
 }
@@ -150,20 +150,20 @@ void	mode_limit(Command &command, Server &server)
 	{
 		if (command.getParams().size() < 3 || command.getParams()[2].empty())
 		{
-			sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : +l <limits>\r\n"), *command.getSource());
+			sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : +l <limits>\r\n"), *command.getSource());
 			std::cerr << "Redirection 696" << std::endl;
 			return ;
 		}
 		int limit = std::atoi(command.getParams()[2].c_str());
 		if (limit < 0) 
 		{
-			sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Invalid number\r\n"), *command.getSource());
+			sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Invalid number\r\n"), *command.getSource());
 			std::cerr << "Redirection 696" << std::endl;
 			return ;
 		}
 		if ((size_t)limit < server.getChan(command.getParams()[0])->nbUser())
 		{
-			sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Limit below number of users\r\n"), *command.getSource());
+			sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Limit below number of users\r\n"), *command.getSource());
 			std::cerr << "Redirection 696" << std::endl;
 			return ;
 		}
@@ -174,7 +174,7 @@ void	mode_limit(Command &command, Server &server)
 		server.getChan(command.getParams()[0])->setL(false);
 	else
 	{
-		sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;
 	}
 }
@@ -183,45 +183,45 @@ void	execute_MODE(Command &command, Server &server)
 {
 	if (command.getParams().empty() || command.getParams().size() < 1 || command.getParams()[0].empty())
 	{
-		sendAll(ERR_NEEDMOREPARAMS(command.getSource()->getNName(), command.getVerb()), *command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_ERRONEUSNICKNAME(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.chanExist(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_NOSUCHCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_NOSUCHCHANNEL(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cout << "Redirection 403" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0])->onChannel(command.getSource()) == false)
 	{
-		sendAll(ERR_NOTONCHANNEL(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_NOTONCHANNEL(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
 	if (command.getParams().size() == 1)
 	{
 		std::string message = display_modes(server.getChan(command.getParams()[0]));
-		sendAll(RPL_CHANNELMODEIS(command.getSource()->getNName(), command.getParams()[0], message), *command.getSource());
+		sendAll(RPL_CHANNELMODEIS(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], message), *command.getSource());
 		std::cout << "Redirection 324" << std::endl;
 	}
 	else
 	{
 		if (server.getChan(command.getParams()[0])->isOperator(command.getSource()) == false)
 		{
-			sendAll(ERR_CHANPRIVSNEEDED(command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+			sendAll(ERR_CHANPRIVSNEEDED(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 			std::cerr << "Redirection 482" << std::endl;
 			return ;
 		}
 		if (command.getParams()[1].empty())
 		{
-			sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Empty mode char ((+/-)(i,t,k,l,o))\r\n"), *command.getSource());
+			sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Empty mode char ((+/-)(i,t,k,l,o))\r\n"), *command.getSource());
 			std::cerr << "Redirection 696" <<std::endl;
 			return ;
 		}
@@ -251,7 +251,7 @@ void	execute_MODE(Command &command, Server &server)
 				mode_limit(command, server);
 				break;
 			default:
-				sendAll(RPL_INVALIDMODEPARAM("@"+command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Unknown mode char ((+/-)(i,t,k,l,o))\r\n"), *command.getSource());
+				sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), " : Unknown mode char ((+/-)(i,t,k,l,o))\r\n"), *command.getSource());
 				std::cerr << "Redirection 696" <<std::endl;
 		}
 	}

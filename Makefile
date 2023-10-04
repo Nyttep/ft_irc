@@ -31,7 +31,6 @@ SRCS_NAME =	main.cpp \
 			command/join.cpp \
 			command/kick.cpp \
 			command/mode.cpp \
-			command/msg.cpp \
 			command/nick.cpp \
 			command/part.cpp \
 			command/pass.cpp \

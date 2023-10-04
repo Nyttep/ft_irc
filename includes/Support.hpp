@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Support.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/02 19:41:57 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/04 11:34:08 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@
 # define KICKLEN 64
 # define TOPICLEN 64
 
-bool	chantypes(char c);
-size_t	targmax(std::string target);
-size_t	chanlimit(char prefixe);
-bool	have_prefix(char c);
+class User;
+
+bool	    chantypes(char c);
+size_t	    targmax(std::string target);
+size_t	    chanlimit(char prefixe);
+bool	    have_prefix(char c);
+std::string setUserAddress(User &user);
 
 #endif

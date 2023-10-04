@@ -197,11 +197,11 @@ void	serverLoop(int listener, Server& serv)
 							{
 								if (client->getNName().empty())
 								{
-									sendAll(ERR_INPUTTOOLONG("guest"), *client);
+									sendAll(ERR_INPUTTOOLONG(setUserAddress(*client), client->getNName()), *client);
 								}
 								else
 								{
-									sendAll(ERR_INPUTTOOLONG(client->getNName()), *client);
+									sendAll(ERR_INPUTTOOLONG(setUserAddress(*client), client->getNName()), *client);
 								}
 							}
 							oldFDCount = serv.getFDCount();
