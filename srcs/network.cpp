@@ -202,15 +202,19 @@ void	serverLoop(int listener, Server& serv)
 							{
 								if (client->getNName().empty())
 								{
-									sendAll(ERR_INPUTTOOLONG(setUserAddress(*client), client->getNName()), *client);
+									sendAll(ERR_INPUTTOOLONG(setUserAddress(*client), "*"), *client);
 								}
 								else
 								{
 									sendAll(ERR_INPUTTOOLONG(setUserAddress(*client), client->getNName()), *client);
 								}
+								oldFDCount = serv.getFDCount();
 							}
-							oldFDCount = serv.getFDCount();
-							parser(*client, client->getMsg(), serv);
+							else
+							{
+								oldFDCount = serv.getFDCount();
+								parser(*client, client->getMsg(), serv);
+							}
 							if (oldFDCount == serv.getFDCount())
 							{
 								client->clearMsg();
