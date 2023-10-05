@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 11:16:55 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:54:07 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 	std::string	message;
 	if (command.getParams().size() > 1)
 		message = std::string(" :") + command.getParams()[1];
+	server.getChan(channels[i])->sendToChan(US_PART(setUserAddress(*command.getSource()), channels[i], message), "", "");
 	if (server.getChan(channels[i])->isOperator(command.getSource()) == true)
 		server.getChan(channels[i])->removeOperator(command.getSource());
 	else
 		server.getChan(channels[i])->removeUser(command.getSource());
-	server.getChan(channels[i])->sendToChan(US_PART(setUserAddress(*command.getSource()), channels[i], message), "", "");
 }
 
 void	execute_PART(Command &command, Server &server)
