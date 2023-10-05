@@ -50,8 +50,12 @@ int	getListenerSocket(Server &serv)
 	freeaddrinfo(ai);
 	if (listener < 0)
 		return (-1);
-	if (listen(listener, 10) == -1)
+	errCode = fcntl(listener, F_SETFL, O_NONBLOCK);
+	if (listen(listener, 10) == -1 || errCode == -1)
+	{
+		close(listener);
 		return (-1);
+	}
 	return (listener);
 }
 
@@ -127,7 +131,7 @@ void	serverLoop(int listener, Server& serv)
 			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
-		int pollCount = poll(serv.getPfds().data(), serv.getFDCount(), -1);
+		int pollCount = poll(serv.getPfds().data(), serv.getFDCount(), 0);
 		if (g_sig != 0)
 		{
 			if (g_sig == SIGINT)
@@ -151,7 +155,8 @@ void	serverLoop(int listener, Server& serv)
 				{
 					addrLen = sizeof(remoteAddr);
 					newFD = accept(listener, (struct sockaddr *)&remoteAddr, &addrLen);
-					if (newFD == -1)
+					ret = fcntl(newFD, F_SETFL, O_NONBLOCK);
+					if (newFD == -1 || ret == -1)
 					{
 						std::perror("Error: Accept: ");
 						closeAll(serv.getPfds(), serv.getFDCount());

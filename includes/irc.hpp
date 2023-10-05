@@ -29,6 +29,7 @@
 # include <sys/poll.h>
 # include <sys/socket.h>
 # include <netdb.h>
+# include <fcntl.h>	
 # include <unistd.h>
 # include <signal.h>
 # include "Support.hpp"
