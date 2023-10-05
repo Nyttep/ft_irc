@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 19:13:08 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 21:43:24 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,7 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 
 void	execute_PRIVMSG(Command &command, Server &server)
 {
-   if (command.getParams().empty() || command.getParams().size() < 2)
-	{
-		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
-		std::cerr << "Redirection 461" << std::endl;
-		return ;
-	}
-	if (command.getParams()[0].empty())
+	if (command.getParams().size() < 1 || command.getParams()[0].empty())
 	{
 		sendAll(ERR_NORECIPIENT(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 411" << std::endl;
@@ -86,13 +80,13 @@ void	execute_PRIVMSG(Command &command, Server &server)
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}
-	std::string message = command.getParams()[1];
-	if (message.empty())
+	if (command.getParams().size() < 2 || command.getParams()[1].empty())
 	{
 		sendAll(ERR_NOTEXTTOSEND(HOSTNAME, command.getSource()->getNName()), *command.getSource());
 		std::cerr << "Redirection 412" << std::endl;
 		return ;
 	}
+	std::string message = command.getParams()[1];
 	for (size_t i = 0; i != targets.size(); ++i)
 	{
 		multiple_PRIVMSG(command, server, targets, i, message);

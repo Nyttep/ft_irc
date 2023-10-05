@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:51:56 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:42:34 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,12 @@ void	execute_JOIN(Command &command, Server &server)
 		return;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
+	if (channels.size() > targmax(command.getVerb()))
+	{
+		sendAll(ERR_TOOMANYTARGETS(HOSTNAME, command.getSource()->getNName()), *command.getSource());
+		std::cerr << "Redirection 407" << std::endl;
+		return ;
+	}
 	std::vector<std::string>	keys;
 	if (command.getParams().size() > 1)
 		keys = collect_arguments(command.getParams()[1]);

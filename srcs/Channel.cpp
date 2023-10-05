@@ -46,12 +46,12 @@ std::string	Channel::getName()
 
 User*	Channel::getUser(std::string nick)
 {
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 	{
 		if (nick == _operators[i]->getNName())
 			return (_operators[i]);
 	}
-	for (size_t i = 0; i != _users.size(); ++i)
+	for (size_t i = 0; i < _users.size(); ++i)
 	{
 		if (nick == _users[i]->getNName())
 			return (_users[i]);
@@ -62,7 +62,7 @@ User*	Channel::getUser(std::string nick)
 void	Channel::removeUser(User *client)
 {
 	client->quitChan(*this);
-	for (size_t i = 0; i != _users.size(); ++i)
+	for (size_t i = 0; i < _users.size(); ++i)
 	{
 		if (_users[i]->getNName() == client->getNName())
 		{
@@ -87,7 +87,7 @@ void	Channel::addOperator(User *client)
 void	Channel::removeOperator(User *client)
 {
 	client->quitChan(*this);
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 	{
 		if (_operators[i]->getNName() == client->getNName())
 		{
@@ -188,12 +188,12 @@ bool	Channel::getL()
 
 bool	Channel::onChannel(User *client)
 {
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 	{
 		if (client->getNName() == _operators[i]->getNName())
 			return (true);
 	}
-	for (size_t i = 0; i != _users.size(); ++i)
+	for (size_t i = 0; i < _users.size(); ++i)
 	{
 		if (client->getNName() == _users[i]->getNName())
 			return (true);
@@ -203,7 +203,7 @@ bool	Channel::onChannel(User *client)
 
 bool	Channel::isOperator(User *client)
 {
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 	{
 		if (client->getNName() == _operators[i]->getNName())
 			return (true);
@@ -213,7 +213,7 @@ bool	Channel::isOperator(User *client)
 
 bool	Channel::isInvite(User *client)
 {
-	for (size_t i = 0; i != _invite.size(); ++i)
+	for (size_t i = 0; i < _invite.size(); ++i)
 	{
 		if (client->getNName() == _invite[i]->getNName())
 			return (true);
@@ -235,14 +235,14 @@ size_t Channel::nbUser()
 
 void	Channel::sendToChan(std::string message, std::string prefix, std::string origin)
 {
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 	{
 		if (origin != _operators[i]->getNName())
 			sendAll(message, *_operators[i]);
 	}
 	if (prefix.empty())
 	{	
-		for (size_t i = 0; i != _users.size(); ++i)
+		for (size_t i = 0; i < _users.size(); ++i)
 		{	
 			if (origin != _users[i]->getNName())
 				sendAll(message, *_users[i]);
@@ -253,9 +253,9 @@ void	Channel::sendToChan(std::string message, std::string prefix, std::string or
 void	Channel::sendUsersList(User &user)
 {
 	std::string userlist;
-	for (size_t i = 0; i != _operators.size(); ++i)
+	for (size_t i = 0; i < _operators.size(); ++i)
 		sendAll(RPL_NAMEREPLY(HOSTNAME, user.getNName(), _name, std::string("@") + _operators[i]->getNName()), user);
-	for (size_t i = 0; i != _users.size(); ++i)
+	for (size_t i = 0; i < _users.size(); ++i)
 		sendAll(RPL_NAMEREPLY(HOSTNAME, user.getNName(), _name, _users[i]->getNName()), user);
 	sendAll(RPL_ENDOFNAMES(HOSTNAME, user.getNName(), _name), user);
 }
