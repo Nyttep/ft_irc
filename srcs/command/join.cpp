@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:10:40 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:07:47 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 
 void	create_chan(Command &command, Server &server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
 {
+	std::cout << channels[i] << std::endl;
+	if (channels[i].length() > CHANNELLEN)
+		channels[i].erase(CHANNELLEN, channels[i].length() - CHANNELLEN);
+	std::cout << channels[i] << std::endl;
 	server.addChan(new Channel(channels[i]));
 	server.getChan(channels[i])->addOperator(command.getSource());
 	sendAll(US_JOIN(setUserAddress(*command.getSource()), channels[i]), *command.getSource());
@@ -119,9 +123,9 @@ void	execute_JOIN(Command &command, Server &server)
 			sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 			std::cerr << "Redirection 461" << std::endl;
 		}
-		else if (chantypes(channels[i][0]) == false || correct_nick_chan(channels[i]) == false)
+		else if (correct_nick_chan(channels[i]) == false)
 		{
-			sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
+			sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
 			std::cerr << "Redirection 432" << std::endl;
 		}
 		else if (server.chanExist(channels[i]) == false)

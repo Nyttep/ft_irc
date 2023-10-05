@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:20:14 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:21:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_QUIT(Command &command, Server& serv)
 	if (command.getParams().empty())
 		message += " Disconnecting from IRC Server";
 	else
-		message += command.getParams()[1];
+		message += command.getParams()[0];
 	command.getSource()->sendToAllChan(US_QUIT(setUserAddress(*command.getSource()), message));
 	command.getSource()->leaveAllChan();
 	// command.getSource()->leaveAllChanQUIT(command);

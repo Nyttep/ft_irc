@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 16:39:03 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 11:14:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,15 +203,9 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
-	if (chantypes(command.getParams()[0][0]) == false)
-	{
-		sendAll(ERR_UMODEUNKNOWNFLAG(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-		std::cerr << "Redirection 501" << std::endl;
-		return ;
-	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}

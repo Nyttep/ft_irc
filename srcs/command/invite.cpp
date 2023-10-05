@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:18 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 10:58:43 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:11:44 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execute_INVITE(Command &command, Server &server)
 	}
 	if (correct_nick_chan(command.getParams()[1]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), command.getParams()[1]), *command.getSource());
+		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[1]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}	

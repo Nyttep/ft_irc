@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 10:56:10 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:01:01 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 	{
 		std::string message;
 		if (!command.getParams()[2].empty())
+		{
+			if (command.getParams()[2].length() > KICKLEN)
+				command.getParams()[2].erase(KICKLEN, command.getParams()[2].length() - KICKLEN);
 			message = std::string(" :") + command.getParams()[2];
+		}
 		server.getChan(command.getParams()[0])->sendToChan(US_KICK(setUserAddress(*command.getSource()), command.getParams()[0], targets[i], message), "", "");
 	}
 	if (server.getChan(command.getParams()[0])->isOperator(server.getUser(targets[i])) == true)
@@ -60,7 +64,7 @@ void	execute_KICK(Command& command, Server& server)
 	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
+		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
@@ -82,7 +86,6 @@ void	execute_KICK(Command& command, Server& server)
 		std::cerr << "Redirection 482" << std::endl;
 		return ;
 	}
-
 	std::vector<std::string>	targets = collect_arguments(command.getParams()[1]);
 	if (targets.size() > targmax(command.getVerb()))
 	{

@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 10:17:07 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:03:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ void	execute_TOPIC(Command &command, Server &server)
 	{
 		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 		std::cerr << "Redirection 461" << std::endl;
+		return ;
+	}
+	if (correct_nick_chan(command.getParams()[0]) == false)
+	{
+		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
+		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.chanExist(command.getParams()[0]) == false)
@@ -61,6 +67,8 @@ void	execute_TOPIC(Command &command, Server &server)
 		}
 		else
 		{
+			if (command.getParams()[1].length() > TOPICLEN)
+				command.getParams()[1].erase(TOPICLEN, command.getParams()[1].length() - TOPICLEN);
 			server.getChan(command.getParams()[0])->setTopic(command.getParams()[1]);
 			server.getChan(command.getParams()[0])->sendToChan(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), "", "");
 		}

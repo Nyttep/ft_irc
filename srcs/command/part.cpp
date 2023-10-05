@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:16:49 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:16:55 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 
 void	multiple_PART(Command &command, Server &server, std::vector<std::string> channels, size_t i)
 {
-	if (correct_nick_chan(command.getParams()[0]) == false)
+	if (channels[i].empty())
 	{
-		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
+		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
+		std::cout << "Redirection 461" << std::endl;
+		return ;
+	}
+	if (correct_nick_chan(channels[i]) == false)
+	{
+		sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}

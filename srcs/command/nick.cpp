@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:12:43 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:53:50 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	execute_NICK(Command &command, Server &server)
 		command.getSource()->setNName(command.getParams()[0]);
 		server.allUsersMessage(US_NICK(formername, command.getSource()->getNName()));
 	}
-	else if (command.getSource()->getUName().empty() && command.getSource()->getRName().empty())
+	else if (command.getSource()->getUName().empty() && command.getSource()->getRName().empty() && command.getSource()->getHName().empty())
 	{
 		command.getSource()->setNName(command.getParams()[0]);
 		return ;
