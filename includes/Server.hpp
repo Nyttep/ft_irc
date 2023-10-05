@@ -45,6 +45,7 @@ class Server //date creation ?
 		void						addChan(Channel	*newChan);
 		bool						chanExist(std::string name);
 		Channel*					getChan(std::string name);
+		void						removeChan(std::string name);
 		bool						nicknameCollision(std::string nickname);
 		void						allUsersMessage(std::string message);
 		std::string					getTime();
@@ -53,7 +54,8 @@ class Server //date creation ?
 		void						delFromPfds(int fd);
 		void						disconnectUser(int fd);
 		int&						getFDCount();
-		std::string					_setMinute(int minute);
+		std::string					setMinute(int minute);
+		void						listInvite(Command &command);
 };
 
 #endif

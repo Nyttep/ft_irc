@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 15:00:31 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:40:42 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	execute_JOIN(Command &command, Server &server)
 	}
 	if ((command.getParams().size() == 1) && (command.getParams()[0] == "0"))
 	{
-		command.getSource()->leaveAllChanPART(command);
+		command.getSource()->leaveAllChanPART(command, server);
 		return;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
@@ -123,7 +123,7 @@ void	execute_JOIN(Command &command, Server &server)
 			sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 			std::cerr << "Redirection 461" << std::endl;
 		}
-		else if (correct_nick_chan(channels[i]) == false)
+		else if (chantypes(channels[i][0]) == false || correct_nick_chan(channels[i]) == false)
 		{
 			sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
 			std::cerr << "Redirection 432" << std::endl;

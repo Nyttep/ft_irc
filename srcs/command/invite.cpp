@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:18 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 11:11:44 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:56:13 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 void	execute_INVITE(Command &command, Server &server)
 {
-	if (command.getParams().empty() || command.getParams().size() < 2 || \
+	if (command.getParams().empty())
+	{
+		server.listInvite(command);
+		return ;
+	}
+	if (command.getParams().size() < 2 || \
 		command.getParams()[0].empty() || command.getParams()[1].empty())
 	{
 		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
@@ -45,7 +50,7 @@ void	execute_INVITE(Command &command, Server &server)
 		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams()[1])->isOperator(command.getSource()) == false)
+	if ((server.getChan(command.getParams()[1])->getI() == true) && (server.getChan(command.getParams()[1])->isOperator(command.getSource()) == false))
 	{
 		sendAll(ERR_CHANPRIVSNEEDED(HOSTNAME, command.getSource()->getNName(), command.getParams()[1]), *command.getSource());
 		std::cerr << "Redirection 482" << std::endl;

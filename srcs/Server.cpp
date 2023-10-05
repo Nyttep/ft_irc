@@ -131,6 +131,19 @@ void	Server::addChan(Channel	*newChan)
 	_channels.push_back(newChan);
 }
 
+void	Server::removeChan(std::string name)
+{
+	for (size_t i = 0; _channels.size(); ++i)
+	{
+		if (name == _channels[i]->getName())
+		{
+			delete _channels[i];
+			_channels.erase(_channels.begin() + i);
+			return ;
+		}
+	}
+}
+
 bool	Server::isValidPswd(std::string tryPswd)
 {
 	if (tryPswd == _pswd)
@@ -177,7 +190,7 @@ void	Server::allUsersMessage(std::string message)
 	}
 }
 
-std::string	Server::_setMinute(int minutes)
+std::string	Server::setMinute(int minutes)
 {
 	std::stringstream	stream;
 	if (minutes < 10)
@@ -194,7 +207,7 @@ void	Server::_setTime()
 	std::time_t time = std::time(NULL);
 
 	std::tm *tm = std::localtime(&time);
-    stream << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100 << " at " << tm->tm_hour << ":" << _setMinute(tm->tm_min);
+    stream << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100 << " at " << tm->tm_hour << ":" << setMinute(tm->tm_min);
     str += stream.str();
     this->_time = str;
 }
@@ -225,8 +238,23 @@ void	Server::delFromPfds(int fd)
 
 void	Server::disconnectUser(int fd)
 {
-	_users.find(fd)->second->leaveAllChan();
+	_users.find(fd)->second->leaveAllChan(*this);
 	close(fd);
 	delFromPfds(fd);
 	removeUser(fd);
+}
+
+void	Server::listInvite(Command &command)
+{
+	if (!_channels.empty())
+	{
+		for (size_t i = 0; i != _channels.size(); ++i)
+		{
+			if (_channels[i]->isInvite(command.getSource()) == true)
+			{
+				sendAll(RPL_INVITELIST(HOSTNAME, command.getSource()->getNName(), _channels[i]->getName()), *command.getSource());
+			}
+		}
+	}
+	sendAll(RPL_ENDOFINVITELIST(HOSTNAME, command.getSource()->getNName()), *command.getSource());
 }

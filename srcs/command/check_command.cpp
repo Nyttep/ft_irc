@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 15:30:03 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 16:47:19 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ bool	correct_nick_chan(std::string name)
 {
 	if (chantypes(name[0]) == true)
 	{
+		if (name.size() == 1)
+			return (false);
 		for (size_t i = 0; i != name.length(); ++i)
 		{
 			if (name[i] == ' ' || name[i] == '\a' || name[i] == ',')

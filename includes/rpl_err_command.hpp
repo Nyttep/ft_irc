@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 14:33:42 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:00:03 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@
 # define ERR_UNKNOWNERROR(ipaddress, client, command, info) (std::string(":") + ipaddress + " 400 " + client + " " + command + " :" + info + "\r\n")
 
 // 401
-# define ERR_NOSUCHNICK(ipaddress, client, nickname) (std::string(":") + ipaddress + " 401 " + client + " " + nickname + " :No such nick/channel\r\n")
+# define ERR_NOSUCHNICK(ipaddress, client, nickname) (std::string(":") + ipaddress + " 401 " + client + " " + nickname + " :No such nick\r\n")
 
 // 403
 # define ERR_NOSUCHCHANNEL(ipaddress, client, channel) (std::string(":") + ipaddress + " 403 " + client + " " + channel + " :No such channel\r\n")

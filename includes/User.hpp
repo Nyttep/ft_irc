@@ -67,10 +67,10 @@ class User
 		void				setRegistered(bool value);
 		bool				maxChannel(std::string channel);
 		void				joinChan(Channel* chan);
-		void				leaveAllChanPART(Command &command);
+		void				leaveAllChanPART(Command &command, Server &server);
 		void				quitChan(Channel& chan);
 		void				sendToAllChan(std::string message);
-		void				leaveAllChan();
+		void				leaveAllChan(Server &server);
 };
 
 #endif

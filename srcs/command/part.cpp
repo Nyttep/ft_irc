@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 12:54:07 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:42:13 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 		std::cout << "Redirection 461" << std::endl;
 		return ;
 	}
-	if (correct_nick_chan(channels[i]) == false)
+	if (chantypes(channels[i][0]) == false || correct_nick_chan(channels[i]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
@@ -46,6 +46,8 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 		server.getChan(channels[i])->removeOperator(command.getSource());
 	else
 		server.getChan(channels[i])->removeUser(command.getSource());
+	if (server.getChan(channels[i])->nbUser() == 0)
+		server.removeChan(channels[i]);
 }
 
 void	execute_PART(Command &command, Server &server)

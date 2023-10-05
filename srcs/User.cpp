@@ -176,28 +176,34 @@ void	User::joinChan(Channel* chan)
 	_lChannel.push_back(chan);
 }
 
-void	User::leaveAllChanPART(Command &command)
+void	User::leaveAllChanPART(Command &command, Server &server)
 {
 	std::string message;
-	if (!command.getParams()[1].empty())
+	if ((command.getParams().size() >= 2) && (!command.getParams()[1].empty()))
 		message = std::string(" :") + command.getParams()[1];
 	else
 		message = " :Left the channel";
 	while (!_lChannel.empty())
 	{
+		std::string channel = _lChannel[0]->getName();
 		_lChannel[0]->sendToChan(US_PART(setUserAddress(*this), _lChannel[0]->getName(), message), "", "");
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
 		else
 			_lChannel[0]->removeUser(this);
+		if (server.getChan(channel)->nbUser() == 0)
+		server.removeChan(channel);
 	}
 	while (!_gChannel.empty())
 	{
+		std::string channel = _gChannel[0]->getName();
 		_gChannel[0]->sendToChan(US_PART(setUserAddress(*this), _gChannel[0]->getName(), message), "", "");
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
 		else
 			_gChannel[0]->removeUser(this);
+		if (server.getChan(channel)->nbUser() == 0)
+			server.removeChan(channel);
 	}
 }
 
@@ -233,20 +239,26 @@ void	User::sendToAllChan(std::string	message)
 	}
 }
 
-void	User::leaveAllChan()
+void	User::leaveAllChan(Server &server)
 {
 	while (!_lChannel.empty())
 	{
+		std::string channel = _lChannel[0]->getName();
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
 		else
 			_lChannel[0]->removeUser(this);
+		if (server.getChan(channel)->nbUser() == 0)
+			server.removeChan(channel);
 	}
 	while (!_gChannel.empty())
 	{
+		std::string channel = _gChannel[0]->getName();
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
 		else
 			_gChannel[0]->removeUser(this);
+		if (server.getChan(channel)->nbUser() == 0)
+			server.removeChan(channel);
 	}
 }
