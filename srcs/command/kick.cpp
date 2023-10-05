@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 19:07:10 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:46:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	execute_KICK(Command& command, Server& server)
 		return ;
 	}
 	std::vector<std::string>	targets = collect_arguments(command.getParams()[1]);
+	std::cout << "targmax" << targets.size() << std::endl;
 	if (targets.size() > targmax(command.getVerb()))
 	{
 		sendAll(ERR_TOOMANYTARGETS(HOSTNAME, command.getSource()->getNName()), *command.getSource());

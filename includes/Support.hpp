@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 19:54:21 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 21:57:35 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define CHANMODES ",o,kl,it"
 # define MODES 1
 # define PREFIX "@"
-# define TARGMAX "PRIVMSG:3,MSG:3,JOIN:3,KICK:1,PART:3"
+# define TARGMAX "PRIVMSG:3,MSG:3,JOIN:3,KICK:1,PART:3,NOTICE:3"
 # define NICKLEN 16
 # define USERLEN 16
 # define CHANNELLEN 24

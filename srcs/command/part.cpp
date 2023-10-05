@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:48:23 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:50:25 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	execute_PART(Command &command, Server &server)
 		return ;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
+	std::cout << "targmax" << channels.size() << std::endl;
 	if (channels.size() > targmax(command.getVerb()))
 	{
 		sendAll(ERR_TOOMANYTARGETS(HOSTNAME, command.getSource()->getNName()), *command.getSource());
