@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:28:46 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:17:07 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,28 @@ void	execute_TOPIC(Command &command, Server &server)
 		}
 		else
 		{
-			sendAll(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), *command.getSource());;
+			sendAll(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), *command.getSource());
 			std::cout << "Redirection 332 suivi de 333(optionnel)" << std::endl;
 		}
 	}
 	else
 	{
+		
 		if (server.getChan(command.getParams()[0])->getT() == true && server.getChan(command.getParams()[0])->isOperator(command.getSource()) == false)
 		{
 			sendAll(ERR_CHANPRIVSNEEDED(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 			std::cerr << "Redirection 482" << std::endl;
 			return;
 		}
-		std::string new_topic;
-		if (command.getParams().size() > 1)
-			new_topic = std::string(" :") + command.getParams()[1];
-		if (new_topic.empty())
+		if (command.getParams()[1].empty())
+		{
 			server.getChan(command.getParams()[0])->setTopic("");
+			server.getChan(command.getParams()[0])->sendToChan(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], ""), "", "");
+		}
 		else
-			server.getChan(command.getParams()[0])->setTopic(new_topic);
-		server.getChan(command.getParams()[0])->sendToChan(RPL_TOPICCHANGED(HOSTNAME, command.getParams()[0], new_topic), "", "");
+		{
+			server.getChan(command.getParams()[0])->setTopic(command.getParams()[1]);
+			server.getChan(command.getParams()[0])->sendToChan(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), "", "");
+		}
 	}
 }

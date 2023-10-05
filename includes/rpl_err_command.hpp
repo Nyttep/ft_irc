@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 19:23:40 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:18:59 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # define VERSION "1.0"
 # define HOSTNAME "127.0.0.1"
 
-//# define RPL_WELCOME(client, nick) (":" + client + " 001 :Welcome to the " SERVERNAME " Network, " nick "\r\n")
 
 # define US_PRIVMSG(ipaddress, client, message) (std::string(":") + ipaddress + " PRIVMSG " + client + " :" + message + "\r\n")
+# define RPL_NOTICE(ipaddress, client, message) (std::string(":") + ipaddress + " NOTICE " + client + " :" + message + "\r\n")
 # define US_INVITE(ipaddress, client, channel) (std::string(":") + ipaddress + " INVITE " + client + " " + channel + "\r\n")
 # define RPL_MODE(ipaddress, channel, modechar, parameter) (std::string(":") + ipaddress + " MODE " + channel + " " + modechar + parameter + "\r\n")
 # define US_JOIN(ipaddress, channel) (std::string(":") + ipaddress + " JOIN " + channel + "\r\n")
@@ -31,7 +31,6 @@
 # define RPL_PONG(ipaddress, token) (std::string(":") + ipaddress + " PONG " + token + "\r\n")
 # define US_QUIT(ipaddress, message) (std::string(":") + ipaddress + " QUIT " + message + "\r\n")
 # define RPL_ERROR(ipaddress, message) (std::string(":") + ipaddress + " ERROR " + message + "\r\n")
-# define RPL_TOPICCHANGED(ipaddress, channel, message) (std::string("") + ipaddress + " TOPIC " + channel + message + "\r\n")
 
 // 001
 # define RPL_WELCOME(ipaddress, client, nick) (std::string(":") + ipaddress + " 001 " + client + " :Welcome to the " + SERVERNAME + " Network, " + nick + "\r\n")
