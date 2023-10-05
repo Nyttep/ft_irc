@@ -76,7 +76,8 @@ void	                    execute_WHOIS(Command &command, Server &server);
 
 // check_command
 std::vector<std::string>	collect_arguments(std::string string);
-bool                    	correct_nick_chan(std::string name);
+bool                    	correct_nick(std::string name);
+bool                        correct_chan(std::string name);
 std::string	                store_message(Command& command);
 std::string                 empty_param(std::string param, size_t i);
 bool	                    analyse_param(std::string param, Command &command);

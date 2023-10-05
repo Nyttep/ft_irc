@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 13:50:56 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 17:59:43 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	multiple_KICK(Command &command, Server &server, std::vector<std::string> targets, size_t i)
 {
-	if (correct_nick_chan(targets[i]) == false)
+	if (correct_nick(targets[i]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), targets[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
@@ -62,7 +62,7 @@ void	execute_KICK(Command& command, Server& server)
 		std::cout << "Redirection 461" << std::endl;
 		return ;
 	}
-	if (correct_nick_chan(command.getParams()[0]) == false)
+	if (correct_chan(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;

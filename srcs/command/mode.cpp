@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 14:42:46 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 18:00:20 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	mode_operator(Command &command, Server &server, std::vector<std::string> cu
 		// std::cerr << "Redirection 696" << std::endl;
 		return;
 	}
-	if (correct_nick_chan(currParams[2]) == false)
+	if (correct_nick(currParams[2]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), currParams[2]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
@@ -225,7 +225,7 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 696" << std::endl;
 		return ;
 	}
-	if (correct_nick_chan(command.getParams()[0]) == false)
+	if (correct_nick(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
