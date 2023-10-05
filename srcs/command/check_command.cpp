@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 17:57:28 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:54:27 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ std::vector<std::string>	collect_arguments(std::string string)
 
 bool	correct_nick(std::string name)
 {
+	if (chantypes(name[0]) == true)
+		return (false);
 	if (name[0] == '$' || name[0] == '#' || name[0] == '&' || name[0] == '%' || (isdigit(name[0])))
 	{
 		std::cerr << "Redirection 432" << std::endl;
@@ -59,6 +61,7 @@ bool	correct_chan(std::string name)
 		if (name[i] == ' ' || name[i] == '\a' || name[i] == ',')
 				return (false);
 	}
+	return (true);
 }
 
 std::string	store_message(Command &command)

@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:00:45 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:43:11 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@ void	multiple_PRIVMSG(Command &command, Server &server, std::vector<std::string>
 		std::cout << "Je suis passe par la" << std::endl;
 		analyse_target.erase(0, 1);
 	}
-	if (correct_nick(analyse_target) == false)
+	if (chantypes(analyse_target[0]) == true && correct_chan(analyse_target) == false)
+	{
+		sendAll(ERR_BADCHANMASK(HOSTNAME, targets[i]), *command.getSource());
+		std::cerr << "Redirection 432" << std::endl;
+		return ;
+	}
+	if (chantypes(analyse_target[0]) == false && correct_nick(analyse_target) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), targets[i]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;

@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:00:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:46:53 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,8 @@ void	mode_topic(Command &command, Server &server, std::vector<std::string> currP
 void	mode_operator(Command &command, Server &server, std::vector<std::string> currParams)
 {
 	if (currParams.size() < 3 || currParams[2].empty())
-	{
-		// sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), currParams[0], currParams[1], "", " : (+/-)o needs a <target>\r\n"), *command.getSource());
-		// std::cerr << "Redirection 696" << std::endl;
 		return;
-	}
-	if (correct_nick(currParams[2]) == false)
+	if (chantypes(currParams[2][0]) == false && correct_nick(currParams[2]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), currParams[2]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
@@ -225,7 +221,7 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 696" << std::endl;
 		return ;
 	}
-	if (correct_nick(command.getParams()[0]) == false)
+	if (correct_chan(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;

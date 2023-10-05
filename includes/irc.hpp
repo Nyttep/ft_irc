@@ -68,6 +68,7 @@ void						execute_PART(Command& command, Server& server);
 void						execute_PASS(Command& command, Server& server);
 void						execute_PING(Command& command);
 void						execute_PRIVMSG(Command& command, Server& server);
+void                        execute_NOTICE(Command& command, Server& server);
 void						execute_QUIT(Command& command, Server& serv);
 void						execute_TOPIC(Command& command, Server& server);
 void						execute_USER(Command& command, Server& server);

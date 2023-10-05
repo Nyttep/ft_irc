@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 17:52:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:19:24 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 
 # define US_PRIVMSG(ipaddress, client, message) (std::string(":") + ipaddress + " PRIVMSG " + client + " :" + message + "\r\n")
-# define RPL_NOTICE(ipaddress, client, message) (std::string(":") + ipaddress + " NOTICE " + client + " :" + message + "\r\n")
+# define US_NOTICE(ipaddress, client, message) (std::string(":") + ipaddress + " NOTICE " + client + " :" + message + "\r\n")
 # define US_INVITE(ipaddress, client, channel) (std::string(":") + ipaddress + " INVITE " + client + " " + channel + "\r\n")
 # define RPL_MODE(ipaddress, channel, modechar, parameter) (std::string(":") + ipaddress + " MODE " + channel + " " + modechar + parameter + "\r\n")
 # define US_MODE(ipaddress, channel, modechar, parameter) (std::string(":") + ipaddress + " MODE " + channel + " " + modechar + parameter + "\r\n")
