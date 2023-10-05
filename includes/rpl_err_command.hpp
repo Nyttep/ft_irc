@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rpl_err_command.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 13:05:34 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 13:49:54 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define RPL_NOTICE(ipaddress, client, message) (std::string(":") + ipaddress + " NOTICE " + client + " :" + message + "\r\n")
 # define US_INVITE(ipaddress, client, channel) (std::string(":") + ipaddress + " INVITE " + client + " " + channel + "\r\n")
 # define RPL_MODE(ipaddress, channel, modechar, parameter) (std::string(":") + ipaddress + " MODE " + channel + " " + modechar + parameter + "\r\n")
+# define US_MODE(ipaddress, channel, modechar, parameter) (std::string(":") + ipaddress + " MODE " + channel + " " + modechar + parameter + "\r\n")
 # define US_JOIN(ipaddress, channel) (std::string(":") + ipaddress + " JOIN " + channel + "\r\n")
 # define US_KICK(ipaddress, channel, target, message) (std::string(":") + ipaddress + " KICK " + channel + " " + target + message + "\r\n")
 # define US_NICK(formername, newname) (std::string(":") + formername + " NICK " + newname + "\r\n")
