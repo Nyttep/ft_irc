@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 20:50:25 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 22:31:33 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 		std::cerr << "Redirection 403" << std::endl;
 		return ;
 	}
-	if (server.getChan(command.getParams()[0])->onChannel(command.getSource()) == false)
+	if (server.getChan(channels[i])->onChannel(command.getSource()) == false)
 	{
 		sendAll(ERR_NOTONCHANNEL(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 442" << std::endl;

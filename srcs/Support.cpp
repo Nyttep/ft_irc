@@ -29,8 +29,8 @@ size_t	targmax(std::string target)
 	{
 		begin += target.length() + 1;
 		size_t end = targmax.find(",", begin);
-			res = targmax.substr(begin, end - begin);
-			return (std::atoi(res.c_str()));
+		res = targmax.substr(begin, end - begin);
+		return (std::atoi(res.c_str()));
 	}
 	return (INT_MAX - 1);
 }

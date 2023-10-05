@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 22:18:15 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 22:31:58 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,10 @@ void	execute_TOPIC(Command &command, Server &server)
 		}
 		else
 		{
-			std::cout << command.getParams()[1] << std::endl;
+			std::string	msg = command.getParams()[1];
 			if (command.getParams()[1].length() > TOPICLEN)
-			{
-				std::cout << "je rentre dans la condition" << std::endl;
-				command.getParams()[1].erase(TOPICLEN, command.getParams()[1].length() - TOPICLEN);
-					
-			}
-			std::cout << command.getParams()[1] << std::endl;
-			server.getChan(command.getParams()[0])->setTopic(command.getParams()[1]);
+				msg.erase(TOPICLEN, msg.length() - TOPICLEN);
+			server.getChan(command.getParams()[0])->setTopic(msg);
 			server.getChan(command.getParams()[0])->sendToChan(RPL_TOPIC(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], server.getChan(command.getParams()[0])->getTopic()), "", "");
 		}
 	}

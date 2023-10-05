@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 20:46:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 22:31:29 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 		std::string message;
 		if (!command.getParams()[2].empty())
 		{
-			if (command.getParams()[2].length() > KICKLEN)
-				command.getParams()[2].erase(KICKLEN, command.getParams()[2].length() - KICKLEN);
 			message = std::string(" :") + command.getParams()[2];
+			if (message.size() > KICKLEN + 2)
+				message.erase(KICKLEN + 2, message.length() - (KICKLEN + 2));
 		}
 		server.getChan(command.getParams()[0])->sendToChan(US_KICK(setUserAddress(*command.getSource()), command.getParams()[0], targets[i], message), "", "");
 	}
