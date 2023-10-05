@@ -50,6 +50,7 @@ int							getListenerSocket(Server &serv);
 std::vector<struct pollfd>	getPfds(int listener);
 void						serverLoop(int listener, Server &serv);
 bool						sendAll(std::string msg, User &target);
+void						closeAll(std::vector<struct pollfd> pfds, int& fdCount);
 
 // check_arg
 void						ft_check_arg(char **argv);

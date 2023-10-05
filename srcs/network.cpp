@@ -27,14 +27,18 @@ int	getListenerSocket(Server &serv)
 	if (errCode != 0)
 	{
 		std::cerr << "Error: getaddrinfo: " << gai_strerror(errCode) << "\n";
-		exit(1);
+		return (-1);
 	}
 	for (struct addrinfo *p = ai; p != NULL; p = p->ai_next)
 	{
 		listener = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
 		if (listener < 0)
 			continue;
-		setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+		if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) != 0)
+		{
+			close(listener);
+			return (-1);
+		}
 		if (bind(listener, p->ai_addr, p->ai_addrlen) < 0)
 		{
 			close(listener);
