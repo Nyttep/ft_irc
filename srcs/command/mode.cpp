@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 13:51:32 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:42:46 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,10 +206,7 @@ std::vector<std::string>	getCurrParams(Command& cmd, size_t& i)
 	if (i + 1 < cmd.getParams().size())
 	{
 		if (!cmd.getParams()[i + 1].empty() && (cmd.getParams()[i + 1][0] != '+' && cmd.getParams()[i + 1][0] != '-'))
-		{
-			++i;
-			ret.push_back(cmd.getParams()[i]);
-		}
+			ret.push_back(cmd.getParams()[i + 1]);
 	}
 	return (ret);
 }
@@ -222,6 +219,12 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
+	if (chantypes(command.getParams()[0][0]) == false)
+	{
+		sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], "", "", " : Server does not handle user modes\r\n"), *command.getSource());
+		std::cerr << "Redirection 696" << std::endl;
+		return ;
+	}
 	if (correct_nick_chan(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
@@ -231,7 +234,7 @@ void	execute_MODE(Command &command, Server &server)
 	if (server.chanExist(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_NOSUCHCHANNEL(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
-		std::cout << "Redirection 403" << std::endl;
+		std::cerr << "Redirection 696" << std::endl;
 		return ;
 	}
 	if (server.getChan(command.getParams()[0])->onChannel(command.getSource()) == false)
@@ -264,7 +267,7 @@ void	execute_MODE(Command &command, Server &server)
 				std::cerr << "Redirection 696" << std::endl;
 				return ;
 			}
-			char c = command.getParams()[1][1];
+			char c = currParams[1][1];
 			switch (c)
 			{
 				case 'i':
@@ -286,6 +289,8 @@ void	execute_MODE(Command &command, Server &server)
 					sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams()[2], 2), " : Unknown mode char ((+/-)(i,t,k,l,o))\r\n"), *command.getSource());
 					std::cerr << "Redirection 696" <<std::endl;
 			}
+			if (currParams.size() == 3)
+				i++;
 		}
 	}
 }
