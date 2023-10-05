@@ -169,12 +169,22 @@ bool	Server::nicknameCollision(std::string nickname)
 	return (false);
 }
 
-void		Server::allUsersMessage(std::string message)
+void	Server::allUsersMessage(std::string message)
 {
 	for (std::map<int, User *>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
 		sendAll(message, *it->second);
 	}
+}
+
+std::string	Server::_setMinute(int minutes)
+{
+	std::stringstream	stream;
+	if (minutes < 10)
+		stream << "0" << minutes;
+	else
+		stream << minutes;
+	return (stream.str());
 }
 
 void	Server::_setTime()
@@ -184,7 +194,7 @@ void	Server::_setTime()
 	std::time_t time = std::time(NULL);
 
 	std::tm *tm = std::localtime(&time);
-    stream << tm->tm_hour << ":" << tm->tm_min << " " << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100;
+    stream << tm->tm_mday << "/" << 1 + tm->tm_mon << "/" << tm->tm_year - 100 << " at " << tm->tm_hour << ":" << _setMinute(tm->tm_min);
     str += stream.str();
     this->_time = str;
 }

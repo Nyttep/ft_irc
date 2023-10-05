@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:19 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 10:54:19 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 13:05:34 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define RPL_YOURHOST(ipaddress, client) (std::string(":") + ipaddress + " 002 " + client + " :Your host is " + SERVERNAME + ", running version " + VERSION + "\r\n")
 
 // 003
-# define RPL_CREATED(ipaddress, client, datetime) (std::string(":") + ipaddress + " 003 " + client + " :This server was created" + datetime + "\r\n")
+# define RPL_CREATED(ipaddress, client, datetime) (std::string(":") + ipaddress + " 003 " + client + " :This server was created " + datetime + "\r\n")
 
 // 004
 # define RPL_MYINFO(ipaddress, client, av_channel_mode) (std::string(":") + ipaddress + " 004 " + client + " " + SERVERNAME + " " + VERSION + " available user mode: available channel mode: " + av_channel_mode + "\r\n")

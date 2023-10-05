@@ -26,7 +26,7 @@ class Server //date creation ?
 		std::vector<struct pollfd>	_pfds;
 		int							_fdCount;
 
-		void		_setTime();
+		void						_setTime();
 		Server();
 	public :
 		Server(std::string newPswd, std::string newPort);
@@ -53,6 +53,7 @@ class Server //date creation ?
 		void						delFromPfds(int fd);
 		void						disconnectUser(int fd);
 		int&						getFDCount();
+		std::string					_setMinute(int minute);
 };
 
 #endif
