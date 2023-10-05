@@ -176,72 +176,28 @@ void	User::joinChan(Channel* chan)
 	_lChannel.push_back(chan);
 }
 
-void	User::leaveAllChanQUIT(Command &command)
+void	User::leaveAllChanPART(Command &command)
 {
-	std::string	message_user;
-	std::string message_chan;
-	std::string nick;
+	std::string message;
+	if (!command.getParams()[1].empty())
+		message = std::string(" :") + command.getParams()[1];
+	else
+		message = " :Left the channel";
 	while (!_lChannel.empty())
 	{
-		if (_lChannel[0]->isOperator(this) == true)
-			nick = "@" + command.getSource()->getNName();
-		else
-			nick = command.getSource()->getNName();
-		std::string message_channel = std::string(":") + nick + " PART " + _lChannel[0]->getName();
-		// std::string message_user = std::string (":") + SERVERNAME + " " + nick + " " + _lChannel[0]->getName() + " :You have left the channel";
-		if (command.getParams().size() > 1)
-		{
-			message_channel += " :";
-			// message_user += " :";
-			for (size_t j = 1; j != command.getParams().size(); ++j)
-			{
-				if (!command.getParams()[j].empty())
-				{
-					message_channel += " " + command.getParams()[j];
-					// message_user += " " + command.getParams()[j];
-				}
-			}
-		}
-		message_channel += "\r\n";
-		// message_user += "\r\n";
+		_lChannel[0]->sendToChan(US_PART(setUserAddress(*this), _lChannel[0]->getName(), message), "", "");
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
 		else
 			_lChannel[0]->removeUser(this);
-		sendAll(message_channel, *this);
-		_lChannel[0]->sendToChan(message_channel, "", command.getSource()->getNName());
-		// _lChannel.erase(_lChannel.begin());
 	}
 	while (!_gChannel.empty())
 	{
-		if (_gChannel[0]->isOperator(this) == true)
-			nick = "@" + command.getSource()->getNName();
-		else
-			nick = command.getSource()->getNName();
-		std::string message_channel = std::string(":") + nick + " PART " + _lChannel[0]->getName();
-		// std::string message_user = std::string(":") + SERVERNAME + " " + nick + " " + _gChannel[0]->getName() +  " :You have left the channel";
-		if (command.getParams().size() > 1)
-		{
-			message_channel += " :";
-			// message_user += " :";
-			for (size_t j = 1; j != command.getParams().size(); ++j)
-			{
-				if (!command.getParams()[j].empty())
-				{
-					message_channel += " " + command.getParams()[j];
-					// message_user += " " + command.getParams()[j];
-				}
-			}
-		}
-		message_channel += "\r\n";
-		// message_user += "\r\n";
+		_gChannel[0]->sendToChan(US_PART(setUserAddress(*this), _gChannel[0]->getName(), message), "", "");
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
 		else
 			_gChannel[0]->removeUser(this);
-		sendAll(message_channel, *this);
-		_gChannel[0]->sendToChan(message_channel, "", command.getSource()->getNName());
-		// _gChannel.erase(_gChannel.begin());
 	}
 }
 

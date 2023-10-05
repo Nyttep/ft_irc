@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 12:07:47 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:00:31 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	execute_JOIN(Command &command, Server &server)
 	}
 	if ((command.getParams().size() == 1) && (command.getParams()[0] == "0"))
 	{
-		command.getSource()->leaveAllChanQUIT(command);
+		command.getSource()->leaveAllChanPART(command);
 		return;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
