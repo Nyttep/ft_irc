@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   notice.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:18:41 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:57 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:13:35 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	execute_NOTICE(Command &command, Server &server)
 	targets = collect_arguments(command.getParams()[0]);
 	if (targets.size() > targmax(command.getVerb()))
 		return ;
-	std::string message = store_message(command);
+	std::string message = command.getParams()[1];
 	if (message.empty())
 		return ;
 	for (size_t i = 0; i != targets.size(); ++i)

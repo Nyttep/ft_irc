@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:03 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:43:11 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:13:08 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	execute_PRIVMSG(Command &command, Server &server)
 		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}
-	std::string message = store_message(command);
+	std::string message = command.getParams()[1];
 	if (message.empty())
 	{
 		sendAll(ERR_NOTEXTTOSEND(HOSTNAME, command.getSource()->getNName()), *command.getSource());
