@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 16:47:19 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:54:27 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,37 @@ std::vector<std::string>	collect_arguments(std::string string)
 	return (vector);
 }
 
-bool	correct_nick_chan(std::string name)
+bool	correct_nick(std::string name)
 {
 	if (chantypes(name[0]) == true)
+		return (false);
+	if (name[0] == '$' || name[0] == '#' || name[0] == '&' || name[0] == '%' || (isdigit(name[0])))
 	{
-		if (name.size() == 1)
-			return (false);
-		for (size_t i = 0; i != name.length(); ++i)
-		{
-			if (name[i] == ' ' || name[i] == '\a' || name[i] == ',')
-			{
-				std::cerr << "redirection  432" << std::endl;
-				return (false);
-			}
-		}
+		std::cerr << "Redirection 432" << std::endl;
+		return (false);
 	}
-	else
+	for (size_t i = 0; i != name.length(); ++i)
 	{
-		if (name[0] == '$' || name[0] == '#' || name[0] == '&' || name[0] == '%' || (isdigit(name[0])))
+		if (name[i] == ' ' || name[i] == ','|| name[i] == '.' || name[i] == '*' || \
+			name[i] == '?' || name[i] == '!' || name[i] == '@')
 		{
 			std::cerr << "Redirection 432" << std::endl;
 			return (false);
 		}
-		for (size_t i = 0; i != name.length(); ++i)
-		{
-			if (name[i] == ' ' || name[i] == ','|| name[i] == '.' || name[i] == '*' || \
-				name[i] == '?' || name[i] == '!' || name[i] == '@')
-			{
-				std::cerr << "Redirection 432" << std::endl;
+	}
+	return (true);
+}
+
+bool	correct_chan(std::string name)
+{
+	if (chantypes(name[0]) == false)
+		return (false);
+	if (name.size() == 1)
+		return (false);
+	for (size_t i = 0; i != name.length(); ++i)
+	{
+		if (name[i] == ' ' || name[i] == '\a' || name[i] == ',')
 				return (false);
-			}
-		}
 	}
 	return (true);
 }

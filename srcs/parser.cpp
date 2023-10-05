@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/04 15:12:48 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:21:45 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ bool	ignored_cmd(std::string verb)
 {
 	if (verb=="CAP" || verb=="AUTHENTICATE" || verb=="PONG" || verb=="OPER" || verb=="ERROR" \
 		|| verb=="NAMES" || verb=="LIST" || verb=="MOTD" || verb=="VERSION" || verb=="ADMIN" || verb=="CONNECT" \
-		|| verb=="LUSERS" || verb=="TIME" || verb=="STATS" || verb=="HELP" || verb=="INFO" || verb=="NOTICE" || \
+		|| verb=="LUSERS" || verb=="TIME" || verb=="STATS" || verb=="HELP" || verb=="INFO" || verb=="WALLOPS" || \
 		verb=="WHO" || verb=="WHOIS" || verb=="WHOWAS" || verb=="KILL" || verb=="REHASH" || verb=="RESTART" || \
-		verb=="SQUIT" || verb=="AWAY" || verb=="LIMKS" || verb=="USERHOST" || verb=="WALLOPS")
+		verb=="SQUIT" || verb=="AWAY" || verb=="LIMKS" || verb=="USERHOST")
 		return (true);
 	return (false);
 }
@@ -163,6 +163,17 @@ void	execute_verb(Command& command, Server &server)
 			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
+	else if (command.getVerb() == "NOTICE")
+	{
+		if (command.getSource()->getRegistered() == true)
+			execute_NOTICE(command, server);
+		else
+		{
+			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
+			std::cerr << "Redirection 451" << std::endl;
+		}
+	}
+	
 	else if (command.getVerb() == "CAP")
 	{
 		return ;

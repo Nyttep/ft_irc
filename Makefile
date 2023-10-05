@@ -36,6 +36,7 @@ SRCS_NAME =	main.cpp \
 			command/pass.cpp \
 			command/ping.cpp \
 			command/privmsg.cpp \
+			command/notice.cpp \
 			command/quit.cpp \
 			command/topic.cpp \
 			command/user.cpp \

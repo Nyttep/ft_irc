@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:10 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 12:03:20 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:49:02 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute_TOPIC(Command &command, Server &server)
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
-	if (correct_nick_chan(command.getParams()[0]) == false)
+	if (chantypes(command.getParams()[0][0]) == true && correct_chan(command.getParams()[0]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, command.getParams()[0]), *command.getSource());
 		std::cerr << "Redirection 432" << std::endl;
