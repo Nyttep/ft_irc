@@ -185,6 +185,7 @@ void	serverLoop(int listener, Server& serv)
 						{
 							std::perror("Error: recv: ");
 						}
+						client->sendToAllChan(US_QUIT(setUserAddress(*client), ":Lost terminal"));
 						serv.disconnectUser(serv.getPfds()[i].fd);
 					}
 					else
