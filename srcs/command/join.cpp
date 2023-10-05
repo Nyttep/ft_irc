@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:23 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:51:56 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:22:57 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 
 void	create_chan(Command &command, Server &server, std::vector<std::string> channels, std::vector<std::string> keys, size_t i)
 {
+	if (command.getSource()->maxChannel(channels[i]) == true)
+	{   
+		sendAll(ERR_TOOMANYCHANNELS(HOSTNAME, command.getSource()->getNName(), channels[i]), *command.getSource());
+		std::cerr << "Redirection 405" << std::endl;
+		return ;
+	}
 	std::cout << channels[i] << std::endl;
 	if (channels[i].length() > CHANNELLEN)
 		channels[i].erase(CHANNELLEN, channels[i].length() - CHANNELLEN);
@@ -123,7 +129,7 @@ void	execute_JOIN(Command &command, Server &server)
 			sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
 			std::cerr << "Redirection 461" << std::endl;
 		}
-		else if (chantypes(channels[i][0]) == false || correct_chan(channels[i]) == false)
+		else if (correct_chan(channels[i]) == false)
 		{
 			sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
 			std::cerr << "Redirection 432" << std::endl;

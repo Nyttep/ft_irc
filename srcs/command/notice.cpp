@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:18:41 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:57 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:14:27 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	multiple_NOTICE(Command &command, Server &server, std::vector<std::string> 
 		return ;
 	std::string	prefix("");
 	std::string analyse_target = targets[i];
-	std::cout << "ma target sera :" << analyse_target << std::endl;
 	if (have_prefix(analyse_target[0]) == true)
 		analyse_target.erase(0, 1);
 	if (chantypes(analyse_target[0]) == true && correct_chan(analyse_target) == false)
@@ -49,7 +48,7 @@ void	execute_NOTICE(Command &command, Server &server)
 	targets = collect_arguments(command.getParams()[0]);
 	if (targets.size() > targmax(command.getVerb()))
 		return ;
-	std::string message = store_message(command);
+	std::string message = command.getParams()[1];
 	if (message.empty())
 		return ;
 	for (size_t i = 0; i != targets.size(); ++i)

@@ -173,7 +173,10 @@ bool	User::maxChannel(std::string channel)
   
 void	User::joinChan(Channel* chan)
 {
-	_lChannel.push_back(chan);
+	if (chan->getName()[0] == '&')
+		_lChannel.push_back(chan);
+	else
+		_gChannel.push_back(chan);
 }
 
 void	User::leaveAllChanPART(Command &command, Server &server)

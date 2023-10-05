@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:46:53 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:09:30 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void	execute_MODE(Command &command, Server &server)
 		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
-	if (chantypes(command.getParams()[0][0]) == false)
+	if (correct_nick(command.getParams()[0]) == true)
 	{
 		sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], "", "", " : Server does not handle user modes\r\n"), *command.getSource());
 		std::cerr << "Redirection 696" << std::endl;

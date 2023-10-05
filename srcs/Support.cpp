@@ -4,13 +4,14 @@ size_t	chanlimit(char prefixe)
 {
 	std::string limit = CHANLIMIT;
 	std::string	res;
-	size_t begin = limit.find(prefixe);
+	size_t	begin = limit.find(prefixe);
 	if (begin != std::string::npos)
 	{
-		while (begin < limit.length() && !isdigit(limit[begin]))
-			begin++;
-		res = limit.substr(begin, std::string::npos - begin);
+		size_t	colon = limit.find(':', begin);
+		res = limit.substr(colon + 1, limit.length() - (colon));
+		std::cout << res << std::endl;
 		begin = std::atoi(res.c_str());
+		std::cout << begin << std::endl;
 		if (begin != 0)
 			return (begin);
 		else
