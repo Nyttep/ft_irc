@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:50:22 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/06 14:57:58 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ void	mode_operator(Command &command, Server &server, std::string currParams, std
 	}
 	if (args.empty() || args[0].empty())
 	{
-		args.erase(args.begin());
+		if (!args.empty())
+			args.erase(args.begin());
 		return;
 	}
 	if (correct_nick(args[0]) == false)
@@ -171,7 +172,8 @@ void	mode_key(Command &command, Server &server, std::string currParams, std::vec
 	{
 		if (args.empty() || args[0].empty())
 		{
-			args.erase(args.begin());
+			if (!args.empty())
+				args.erase(args.begin());
 			return ;
 		}
 		server.getChan(command.getParams()[0])->setK(true);
@@ -205,7 +207,8 @@ void	mode_limit(Command &command, Server &server, std::string currParams, std::v
 	{
 		if (args.empty()|| args[0].empty())
 		{
-			args.erase(args.begin());
+			if (!args.empty())
+				args.erase(args.begin());
 			return ;
 		}
 		int limit = std::atoi(args[0].c_str());

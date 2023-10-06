@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:39:27 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/06 14:50:49 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define CHANLIMIT "&#:4"
 # define CHANMODES ",o,kl,it"
 # define PREFIX "@"
-# define MODES 3
+# define MODES 4
 # define TARGMAX "PRIVMSG:3,JOIN:3,KICK:2,PART:3,NOTICE:3"
 # define NICKLEN 16
 # define USERLEN 16
