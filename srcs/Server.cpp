@@ -63,7 +63,9 @@ User*	Server::getUser(int key)
 {
 	std::map<int, User*>::iterator	found = _users.find(key);
 	if (found == _users.end())
+	{
 		return (NULL);
+	}
 	return (found->second);
 }
 
@@ -239,9 +241,9 @@ void	Server::delFromPfds(int fd)
 void	Server::disconnectUser(int fd)
 {
 	_users.find(fd)->second->leaveAllChan(*this);
-	close(fd);
 	delFromPfds(fd);
 	removeUser(fd);
+	close(fd);
 }
 
 void	Server::listInvite(Command &command)

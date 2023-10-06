@@ -191,10 +191,10 @@ void	User::leaveAllChanPART(Command &command, Server &server)
 		_lChannel[0]->sendToChan(US_PART(setUserAddress(*this), _lChannel[0]->getName(), message), "", "");
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
-		else
+		else if (_lChannel[0]->onChannel(this) == true)
 			_lChannel[0]->removeUser(this);
 		if (server.getChan(channel)->nbUser() == 0)
-		server.removeChan(channel);
+			server.removeChan(channel);
 	}
 	while (!_gChannel.empty())
 	{
@@ -202,7 +202,7 @@ void	User::leaveAllChanPART(Command &command, Server &server)
 		_gChannel[0]->sendToChan(US_PART(setUserAddress(*this), _gChannel[0]->getName(), message), "", "");
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
-		else
+		else if (_gChannel[0]->onChannel(this) == true)
 			_gChannel[0]->removeUser(this);
 		if (server.getChan(channel)->nbUser() == 0)
 			server.removeChan(channel);
@@ -231,11 +231,11 @@ void	User::quitChan(Channel& chan)
 
 void	User::sendToAllChan(std::string	message)
 {
-	for (size_t i = 0; i != _lChannel.size(); ++i)
+	for (size_t i = 0; i < _lChannel.size(); ++i)
 	{
 		_lChannel[i]->sendToChan(message, "", _nName);
 	}
-	for (size_t i = 0; i != _gChannel.size(); ++i)
+	for (size_t i = 0; i < _gChannel.size(); ++i)
 	{
 		_gChannel[i]->sendToChan(message, "", _nName);
 	}
@@ -248,7 +248,7 @@ void	User::leaveAllChan(Server &server)
 		std::string channel = _lChannel[0]->getName();
 		if (_lChannel[0]->isOperator(this) == true)
 			_lChannel[0]->removeOperator(this);
-		else
+		else if (_lChannel[0]->onChannel(this) == true)
 			_lChannel[0]->removeUser(this);
 		if (server.getChan(channel)->nbUser() == 0)
 			server.removeChan(channel);
@@ -258,7 +258,7 @@ void	User::leaveAllChan(Server &server)
 		std::string channel = _gChannel[0]->getName();
 		if (_gChannel[0]->isOperator(this) == true)
 			_gChannel[0]->removeOperator(this);
-		else
+		else if (_gChannel[0]->onChannel(this) == true)
 			_gChannel[0]->removeUser(this);
 		if (server.getChan(channel)->nbUser() == 0)
 			server.removeChan(channel);

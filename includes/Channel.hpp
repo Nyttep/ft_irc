@@ -21,7 +21,6 @@ class Channel
 {
 	private :
 		std::string			_name;
-		std::vector<User*>	_operators;
 		std::vector<User*>	_users;
 		std::vector<User*>	_invite;
 
@@ -38,6 +37,7 @@ class Channel
 		Channel(const Channel& toCopy);
 
 	public :
+		std::vector<User*>	_operators;
 		Channel(std::string newName);
 		~Channel();
 		Channel&	operator=(const Channel& rhs);

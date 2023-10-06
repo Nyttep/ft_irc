@@ -190,6 +190,7 @@ bool	Channel::onChannel(User *client)
 {
 	for (size_t i = 0; i < _operators.size(); ++i)
 	{
+		std::cout << "INSIDE ONCHANNEL " << _operators[i]->getNName() << std::endl;
 		if (client->getNName() == _operators[i]->getNName())
 			return (true);
 	}
@@ -205,6 +206,7 @@ bool	Channel::isOperator(User *client)
 {
 	for (size_t i = 0; i < _operators.size(); ++i)
 	{
+		std::cout << "INSIDE ISOPERATOR " << _operators[i]->getNName() << std::endl;
 		if (client->getNName() == _operators[i]->getNName())
 			return (true);
 	}
@@ -237,6 +239,7 @@ void	Channel::sendToChan(std::string message, std::string prefix, std::string or
 {
 	for (size_t i = 0; i < _operators.size(); ++i)
 	{
+		std::cout << "INSIDE SENDTOCHAN " << _operators[i]->getNName() << std::endl;
 		if (origin != _operators[i]->getNName())
 			sendAll(message, *_operators[i]);
 	}

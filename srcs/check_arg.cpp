@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:17 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 10:25:16 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:05:48 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	ft_check_arg(char **argv)
 
 	if (ports.empty() || password.empty())
 	{
-		std::cerr << "Error: Empty argument" << std::endl;
+		std::cerr << "Error: Empty argument\n";
 		exit (1);
 	}
 	while (argv[1][i])
 	{
 		if (isdigit(argv[1][i]) == 0)
 		{
-			std::cerr << "Error: Non digit in Port number" << std::endl;
+			std::cerr << "Error: Non digit in Port number\n";
 			exit(1);
 		}
 		i++;
@@ -66,24 +66,24 @@ void	ft_check_arg(char **argv)
 	{
 		if (port >= 0 && port <= 1024)
 		{
-			std::cerr << "Error: System port" << std::endl;
+			std::cerr << "Error: System port\n";
 		}
 		else
 		{
-			std::cerr << "Error: Invalid Port value" << std::endl;
+			std::cerr << "Error: Invalid Port value\n";
 		}
 		exit(1);
 	}
 	if (password.length() > 255)
 	{
-		std::cerr << "Error: Password too long" << std::endl;
+		std::cerr << "Error: Password too long\n";
 		exit(1);
 	}
 	if (password.find('\a') != std::string::npos || password.find('\t') != std::string::npos || password.find(' ') != std::string::npos \
 		|| password.find('\n') != std::string::npos || password.find('\v') != std::string::npos || password.find('\f') != std::string::npos \
 		|| password.find('\r') != std::string::npos)
 	{
-			std::cerr << "Error: Whitespaces forbidden" << std::endl;
+			std::cerr << "Error: Whitespaces forbidden\n";
 			exit (1);
 	}
 }

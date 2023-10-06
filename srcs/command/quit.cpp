@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 16:37:34 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:32:36 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	execute_QUIT(Command &command, Server& serv)
 		message += std::string(":") + command.getParams()[0];
 	command.getSource()->sendToAllChan(US_QUIT(setUserAddress(*command.getSource()), message));
 	command.getSource()->leaveAllChan(serv);
-	close(command.getSource()->getFD());
-	serv.delFromPfds(command.getSource()->getFD());
-	serv.removeUser(command.getSource()->getFD());
+	sendAll(RPL_ERROR(HOSTNAME, ":Quit command"), *command.getSource());
+	int	fd = command.getSource()->getFD();
+	serv.delFromPfds(fd);
+	serv.removeUser(fd);
+	close(fd);
 }

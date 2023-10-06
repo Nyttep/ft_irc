@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:32 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 11:41:56 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 18:29:38 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	multiple_KICK(Command &command, Server &server, std::vector<std::string> ta
 	}
 	if (server.getChan(command.getParams()[0])->isOperator(server.getUser(targets[i])) == true)
 		server.getChan(command.getParams()[0])->removeOperator(server.getUser(targets[i]));	
-	else
+	else if (server.getChan(command.getParams()[0])->onChannel(server.getUser(targets[i])) == true)
 		server.getChan(command.getParams()[0])->removeUser(server.getUser(targets[i]));
 }
 

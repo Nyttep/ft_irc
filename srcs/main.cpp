@@ -30,7 +30,7 @@ int	main(int argc, char** argv)
 	}
 	if (argc != 3)
 	{
-		std::cerr << "Error: Port and password required" << std::endl;
+		std::cerr << "Error: Port and password required\n";
 		exit(1);
 	}
 	ft_check_arg(argv);

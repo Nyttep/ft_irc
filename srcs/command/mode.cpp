@@ -6,7 +6,7 @@
 /*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:57:58 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/06 23:18:54 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void	mode_limit(Command &command, Server &server, std::string currParams, std::v
 			return ;
 		}
 		int limit = std::atoi(args[0].c_str());
-		if (limit < 0) 
+		if (limit <= 0) 
 		{
 			sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], currParams, args[0], "Invalid number"), *command.getSource());
 			args.erase(args.begin());
@@ -315,7 +315,7 @@ void	execute_MODE(Command &command, Server &server)
 					mode_limit(command, server, currParams[i], args);
 					break;
 				default:
-					sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(command.getParams(), 2), "Unknown mode char ((+/-)(i,t,k,l,o))"), *command.getSource());
+					sendAll(RPL_INVALIDMODEPARAM(HOSTNAME, command.getSource()->getNName(), command.getParams()[0], currParams[i], "", "Unknown mode char ((+/-)(i,t,k,l,o))"), *command.getSource());
 			}
 		}
 	}

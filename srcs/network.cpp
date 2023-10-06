@@ -119,9 +119,9 @@ void	serverLoop(int listener, Server& serv)
 		if (g_sig != 0)
 		{
 			if (g_sig == SIGINT)
-				std::cerr << "received SIGINT\nshuting down the server";
+				std::cerr << "received SIGINT\nshuting down the server\n";
 			if (g_sig == SIGQUIT)
-				std::cerr << "received SIGQUIT\nshuting down the server";
+				std::cerr << "received SIGQUIT\nshuting down the server\n";
 			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
@@ -129,9 +129,9 @@ void	serverLoop(int listener, Server& serv)
 		if (g_sig != 0)
 		{
 			if (g_sig == SIGINT)
-				std::cerr << "received SIGINT\nshuting down the server";
+				std::cerr << "received SIGINT\nshuting down the server\n";
 			if (g_sig == SIGQUIT)
-				std::cerr << "received SIGQUIT\nshuting down the server";
+				std::cerr << "received SIGQUIT\nshuting down the server\n";
 			closeAll(serv.getPfds(), serv.getFDCount());
 			return ;
 		}
@@ -171,7 +171,7 @@ void	serverLoop(int listener, Server& serv)
 					{
 						if (!serv.addUser(serv.getPfds()[i].fd, new User(serv.getPfds()[i].fd)))
 						{
-							std::cerr << "Error: unexpected error: couldn't insert element in map";
+							std::cerr << "Error: unexpected error: couldn't insert element in map\n";
 							closeAll(serv.getPfds(), serv.getFDCount());
 							return ;
 						}
@@ -223,6 +223,13 @@ void	serverLoop(int listener, Server& serv)
 							else
 							{
 								ret = EOT_NOT_FOUND;	
+							}
+							if (serv.chanExist("#chan"))
+							{
+								for (size_t i = 0; i < serv.getChan("#chan")->_operators.size(); i++)
+								{
+									std::cout << "OP " << i << " ======= " << serv.getChan("#chan")->_operators[i]->getNName() << std::endl;
+								}
 							}
 						}
 					}

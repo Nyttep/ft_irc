@@ -41,6 +41,7 @@ SRCS_NAME =	main.cpp \
 			command/topic.cpp \
 			command/user.cpp \
 			command/check_command.cpp
+
 SRCS_PATH =	srcs
 SRCS = $(addprefix $(SRCS_PATH)/, $(SRCS_NAME))
 
@@ -51,6 +52,7 @@ INCS_NAME =	irc.hpp \
 			User.hpp \
 			Command.hpp \
 			rpl_err_command.hpp
+
 INCS_PATH =	includes
 INCS = $(addprefix $(INCS_PATH)/, $(INCS_NAME))
 
