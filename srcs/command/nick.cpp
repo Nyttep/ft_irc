@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:45 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:00:27 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:42:02 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	execute_NICK(Command &command, Server &server)
 		{
 			sendAll(ERR_NONICKNAMEGIVEN(HOSTNAME, command.getSource()->getNName()), *command.getSource());
 		}
-		std::cerr << "Redirection 431" << std::endl;
 		return ;
 	}
 	if (correct_nick(command.getParams()[0]) == false)
@@ -36,10 +35,8 @@ void	execute_NICK(Command &command, Server &server)
 	if (command.getParams()[0].length() > NICKLEN)
 		command.setPParams(0, command.getParams()[0].erase(NICKLEN, command.getParams()[0].length() - NICKLEN));
 	std::string	low_nick = command.getParams()[0];
-	std::cout << low_nick << std::endl;
 	for (size_t i = 0; i != low_nick.length(); ++i)
 		low_nick[i] = std::tolower(low_nick[i]);
-	std::cout << low_nick << std::endl;
 	if (server.nicknameCollision(low_nick) == true)
 	{
 		if (command.getSource()->getNName().empty())
@@ -50,7 +47,6 @@ void	execute_NICK(Command &command, Server &server)
 		{
 			sendAll(ERR_NICKNAMEINUSE(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
 		}
-		std::cerr << "Redirection 433" << std::endl;
 		return ;
 	}
 	if (command.getSource()->getRegistered() == true)

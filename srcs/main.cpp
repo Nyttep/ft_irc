@@ -20,8 +20,8 @@ int	main(int argc, char** argv)
 
 	try
 	{
-	if (signals(sa))
-		return (1);
+		if (signals(sa))
+			return (1);
 	}
 	catch (std::exception& e)
 	{

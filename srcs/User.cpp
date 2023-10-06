@@ -138,7 +138,6 @@ bool	User::formatRecvData(std::vector<char>& buff)
 
 	std::string::size_type	pos = tmp.find("\r\n");
 
-	std::cout << "BUFFER RECEIVED = " << tmp << std::endl;
 	if (pos == std::string::npos)
 	{
 		_msg.append(tmp);

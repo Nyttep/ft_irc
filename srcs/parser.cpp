@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:35 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 18:21:45 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:41:39 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "USER")
@@ -61,12 +60,10 @@ void	execute_verb(Command& command, Server &server)
 		else if (command.getSource()->getRegistered() == true)
 		{
 			sendAll(ERR_ALREADYREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 462" << std::endl;
 		}
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "PASS")
@@ -76,7 +73,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_ALREADYREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 462" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "MODE")
@@ -86,7 +82,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "JOIN")
@@ -96,7 +91,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "PART")
@@ -106,7 +100,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}	
 	else if (command.getVerb() == "PING")
@@ -116,7 +109,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "KICK")
@@ -126,7 +118,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "PRIVMSG")
@@ -136,7 +127,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "QUIT")
@@ -150,7 +140,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "TOPIC")
@@ -160,7 +149,6 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
 	else if (command.getVerb() == "NOTICE")
@@ -170,28 +158,15 @@ void	execute_verb(Command& command, Server &server)
 		else
 		{
 			sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-			std::cerr << "Redirection 451" << std::endl;
 		}
 	}
-	
 	else if (command.getVerb() == "CAP")
 	{
 		return ;
 	}
-	// else if (command.getVerb() == "WHOIS")
-	// {
-	// 	if (command.getSource()->getRegistered() == true)
-	// 		execute_WHOIS(command, server);
-	// 	else
-	// 	{
-	// 		sendAll(ERR_NOTREGISTERED(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-	// 		std::cerr << "Redirection 451" << std::endl;
-	// 	}
-	// }
 	else
 	{
 		sendAll(ERR_UNKNOWNCOMMAND(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
-		std::cout << "Redirection 421" << std::endl;
 	}
 }
 
@@ -274,21 +249,5 @@ void	parser(User& source, std::string reception, Server& server)
 	command.setVerb(parsing_cmd(&reception));
 	if (!reception.empty())
 		command.setParams(parsing_arguments(&reception));
-
-	// un simple check  a supprimer
-	std::cout << "source :" << command.getSource()->getNName() << std::endl;
-	if (command.getVerb().empty())
-		std::cout << "verb : (null)" << std::endl;
-	else	
-		std::cout << "verb : \"" << command.getVerb() << "\"" << std::endl;
-	for (size_t it = 0; it != command.getParams().size(); ++it)
-	{
-		if (command.getParams().empty())
-			std::cout << "Argument : (null)" << std::endl;
-		else	
-			std::cout << "Argument : \"" << command.getParams()[it] << "\"" << std::endl;
-	}
-	// fin supprimer
-
 	execute_verb(command, server);
 }

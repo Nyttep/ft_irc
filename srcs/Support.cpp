@@ -9,9 +9,7 @@ size_t	chanlimit(char prefixe)
 	{
 		size_t	colon = limit.find(':', begin);
 		res = limit.substr(colon + 1, limit.length() - (colon));
-		std::cout << res << std::endl;
 		begin = std::atoi(res.c_str());
-		std::cout << begin << std::endl;
 		if (begin != 0)
 			return (begin);
 		else

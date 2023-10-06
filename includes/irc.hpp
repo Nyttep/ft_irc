@@ -53,13 +53,11 @@ void						serverLoop(int listener, Server &serv);
 bool						sendAll(std::string msg, User &target);
 void						closeAll(std::vector<struct pollfd> pfds, int& fdCount);
 
-// check_arg
 void						ft_check_arg(char **argv);
 int							ft_atoi(const char *str);
 
-void	parser(User& source, std::string reception, Server& server);
+void	                    parser(User& source, std::string reception, Server& server);
 
-// command
 void						execute_INVITE(Command& command, Server& server);
 void						execute_JOIN(Command& command, Server& server);
 void						execute_KICK(Command& command, Server& server);
@@ -75,16 +73,15 @@ void						execute_TOPIC(Command& command, Server& server);
 void						execute_USER(Command& command, Server& server);
 void	                    execute_WHOIS(Command &command, Server &server);
 
-
-// check_command
 std::vector<std::string>	collect_arguments(std::string string);
 bool                    	correct_nick(std::string name);
 bool                        correct_chan(std::string name);
 std::string	                store_message(Command& command);
-std::string                 empty_param(std::string param, size_t i);
-bool	                    analyse_param(std::string param, Command &command);
+std::string                 empty_param(std::vector<std::string> param, size_t i);
+bool	                    analyse_param(std::string param,  Command &command);
 void                        handshake(Command &command, Server &server);
-
+std::vector<std::string>	collect_mode_char(std::string modechar);
+std::vector<std::string>	getParamsMODE(std::vector<std::string> modestring);
 int							signals(struct sigaction &sa);
 
 #endif

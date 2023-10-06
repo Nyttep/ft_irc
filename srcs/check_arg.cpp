@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:17 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/03 12:54:23 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 10:25:16 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,11 @@ void	ft_check_arg(char **argv)
 		std::cerr << "Error: Password too long" << std::endl;
 		exit(1);
 	}
-	for (size_t i = 0; i != password.length(); ++i)
+	if (password.find('\a') != std::string::npos || password.find('\t') != std::string::npos || password.find(' ') != std::string::npos \
+		|| password.find('\n') != std::string::npos || password.find('\v') != std::string::npos || password.find('\f') != std::string::npos \
+		|| password.find('\r') != std::string::npos)
 	{
-		if (std::isspace(password[i]))
-		{
 			std::cerr << "Error: Whitespaces forbidden" << std::endl;
 			exit (1);
-		}
 	}
 }

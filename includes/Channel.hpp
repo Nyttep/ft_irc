@@ -17,7 +17,7 @@
 
 class User;
 
-class Channel //date creation ?
+class Channel
 {
 	private :
 		std::string			_name;

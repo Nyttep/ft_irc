@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 21:17:46 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/06 14:26:32 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ bool	correct_nick(std::string name)
 		return (false);
 	if (name[0] == '$' || name[0] == '#' || name[0] == '&' || name[0] == '%' || (isdigit(name[0])))
 	{
-		std::cerr << "Redirection 432" << std::endl;
 		return (false);
 	}
 	for (size_t i = 0; i != name.length(); ++i)
@@ -43,7 +42,6 @@ bool	correct_nick(std::string name)
 		if (name[i] == ' ' || name[i] == ','|| name[i] == '.' || name[i] == '*' || \
 			name[i] == '?' || name[i] == '!' || name[i] == '@')
 		{
-			std::cerr << "Redirection 432" << std::endl;
 			return (false);
 		}
 	}
@@ -56,9 +54,11 @@ bool	correct_chan(std::string name)
 		return (false);
 	if (name.size() == 1)
 		return (false);
+	if (name.find('\a') != std::string::npos)
+		return (false);
 	for (size_t i = 0; i != name.length(); ++i)
 	{
-		if (name[i] == ' ' || name[i] == '\a' || name[i] == ',')
+		if (name[i] == ' ' || name[i] == ',')
 				return (false);
 	}
 	return (true);
@@ -79,28 +79,28 @@ std::string	store_message(Command &command)
 	return (message);
 }
 
-std::string empty_param(std::string param, size_t i)
+std::string empty_param(std::vector<std::string> param, size_t i)
 {
-	if (param.size() < i)
+	if (i >= param.size())
 		return ("");
-	return (param);
+	return (std::string(" ") + param[i]);
 }
 
 bool	analyse_param(std::string param, Command &command)
 {
 	if (param.size() != 2)
 	{
-		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], param, "",  " :One mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	if (param.empty())
 	{
-		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], param, "", " :Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	if (param[0] != '+' && param[0] != '-')
 	{
-		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], command.getParams()[1], empty_param(param, 2), " : Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
+		sendAll(RPL_INVALIDMODEPARAM(setUserAddress(*command.getSource()), command.getSource()->getNName(), command.getParams()[0], param, "", " :Incorrect mode char ((+/-)(i/t/k/l/o))\r\n"), *command.getSource());
 		return (false);
 	}
 	return (true);
@@ -131,4 +131,65 @@ void	handshake(Command &command, Server &server)
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANNELLEN=" + itoa(CHANNELLEN)), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "KICKLEN=" + itoa(KICKLEN)), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "TOPICLEN=" + itoa(TOPICLEN)), *command.getSource());
+}
+
+std::vector<std::string>	collect_mode_char(std::string str)
+{
+	std::vector<std::string>	vec;
+	std::string			 		res;
+	size_t i = 0;
+	while (str[i])
+	{
+		if (str[i] == '-')
+		{
+			i++;
+			while (str[i] && str[i] != '+')
+			{
+				if (str[i] == '-')
+					i++;
+				else
+				{
+					res = std::string("-") + str[i];
+					vec.push_back(res);
+					if (i != str.size())
+						i++;
+				}
+			}
+
+		}
+		else if (str[i] == '+')
+		{
+			i++;
+			while (str[i] && str[i] != '-')
+			{
+				if (str[i] == '+')
+					i++;
+				else
+				{
+					res = std::string("+") + str[i];
+					if(i != str.size())
+						i++;
+					vec.push_back(res);
+				}
+			}
+		}
+		else
+		{
+			res = std::string("+") + str[i];
+			if (i != str.size())
+				i++;
+			vec.push_back(res);
+		}
+	}
+	return (vec);
+}
+
+std::vector<std::string>	getParamsMODE(std::vector<std::string> getParams)
+{
+	std::vector<std::string>	ret;
+	for (size_t i = 2; i < getParams.size(); i++)
+	{
+		ret.push_back(getParams[i]);
+	}
+	return (ret);
 }

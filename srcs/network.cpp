@@ -70,12 +70,6 @@ void	addToPfds(int newFD, int& fdCount, std::vector<struct pollfd>& pfds)
 	pfds.push_back(newPollFD);
 }
 
-// void	delFromPfds(std::vector<struct pollfd> pfds, int i, int& fdCount)
-// {
-	// pfds[i] = pfds[fdCount - 1];
-	// fdCount--;
-// }
-
 bool	msgTooLong(std::string msg)
 {
 	if (msg.size() > 512)
@@ -188,13 +182,14 @@ void	serverLoop(int listener, Server& serv)
 					{
 						if (nBytes == 0)
 						{
-							std::cout << "server: socket " << serv.getPfds()[i].fd << "hung up" << std::endl; //dire au serv
+							client->sendToAllChan(US_QUIT(setUserAddress(*client), ":Lost terminal"));
 						}
 						else
 						{
+							client->sendToAllChan(US_QUIT(setUserAddress(*client), ":Lost terminal"));
+							sendAll(RPL_ERROR(HOSTNAME, ":Fatal Error on receive"), *client);
 							std::perror("Error: recv: ");
 						}
-						client->sendToAllChan(US_QUIT(setUserAddress(*client), ":Lost terminal"));
 						serv.disconnectUser(serv.getPfds()[i].fd);
 					}
 					else

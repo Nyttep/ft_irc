@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:48 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 22:31:33 by pdubois          ###   ########.fr       */
+/*   Updated: 2023/10/06 11:31:12 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,21 @@ void	multiple_PART(Command &command, Server &server, std::vector<std::string> ch
 	if (channels[i].empty())
 	{
 		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
-		std::cout << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (chantypes(channels[i][0]) == true && correct_chan(channels[i]) == false)
 	{
 		sendAll(ERR_BADCHANMASK(HOSTNAME, channels[i]), *command.getSource());
-		std::cerr << "Redirection 432" << std::endl;
 		return ;
 	}
 	if (server.chanExist(channels[i]) == false)
 	{
 		sendAll(ERR_NOSUCHCHANNEL(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
-		std::cerr << "Redirection 403" << std::endl;
 		return ;
 	}
 	if (server.getChan(channels[i])->onChannel(command.getSource()) == false)
 	{
 		sendAll(ERR_NOTONCHANNEL(HOSTNAME, command.getSource()->getNName(), command.getParams()[0]), *command.getSource());
-		std::cerr << "Redirection 442" << std::endl;
 		return ;
 	}
 	std::string	message;
@@ -55,15 +51,12 @@ void	execute_PART(Command &command, Server &server)
 	if (command.getParams().empty() || command.getParams()[0].empty())
 	{
 		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
-		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	std::vector<std::string>	channels = collect_arguments(command.getParams()[0]);
-	std::cout << "targmax" << channels.size() << std::endl;
 	if (channels.size() > targmax(command.getVerb()))
 	{
 		sendAll(ERR_TOOMANYTARGETS(HOSTNAME, command.getSource()->getNName()), *command.getSource());
-		std::cerr << "Redirection 407" << std::endl;
 		return ;
 	}
 	for (size_t i = 0; i != channels.size(); ++i)

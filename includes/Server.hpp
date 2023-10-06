@@ -15,7 +15,7 @@
 
 # include "irc.hpp"
 
-class Server //date creation ?
+class Server
 {
 	private :
 		std::string					_time;

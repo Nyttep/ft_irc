@@ -25,13 +25,13 @@ class User
 		int						_fd;
 		int						_port;
 
-		std::string				_nName; // nickname
-		std::string 			_uName; // username
-		std::string 			_rName; // realname
-		std::string				_hName; // hostname
+		std::string				_nName;
+		std::string 			_uName;
+		std::string 			_rName;
+		std::string				_hName;
 
-		std::vector<Channel*>	_lChannel; // LocalChan
-		std::vector<Channel*>	_gChannel; // GeneralChan
+		std::vector<Channel*>	_lChannel;
+		std::vector<Channel*>	_gChannel;
 
 		bool					_pass;
 		bool					_registered;

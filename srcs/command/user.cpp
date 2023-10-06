@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:42:13 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/05 11:56:09 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:42:11 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	execute_USER(Command &command, Server &server)
 		|| command.getParams()[1].empty() || command.getParams()[2].empty() || command.getParams()[3].empty())
 	{
 		sendAll(ERR_NEEDMOREPARAMS(HOSTNAME, command.getSource()->getNName(), command.getVerb()), *command.getSource());
-		std::cerr << "Redirection 461" << std::endl;
 		return ;
 	}
 	if (command.getParams()[0].length() > USERLEN)
