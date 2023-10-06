@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:31:22 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:47:42 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,19 @@ void	mode_invite(Command &command, Server &server, std::string currParams)
 	}
 	if (currParams[0] == '-')
 	{
-		server.getChan(command.getParams()[0])->setI(false);
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		if(server.getChan(command.getParams()[0])->getI() == true)
+		{
+			server.getChan(command.getParams()[0])->setI(false);
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		}
 	}
 	else if (currParams[0] == '+')
 	{
-		server.getChan(command.getParams()[0])->setI(true);
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		if(server.getChan(command.getParams()[0])->getI() == false)
+		{
+			server.getChan(command.getParams()[0])->setI(true);
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		}
 	}
 	else
 	{
@@ -74,13 +80,19 @@ void	mode_topic(Command &command, Server &server, std::string currParams)
 	}
 	if (currParams[0] == '-')
 	{
-		server.getChan(command.getParams()[0])->setT(false);
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		if(server.getChan(command.getParams()[0])->getT() == true)
+		{
+			server.getChan(command.getParams()[0])->setT(false);
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		}
 	}
 	else if (currParams[0] == '+')
 	{
-		server.getChan(command.getParams()[0])->setT(true);
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		if(server.getChan(command.getParams()[0])->getT() == false)
+		{
+			server.getChan(command.getParams()[0])->setT(true);
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		}
 	}
 	else
 	{
@@ -96,7 +108,10 @@ void	mode_operator(Command &command, Server &server, std::string currParams, std
 		return ;
 	}
 	if (args.empty() || args[0].empty())
+	{
+		args.erase(args.begin());
 		return;
+	}
 	if (correct_nick(args[0]) == false)
 	{
 		sendAll(ERR_ERRONEUSNICKNAME(HOSTNAME, command.getSource()->getNName(), args[0]), *command.getSource());
@@ -129,13 +144,15 @@ void	mode_operator(Command &command, Server &server, std::string currParams, std
 	}
 	else if (currParams[0] == '-')
 	{
-		if (server.getChan(command.getParams()[0])->isOperator(server.getUser(currParams[2])) == false)
+		if (server.getChan(command.getParams()[0])->isOperator(server.getUser(args[0])) == false)
+		{
+			args.erase(args.begin());
 			return ;
-		server.getChan(command.getParams()[0])->removeOperator(server.getUser(currParams[2]));
-		server.getChan(command.getParams()[0])->addUser(server.getUser(currParams[2]));
+		}
+		server.getChan(command.getParams()[0])->removeOperator(server.getUser(args[0]));
+		server.getChan(command.getParams()[0])->addUser(server.getUser(args[0]));
 		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams, std::string(" :") + args[0]), "", "");
 		args.erase(args.begin());
-
 	}
 	else
 	{
@@ -154,6 +171,7 @@ void	mode_key(Command &command, Server &server, std::string currParams, std::vec
 	{
 		if (args.empty() || args[0].empty())
 		{
+			args.erase(args.begin());
 			return ;
 		}
 		server.getChan(command.getParams()[0])->setK(true);
@@ -163,9 +181,12 @@ void	mode_key(Command &command, Server &server, std::string currParams, std::vec
 	}
 	else if (currParams[0] == '-')
 	{
-		server.getChan(command.getParams()[0])->setK(false);
-		server.getChan(command.getParams()[0])->setKey("");
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		if (server.getChan(command.getParams()[0])->getK() == true)
+		{
+			server.getChan(command.getParams()[0])->setK(false);
+			server.getChan(command.getParams()[0])->setKey("");
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], std::string(":") + currParams, ""), "", "");
+		}
 	}
 	else
 	{
@@ -184,6 +205,7 @@ void	mode_limit(Command &command, Server &server, std::string currParams, std::v
 	{
 		if (args.empty()|| args[0].empty())
 		{
+			args.erase(args.begin());
 			return ;
 		}
 		int limit = std::atoi(args[0].c_str());
@@ -206,8 +228,11 @@ void	mode_limit(Command &command, Server &server, std::string currParams, std::v
 	}
 	else if (currParams[0] == '-')
 	{
-		server.getChan(command.getParams()[0])->setL(false);
-		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams, ""), "", "");
+		if (server.getChan(command.getParams()[0])->getL() == true)
+		{
+			server.getChan(command.getParams()[0])->setL(false);
+			server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams, ""), "", "");
+		}
 	}
 	else
 	{
