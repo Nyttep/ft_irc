@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Support.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:40:30 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:18:53 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:39:27 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define CHANLIMIT "&#:4"
 # define CHANMODES ",o,kl,it"
 # define PREFIX "@"
-# define MODES 1
+# define MODES 3
 # define TARGMAX "PRIVMSG:3,JOIN:3,KICK:2,PART:3,NOTICE:3"
 # define NICKLEN 16
 # define USERLEN 16

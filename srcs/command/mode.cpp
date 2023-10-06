@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubois <pdubois@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:36 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:31:22 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:48:43 by pdubois          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ void	mode_operator(Command &command, Server &server, std::string currParams, std
 	}
 	else if (currParams[0] == '-')
 	{
-		if (server.getChan(command.getParams()[0])->isOperator(server.getUser(currParams[2])) == false)
+		if (server.getChan(command.getParams()[0])->isOperator(server.getUser(args[0])) == false)
 			return ;
-		server.getChan(command.getParams()[0])->removeOperator(server.getUser(currParams[2]));
-		server.getChan(command.getParams()[0])->addUser(server.getUser(currParams[2]));
+		server.getChan(command.getParams()[0])->removeOperator(server.getUser(args[0]));
+		server.getChan(command.getParams()[0])->addUser(server.getUser(args[0]));
 		server.getChan(command.getParams()[0])->sendToChan(US_MODE(setUserAddress(*command.getSource()), command.getParams()[0], currParams, std::string(" :") + args[0]), "", "");
 		args.erase(args.begin());
 
