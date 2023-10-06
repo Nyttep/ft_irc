@@ -6,7 +6,7 @@
 /*   By: mportrai <mportrai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:41:07 by mportrai          #+#    #+#             */
-/*   Updated: 2023/10/06 14:26:32 by mportrai         ###   ########.fr       */
+/*   Updated: 2023/10/06 15:00:08 by mportrai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	handshake(Command &command, Server &server)
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANLIMIT=" + CHANLIMIT), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "CHANMODES=" + CHANMODES), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "PREFIX=" + PREFIX), *command.getSource());
+	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "MODES=" + itoa(MODES)), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "TARGMAX=" + TARGMAX), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "NICKLEN=" + itoa(NICKLEN)), *command.getSource());
 	sendAll(RPL_ISUPPORT(setUserAddress(*command.getSource()), command.getSource()->getNName(), "USERLEN=" + itoa(USERLEN)), *command.getSource());
